@@ -1,9 +1,5 @@
 import os
-import RPi.GPIO as GPIO
-from multiprocessing import Process
 from app import create_app
-from gpiozero import DistanceSensor
-import time
 
 app = create_app()
 

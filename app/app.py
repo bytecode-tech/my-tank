@@ -4,11 +4,14 @@ from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 import config as Config
 
+from .api import temp_controller
+
 # For import *
 __all__ = ['create_app']
 
 
 DEFAULT_BLUEPRINTS = [
+    temp_controller
 ]
 
 def create_app(config=None, app_name=None, blueprints=None):
