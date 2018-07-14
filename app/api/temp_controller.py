@@ -8,6 +8,6 @@ def api_temp_control():
 
     humidity, temperature = temp.read_temp()
 
-    tempf = 9.0/5.0 * temperature + 32
+    temperature = 9.0/5.0 * temperature + 32
 
-    return {'temperature': tempf, 'humidity': humidity}
+    return {'temperature': temperature, 'humidity': humidity}
