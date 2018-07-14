@@ -1,5 +1,16 @@
 #!/bin/bash
 
+sudo easy_install pip
+sudo pip install setuptools
+
+sudo apt-get install git-core
+git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+cd Adafruit_Python_DHT
+sudo apt-get install build-essential python-dev
+sudo python setup.py install
+
+sudo pip install -r requirements.txt
+
 # Install and run node exporter for pi stats
 curl -SL https://github.com/prometheus/node_exporter/releases/download/v0.14.0/node_exporter-0.14.0.linux-armv6.tar.gz > node_exporter.tar.gz && \
 sudo tar -xvf node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1

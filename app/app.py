@@ -5,13 +5,15 @@ from flask_api import FlaskAPI
 import config as Config
 
 from .api import temp_controller
+from .api import soil_controller
 
 # For import *
 __all__ = ['create_app']
 
 
 DEFAULT_BLUEPRINTS = [
-    temp_controller
+    temp_controller,
+    soil_controller
 ]
 
 def create_app(config=None, app_name=None, blueprints=None):
