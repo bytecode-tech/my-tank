@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from gpiozero import DigitalInputDevice
 
-soil_sensor = DigitalInputDevice(14)
+soil_sensor = DigitalInputDevice(23)
 
 def moist():
-    return soil_sensor.value
+    return not soil_sensor.value
