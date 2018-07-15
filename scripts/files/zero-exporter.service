@@ -1,5 +1,6 @@
 [Unit]
 Description=Node Exporter
+After=zero-applicance.service
 
 [Service]
 User=pi
