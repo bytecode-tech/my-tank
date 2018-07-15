@@ -11,8 +11,10 @@ sudo python setup.py install
 
 sudo pip install -r requirements.txt
 
+pip install prometheus_client
+
 # Install and run node exporter for pi stats
-curl -SL https://github.com/prometheus/node_exporter/releases/download/v0.14.0/node_exporter-0.14.0.linux-armv6.tar.gz > node_exporter.tar.gz && \
+curl -SL https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-armv6.tar.gz > node_exporter.tar.gz && \
 sudo tar -xvf node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1
 
 node_exporter &

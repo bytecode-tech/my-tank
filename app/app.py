@@ -4,8 +4,8 @@ from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 import config as Config
 
-from .api import temp_controller
-from .api import soil_controller
+from .modules.dht-sensor import temp_controller
+from .modules.soil-sensor import soil_controller
 
 # For import *
 __all__ = ['create_app']

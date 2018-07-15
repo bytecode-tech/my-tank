@@ -1,5 +1,5 @@
 from flask import (Blueprint, request)
-from app.hardware import temp
+import temp
 
 temp_controller = Blueprint('temp-controller', __name__, url_prefix='/api/temp')
 
