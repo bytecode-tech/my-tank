@@ -14,7 +14,7 @@ class TempCollector(object):
 
     result = json.load(urllib2.urlopen('http://localhost:8080/api/soil/'))
 
-    yield GaugeMetricFamily('sensor_soil_moisture', 'Moisture sensor, value=result)
+    yield GaugeMetricFamily('sensor_soil_moisture', 'Soil moisture sensor', value=result['moist'])
 
 if __name__ == "__main__":
   REGISTRY.register(TempCollector())
