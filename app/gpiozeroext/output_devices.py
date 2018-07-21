@@ -10,6 +10,6 @@ class Relay(OutputDevice):
     def __init__(
             self, pin=None, active_high=False, initial_value=False,
             pin_factory=None):
-        super(DigitalOutputDevice, self).__init__(
+        super(Relay, self).__init__(
             pin, active_high, initial_value, pin_factory=pin_factory
         )
