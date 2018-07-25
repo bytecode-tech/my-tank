@@ -8,13 +8,15 @@ from prometheus_client.core import GaugeMetricFamily, REGISTRY
 class TempCollector(object):
   def collect(self):
     result = json.load(urllib2.urlopen('http://localhost:8080/api/temp/'))
-
     yield GaugeMetricFamily('sensor_temperature', 'Sensor temperature in degrees F', value=result['temperature'])
     yield GaugeMetricFamily('sensor_humidity', 'Sensor humidity', value=result['humidity'])
 
     result = json.load(urllib2.urlopen('http://localhost:8080/api/soil/'))
-
     yield GaugeMetricFamily('sensor_soil_moisture', 'Soil moisture sensor', value=result['moist'])
+
+    result = json.load(urllib2.urlopen('http://localhost:8080/api/soil-temp/'))
+    yield GaugeMetricFamily('sensor_soil_temperature', 'Soil sensor temperature in degrees F', value=result['temperature'])
+    
 
 if __name__ == "__main__":
   REGISTRY.register(TempCollector())
