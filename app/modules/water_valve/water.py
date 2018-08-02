@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from app.gpiozeroext.output_devices import Relay
 
-water_valve = Relay(16)
+water_valve = Relay(26)
 
 def value():
     return water_valve.value
@@ -11,4 +11,7 @@ def on():
 
 def off():
     return water_valve.off()
+
+def toggle():
+    return water_valve.toggle()
 

@@ -20,3 +20,10 @@ def api_water_off():
         water.off()
 
     return {'water-on-status': water.value()}
+
+@water_controller.route('/toggle', methods=["GET", "POST"])
+def api_water_toggle():
+    if request.method == "POST":
+        water.toggle()
+
+    return {'water-on-status': water.value()}
