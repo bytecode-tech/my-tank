@@ -4,8 +4,10 @@ from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 import config as Config
 
-from .api import temp_controller
-from .api import soil_controller
+from .modules.dht_sensor import temp_controller
+from .modules.soil_sensor import soil_controller
+from .modules.water_valve import water_controller
+from .modules.soil_temp import soil_temp_controller
 
 # For import *
 __all__ = ['create_app']
@@ -13,7 +15,9 @@ __all__ = ['create_app']
 
 DEFAULT_BLUEPRINTS = [
     temp_controller,
-    soil_controller
+    soil_controller,
+    water_controller,
+    soil_temp_controller
 ]
 
 def create_app(config=None, app_name=None, blueprints=None):
