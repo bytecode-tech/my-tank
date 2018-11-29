@@ -5,25 +5,25 @@ water_controller = Blueprint('water-controller', __name__, url_prefix='/api/wate
 
 @water_controller.route('/', methods=["GET"])
 def api_water_control():
-    return {'water-on-status': water.value()}
+    return {'flowStatus': water.value()}
 
 @water_controller.route('/on', methods=["GET", "POST"])
 def api_water_on():
     if request.method == "POST":
         water.on()
 
-    return {'water-on-status': water.value()}
+    return {'flowStatus': water.value()}
 
 @water_controller.route('/off', methods=["GET", "POST"])
 def api_water_off():
     if request.method == "POST":
         water.off()
 
-    return {'water-on-status': water.value()}
+    return {'flowStatus': water.value()}
 
 @water_controller.route('/toggle', methods=["GET", "POST"])
 def api_water_toggle():
     if request.method == "POST":
         water.toggle()
 
-    return {'water-on-status': water.value()}
+    return {'flowStatus': water.value()}
