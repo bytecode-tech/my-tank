@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, make_response, request
 from flask_api import FlaskAPI
+from flask_cors import CORS
 import config as Config
 
 from .modules.dht_sensor import temp_controller
@@ -26,6 +27,7 @@ def create_app(config=None, app_name=None, blueprints=None):
    blueprints = DEFAULT_BLUEPRINTS
 
    app = FlaskAPI("zero_controller")
+   CORS(app)
    configure_app(app, config)   
    configure_blueprints(app, blueprints)
 
