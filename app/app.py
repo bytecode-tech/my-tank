@@ -18,7 +18,8 @@ DEFAULT_BLUEPRINTS = [
     temp_controller,
     soil_controller,
     water_controller,
-    soil_temp_controller
+    soil_temp_controller,
+    schedule_controller
 ]
 
 def create_app(config=None, app_name=None, blueprints=None):
