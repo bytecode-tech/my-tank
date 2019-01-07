@@ -9,6 +9,7 @@ from .modules.dht_sensor import temp_controller
 from .modules.soil_sensor import soil_controller
 from .modules.water_valve import water_controller
 from .modules.soil_temp import soil_temp_controller
+from .modules.schedule import schedule_controller
 
 # For import *
 __all__ = ['create_app']

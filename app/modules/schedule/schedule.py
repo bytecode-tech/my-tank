@@ -1,5 +1,9 @@
 #!/usr/bin/python
-from crontabs import CronTabs
 
-def allJobs():
-    return CronTabs()
+class ScheduledJob(object):
+    
+    def __init__(self, cron_job):
+        self.cron_schedule = cron_job.slices.render()
+        self.command = cron_job.command
+        self.comment = cron_job.comment
+        
