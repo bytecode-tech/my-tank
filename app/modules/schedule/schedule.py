@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-class ScheduledJob(object):
+class ScheduledJob():
     
     def __init__(self, cron_job):
         self.cron_schedule = cron_job.slices.render()
