@@ -8,7 +8,8 @@ def job_repr(job):
     return {
         'schedule': job.slices.render(),
         'command': job.command,
-        'comment' : job.comment
+        'comment' : job.comment,
+        'enabled' : job.is_enabled()
     }
 
 @schedule_controller.route('/', methods=["GET"])
