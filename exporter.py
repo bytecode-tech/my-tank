@@ -20,6 +20,9 @@ class TempCollector(object):
     result = json.load(urllib2.urlopen('http://localhost:8080/api/water/'))
     yield GaugeMetricFamily('sensor_water', 'Water value value', value=result['flowStatus'])
 
+    result = json.load(urllib2.urlopen('http://localhost:8080/api/light/'))
+    yield GaugeMetricFamily('sensor_light', 'Light value', value=result['lightStatus'])
+
 if __name__ == "__main__":
   REGISTRY.register(TempCollector())
   start_http_server(9118)
