@@ -8,6 +8,7 @@ import config as Config
 from .modules.dht_sensor import temp_controller
 from .modules.soil_sensor import soil_controller
 from .modules.water_valve import water_controller
+from .modules.light import light_controller
 from .modules.soil_temp import soil_temp_controller
 from .modules.schedule import schedule_controller
 
@@ -19,6 +20,7 @@ DEFAULT_BLUEPRINTS = [
     temp_controller,
     soil_controller,
     water_controller,
+    light_controller,
     soil_temp_controller,
     schedule_controller
 ]
