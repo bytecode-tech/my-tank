@@ -5,6 +5,14 @@ from crontab import CronTab
 
 lock = threading.Lock()
 
+def job_response(job):
+    return {
+        'schedule': job.slices.render(),
+        'command': job.command,
+        'comment' : job.comment,
+        'enabled' : job.is_enabled()
+    }
+
 
 def synchronized(lock):
     """ Synchronization decorator """
@@ -34,4 +42,11 @@ class Scheduler():
 
     def jobs(self):
         return self.system_cron
+
+    def serializableJobs(self):
+        jobList = []
+        for job in self.system_cron:
+            jobList.append(job_response(job))
+
+        return jobList
         

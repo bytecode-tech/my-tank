@@ -3,7 +3,7 @@ from .schedule import Scheduler
 
 schedule_controller = Blueprint('schedule-controller', __name__, url_prefix='/api/schedule')
 
-def job_repr(job):
+def job_response(job):
     return {
         'schedule': job.slices.render(),
         'command': job.command,
@@ -14,9 +14,5 @@ def job_repr(job):
 @schedule_controller.route('/', methods=["GET"])
 def api_schedule_control():
     scheduler = Scheduler()
-    cronList = scheduler.jobs()
-    jobList = []
-    for job in cronList:
-        jobList.append(job_repr(job))
 
-    return {'schedule': jobList}
+    return {'schedule': scheduler.serializableJobs()}
