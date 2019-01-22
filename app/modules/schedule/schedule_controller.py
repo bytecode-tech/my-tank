@@ -1,6 +1,5 @@
 from flask import (Blueprint, request)
-from crontab import CronTab
-from .schedule import ScheduledJob
+from .schedule import Scheduler
 
 schedule_controller = Blueprint('schedule-controller', __name__, url_prefix='/api/schedule')
 
@@ -14,9 +13,10 @@ def job_repr(job):
 
 @schedule_controller.route('/', methods=["GET"])
 def api_schedule_control():
-    system_cron = CronTab(tabfile='/etc/crontab', user=False)
+    scheduler = Scheduler()
+    cronList = scheduler.jobs()
     jobList = []
-    for job in system_cron:
+    for job in cronList:
         jobList.append(job_repr(job))
 
     return {'schedule': jobList}
