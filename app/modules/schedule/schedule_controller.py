@@ -17,6 +17,6 @@ def api_schedule_control():
     jobList = scheduler.serializableJobs()
     responseList = []
     for job in jobList:
-        responseList.append(job_response(job)
+        responseList.append(job_response(job))
 
     return {'schedule': responseList}
