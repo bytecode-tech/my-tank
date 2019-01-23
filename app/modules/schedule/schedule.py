@@ -5,15 +5,6 @@ from crontab import CronTab
 
 lock = threading.Lock()
 
-def job_response(job):
-    return {
-        'schedule': job.slices.render(),
-        'command': job.command,
-        'comment' : job.comment,
-        'enabled' : job.is_enabled()
-    }
-
-
 def synchronized(lock):
     """ Synchronization decorator """
     def wrapper(f):
@@ -55,8 +46,8 @@ class Scheduler():
 
     def serializableJobs(self):
         jobList = []
-        for job in self.system_cron:
-            jobList.append(UserJob(cron_job=job))
+        for job in self.system_cron.find_comment('userJob'):
+            jobList.append(UserJob(job))
 
         return jobList
         
