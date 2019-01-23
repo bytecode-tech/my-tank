@@ -40,23 +40,23 @@ class UserJob():
 
 class Scheduler():
     __metaclass__ = Singleton
-    
-    def __init__(self):
-        self.system_cron = CronTab(user=True)
 
     def jobs(self):
-        return self.system_cron
+        cron = CronTab(user=True)
+        return cron
 
     def save_job(self, user_job):
-        job = self.system_cron.new(command=user_job.command, user='root')
+        cron = CronTab(user=True)
+        job = cron.new(command=user_job.command, user='root')
         job.setall(user_job.schedule)
         job.set_comment(user_job.comment)
-        self.system_cron.write()
+        cron.write()
         return UserJob(cron_job=job)
 
     def serializable_jobs(self):
         jobList = []
-        for job in self.system_cron:
+        cron = CronTab(user=True)
+        for job in cron:
             jobList.append(UserJob(cron_job=job))
 
         return jobList
