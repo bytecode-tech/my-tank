@@ -34,6 +34,16 @@ class Singleton(type):
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
+class UserJob():
+    def __init__(self, *args, **kwargs):
+        if 'cron_job' in kwargs:
+            cron_job = kwargs.get('cron_job')
+            self.schedule = cron_job.slices.render()
+            self.command = cron_job.command
+            self.comment = cron_job.comment
+            self.enabled = cron_job.is_enabled()
+    
+
 class Scheduler():
     __metaclass__ = Singleton
     
@@ -45,8 +55,8 @@ class Scheduler():
 
     def serializableJobs(self):
         jobList = []
-        for job in self.system_cron.find_comment('userJob'):
-            jobList.append(job_response(job))
+        for job in self.system_cron:
+            jobList.append(UserJob(cron_job=job))
 
         return jobList
         
