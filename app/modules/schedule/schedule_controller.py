@@ -28,9 +28,9 @@ def api_job_control():
     command = ""
     comment = ""
     if request.method == "POST":
-        schedule = request.json.get('schedule')
-        command = request.json.get('command')
-        comment = request.json.get('comment')
+        schedule = request.data.get('schedule')
+        command = request.data.get('command')
+        comment = request.data.get('comment')
     
     return {'schedule': schedule,
             'command': command,
