@@ -5,10 +5,10 @@ schedule_controller = Blueprint('schedule-controller', __name__, url_prefix='/ap
 
 def job_response(job):
     return {
-        'schedule': job.slices.render(),
+        'schedule': job.schedule,
         'command': job.command,
         'comment' : job.comment,
-        'enabled' : job.is_enabled()
+        'enabled' : job.enabled
     }
 
 @schedule_controller.route('/', methods=["GET"])
