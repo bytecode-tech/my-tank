@@ -42,7 +42,7 @@ class Scheduler():
     __metaclass__ = Singleton
     
     def __init__(self):
-        self.system_cron = CronTab(tabfile='/etc/crontab', user=False)
+        self.system_cron = CronTab(user=True)
 
     def jobs(self):
         return self.system_cron
@@ -51,6 +51,7 @@ class Scheduler():
         job = self.system_cron.new(command=user_job.command, user='root')
         job.setall(user_job.schedule)
         job.set_comment(user_job.comment)
+        self.system_cron.write()
         return UserJob(cron_job=job)
 
     def serializable_jobs(self):
