@@ -46,7 +46,7 @@ class Scheduler():
 
     def serializableJobs(self):
         jobList = []
-        for job in self.system_cron.find_comment('userJob'):
+        for job in self.system_cron:
             jobList.append(UserJob(job))
 
         return jobList
