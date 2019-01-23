@@ -28,10 +28,7 @@ def api_job_control():
     command = ""
     comment = ""
     if request.method == "POST":
-        schedule = request.data.get('schedule')
-        command = request.data.get('command')
-        comment = request.data.get('comment')
-        user_job = UserJob(schedule, command, comment)
+        user_job = UserJob(request.data.get('schedule'), request.data.get('command'), request.data.get('comment'))
         scheduler = Scheduler()
         job = scheduler.save_job(user_job)
         schedule = job.schedule
