@@ -33,7 +33,10 @@ class UserJob():
             self.command = cron_job.command
             self.comment = cron_job.comment
             self.enabled = cron_job.is_enabled()
-    
+        else:
+            self.schedule = args[0]
+            self.command = args[1]
+            self.comment = args[2]
 
 class Scheduler():
     __metaclass__ = Singleton
@@ -44,7 +47,12 @@ class Scheduler():
     def jobs(self):
         return self.system_cron
 
-    def serializableJobs(self):
+    def save_job(self, user_job):
+        job = self.system_cron.new(command=user_job.command, comment=user_job.comment, user='root')
+        job.setall(user_job.schedule)
+        self.system_cron.write()
+
+    def serializable_jobs(self):
         jobList = []
         for job in self.system_cron:
             jobList.append(UserJob(cron_job=job))

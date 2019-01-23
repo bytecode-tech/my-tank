@@ -1,5 +1,6 @@
 from flask import (Blueprint, request)
 from .schedule import Scheduler
+from .schedule import UserJob
 
 schedule_controller = Blueprint('schedule-controller', __name__, url_prefix='/api/schedule')
 
@@ -14,9 +15,16 @@ def job_response(job):
 @schedule_controller.route('/', methods=["GET"])
 def api_schedule_control():
     scheduler = Scheduler()
-    jobList = scheduler.serializableJobs()
-    responseList = []
-    for job in jobList:
-        responseList.append(job_response(job))
+    job_list = scheduler.serializable_jobs()
+    response_list = []
+    for job in job_list:
+        response_list.append(job_response(job))
 
-    return {'schedule': responseList}
+    return {'schedule': response_list}
+
+@schedule_controller.route('/job', methods=["GET, POST"])
+def api_job_control():
+    if request.method == "POST":
+        user_job = UserJob(request.json.get('schedule'), request.json.get('command'), request.json.get('comment'))
+        scheduler = Scheduler()
+        scheduler.save_job(user_job)
