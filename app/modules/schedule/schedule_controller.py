@@ -28,3 +28,5 @@ def api_job_control():
         user_job = UserJob(request.json.get('schedule'), request.json.get('command'), request.json.get('comment'))
         scheduler = Scheduler()
         scheduler.save_job(user_job)
+    
+    return ""
