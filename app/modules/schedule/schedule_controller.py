@@ -24,8 +24,14 @@ def api_schedule_control():
 
 @schedule_controller.route('/job', methods=["GET", "POST"])
 def api_job_control():
+    schedule = ""
+    command = ""
+    comment = ""
     if request.method == "POST":
-        user_job = UserJob(request.json.get('schedule'), request.json.get('command'), request.json.get('comment'))
-
+        schedule = request.json.get('schedule')
+        command = request.json.get('command')
+        comment = request.json.get('comment')
     
-    return ""
+    return {'schedule': schedule,
+            'command': command,
+            'comment': comment}
