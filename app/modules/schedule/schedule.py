@@ -51,7 +51,7 @@ class Scheduler():
         job = self.system_cron.new(command=user_job.command, user='root')
         job.setall(user_job.schedule)
         job.set_comment(user_job.comment)
-        self.system_cron.write_to_user(user=False)
+        return job
 
     def serializable_jobs(self):
         jobList = []

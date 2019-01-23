@@ -33,7 +33,10 @@ def api_job_control():
         comment = request.data.get('comment')
         user_job = UserJob(schedule, command, comment)
         scheduler = Scheduler()
-        scheduler.save_job(user_job)
+        job = scheduler.save_job(user_job)
+        schedule = job.schedule
+        command = job.command
+        comment = job.comment
     
     return {'schedule': schedule,
             'command': command,
