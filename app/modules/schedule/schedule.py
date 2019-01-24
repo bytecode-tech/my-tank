@@ -39,9 +39,6 @@ class UserJob():
             cron_job = kwargs.get('cron_job')
             self.schedule = cron_job.slices.render()
             self.command = cron_job.command
-
-            self.action = cron_job.command.split("/")[-1]
-            self.agent = cron_job.command.split("/")[2]
             
             comment_data = cron_job.comment.split(';')
             stringcount = len(comment_data)
