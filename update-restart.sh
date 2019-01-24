@@ -1,6 +1,4 @@
 #!/bin/bash
-
-cd zero-appliance
 git pull origin master
 
 echo 'Restarting zero-appliance'
