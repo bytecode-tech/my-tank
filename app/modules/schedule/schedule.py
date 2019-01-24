@@ -91,6 +91,6 @@ class Scheduler():
             cron = CronTab(user=True)
             cron.remove(job)
 
-        return self.find_job(job_id)
+        return None
 
         
