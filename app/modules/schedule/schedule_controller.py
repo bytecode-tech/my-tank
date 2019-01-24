@@ -6,6 +6,7 @@ schedule_controller = Blueprint('schedule-controller', __name__, url_prefix='/ap
 
 def job_response(job):
     return {
+        'id': job.id,
         'schedule': job.schedule,
         'command': job.command,
         'comment' : job.comment,
@@ -15,26 +16,24 @@ def job_response(job):
 @schedule_controller.route('/', methods=["GET"])
 def api_schedule_control():
     scheduler = Scheduler()
-    job_list = scheduler.serializable_jobs()
+    job_list = scheduler.jobs()
     response_list = []
     for job in job_list:
         response_list.append(job_response(job))
 
     return {'schedule': response_list}
 
-@schedule_controller.route('/job', methods=["GET", "POST"])
-def api_job_control():
-    schedule = ""
-    command = ""
-    comment = ""
-    if request.method == "POST":
-        user_job = UserJob(request.data.get('schedule'), request.data.get('command'), request.data.get('comment'))
+@schedule_controller.route('/jobs/<id>', methods=["GET", "POST", "DELETE"])
+def api_job_control(id):
+    user_job = None
+
+    if request.method == "GET":
         scheduler = Scheduler()
-        job = scheduler.save_job(user_job)
-        schedule = job.schedule
-        command = job.command
-        comment = job.comment
+        user_job = scheduler.find_job(id)
+
+    if request.method == "POST":
+        user_job = UserJob(id, request.data.get('schedule'), request.data.get('command'), request.data.get('comment'))
+        scheduler = Scheduler()
+        user_job = scheduler.save_job(user_job)
     
-    return {'schedule': schedule,
-            'command': command,
-            'comment': comment}
+    return job_response(user_job)
