@@ -69,11 +69,14 @@ class Scheduler():
         cron.write()
         return UserJob(cron_job=job)
     
-    def find_job(self, job_id):
+    def __find_cron_job(self, job_id):
         cron = CronTab(user=True)
         jobs = cron.find_comment(re.compile(job_id + '*'))
 
-        job = next(jobs, None)
+        return next(jobs, None)
+
+    def find_job(self, job_id):
+        job = self.__find_cron_job(job_id)
 
         if job:
             return UserJob(cron_job=job)
@@ -82,12 +85,10 @@ class Scheduler():
         
 
     def delete_job(self, job_id):
-        cron = CronTab(user=True)
-        jobs = cron.find_comment(job_id)
-
-        job = next(jobs, None)
+        job = self.__find_cron_job(job_id)
 
         if job:
+            cron = CronTab(user=True)
             cron.remove(job)
 
         return self.find_job(job_id)

@@ -13,7 +13,7 @@ def job_response(job):
         'enabled' : job.enabled
     }
 
-@schedule_controller.route('/', methods=["GET"])
+@schedule_controller.route('/jobs', methods=["GET"])
 def api_schedule_control():
     scheduler = Scheduler()
     job_list = scheduler.jobs()
