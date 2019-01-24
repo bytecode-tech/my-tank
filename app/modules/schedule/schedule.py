@@ -71,7 +71,7 @@ class Scheduler():
     
     def find_job(self, job_id):
         cron = CronTab(user=True)
-        jobs = cron.find_comment(re.compile('*'+ job_id + '*'))
+        jobs = cron.find_comment(re.compile(job_id + '*'))
 
         job = next(jobs, None)
 
