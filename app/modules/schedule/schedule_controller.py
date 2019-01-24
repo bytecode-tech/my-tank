@@ -26,18 +26,16 @@ def api_schedule_control():
 @schedule_controller.route('/jobs/<id>', methods=["GET", "POST", "DELETE"])
 def api_job_control(id):
     user_job = None
+    scheduler = Scheduler()
 
     if request.method == "GET":
-        scheduler = Scheduler()
         user_job = scheduler.find_job(id)
 
     if request.method == "POST":
         user_job = UserJob(id, request.data.get('schedule'), request.data.get('command'), request.data.get('comment'))
-        scheduler = Scheduler()
         user_job = scheduler.save_job(user_job)
 
     if request.method == "DELETE":
-        scheduler = Scheduler()
         user_job = scheduler.delete_job(id)
     
     if user_job:
