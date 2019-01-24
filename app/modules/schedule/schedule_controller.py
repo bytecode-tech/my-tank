@@ -47,7 +47,7 @@ def api_job_control(id):
             'id': "",
             'schedule': "",
             'action' : "",
-            'agent' : ""
+            'agent' : "",
             'command': "",
             'comment' : "",
             'enabled' : ""
