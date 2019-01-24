@@ -38,4 +38,12 @@ def api_job_control(id):
     
     if user_job:
         return job_response(user_job)
+    else:
+        return {
+            'id': "",
+            'schedule': "",
+            'command': "",
+            'comment' : "",
+            'enabled' : ""
+        }
     
