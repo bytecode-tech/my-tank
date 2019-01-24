@@ -70,7 +70,7 @@ class Scheduler():
         return UserJob(cron_job=job)
     
     def __find_cron_job(self, cron_tab, job_id):
-        jobs = cron_tab.find_comment(re.compile(r"^" + re.escape(job_id) + r"$"))
+        jobs = cron_tab.find_comment(re.compile(r"^" + re.escape(job_id)))
 
         return next(jobs, None)
 
