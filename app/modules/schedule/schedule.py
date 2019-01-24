@@ -28,10 +28,20 @@ class Singleton(type):
 
 class UserJob():
     def __init__(self, *args, **kwargs):
+        self.id = None
+        self.schedule = None
+        self.agent = None
+        self.action = None
+        self.command = None
+        self.comment = None
+
         if 'cron_job' in kwargs:
             cron_job = kwargs.get('cron_job')
             self.schedule = cron_job.slices.render()
             self.command = cron_job.command
+
+            self.action = cron_job.command.split("/")[-1]
+            self.agent = cron_job.command.split("/")[2]
             
             comment_data = cron_job.comment.split(';')
             stringcount = len(comment_data)
@@ -47,8 +57,9 @@ class UserJob():
         else:
             self.id = args[0]
             self.schedule = args[1]
-            self.command = args[2]
-            self.comment = args[3]
+            self.agent = args[2]
+            self.action = args[3]
+            self.comment = args[4]
 
 class Scheduler():
     __metaclass__ = Singleton
@@ -63,7 +74,8 @@ class Scheduler():
 
     def save_job(self, user_job):
         cron = CronTab(user=True)
-        job = cron.new(command=user_job.command, user='root')
+        job = cron.new()
+        job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
         job.setall(user_job.schedule)
         job.set_comment(user_job.id + ';' + user_job.comment)
         cron.write()
