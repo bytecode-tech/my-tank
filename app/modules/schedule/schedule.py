@@ -71,7 +71,7 @@ class Scheduler():
     def find_job(self, job_id):
         cron = CronTab(user=True)
         jobs = cron.find_comment(job_id)
-        return UserJob(cron_job=next(jobs))
+        return UserJob(cron_job=next(jobs, None))
 
     def delete_job(self, job_id):
         cron = CronTab(user=True)
