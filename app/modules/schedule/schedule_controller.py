@@ -36,4 +36,6 @@ def api_job_control(id):
         scheduler = Scheduler()
         user_job = scheduler.save_job(user_job)
     
-    return job_response(user_job)
+    if user_job:
+        return job_response(user_job)
+    
