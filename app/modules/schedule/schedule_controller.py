@@ -34,7 +34,7 @@ def api_job_control(id):
         user_job = scheduler.find_job(id)
 
     if request.method == "POST":
-        user_job = UserJob(id, request.data.get('schedule'), request.data.get('agent'), request.data.get('action'), request.data.get('comment'))
+        user_job = UserJob(id, request.data.get('schedule'), request.data.get('agent'), request.data.get('action'), request.data.get('comment'), request.data.get('enabled'))
         user_job = scheduler.save_job(user_job)
 
     if request.method == "DELETE":

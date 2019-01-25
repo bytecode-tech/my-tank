@@ -63,6 +63,7 @@ class UserJob():
             self.agent = args[2]
             self.action = args[3]
             self.comment = args[4]
+            self.enabled = args[5]
 
 class Scheduler():
     __metaclass__ = Singleton
@@ -83,6 +84,7 @@ class Scheduler():
             job.setall(user_job.schedule)
             job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
             job.set_comment(user_job.id + ';' + user_job.comment)
+            job.enable(user_job.enabled)
         else:
             job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
             job.setall(user_job.schedule)
