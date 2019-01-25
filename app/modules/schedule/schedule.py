@@ -81,7 +81,13 @@ class Scheduler():
         job.setall(user_job.schedule)
         job.set_comment(user_job.id + ';' + user_job.comment)
         cron.write()
-        return UserJob(cron_job=job)
+
+        saved_job = self.__find_cron_job(cron, user_job.id)
+
+        if saved_job:
+            return UserJob(cron_job=saved_job)
+        else:
+            return None
     
     def __find_cron_job(self, cron_tab, job_id):
         jobs = cron_tab.find_comment(re.compile(r"^" + re.escape(job_id)))
