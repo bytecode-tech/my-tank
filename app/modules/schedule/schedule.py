@@ -40,8 +40,11 @@ class UserJob():
             self.schedule = cron_job.slices.render()
             self.command = cron_job.command
 
-            self.agent = cron_job.command.rsplit("/")[-2]
-            self.action = cron_job.command.rsplit("/")[-1]            
+            command_components = cron_job.command.rsplit("/")
+            component_count = len(command_components)
+            if component_count >= 2:
+                self.agent = command_components[-2]
+                self.action = command_components[-1]            
             
             comment_data = cron_job.comment.split(';')
             stringcount = len(comment_data)
