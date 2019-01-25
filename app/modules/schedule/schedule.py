@@ -77,9 +77,17 @@ class Scheduler():
 
     def save_job(self, user_job):
         cron = CronTab(user=True)
-        job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
-        job.setall(user_job.schedule)
-        job.set_comment(user_job.id + ';' + user_job.comment)
+        job = self.__find_cron_job(cron, user_job.id)
+
+        if job:
+            job.setall(user_job.schedule)
+            job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job.set_comment(user_job.id + ';' + user_job.comment)
+        else:
+            job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job.setall(user_job.schedule)
+            job.set_comment(user_job.id + ';' + user_job.comment)
+
         cron.write()
 
         saved_job = self.__find_cron_job(cron, user_job.id)
