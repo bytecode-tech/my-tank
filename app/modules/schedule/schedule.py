@@ -71,8 +71,7 @@ class Scheduler():
 
     def save_job(self, user_job):
         cron = CronTab(user=True)
-        job = cron.new()
-        job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+        job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
         job.setall(user_job.schedule)
         job.set_comment(user_job.id + ';' + user_job.comment)
         cron.write()
