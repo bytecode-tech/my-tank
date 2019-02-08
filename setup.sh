@@ -1,26 +1,14 @@
 #!/bin/bash
 
-sudo easy_install pip
-sudo pip install setuptools
+sudo apt-get install python3-pip python3-gpiozero
+sudo python3 -m pip install --upgrade pip setuptools wheel
 
 sudo apt-get install git-core
 #GEN SSH Keys before git
 
-
-git clone https://github.com/adafruit/Adafruit_Python_DHT.git
-cd Adafruit_Python_DHT
-
-sudo apt-get install build-essential python-dev
-
-sudo python setup.py install
-
-cd ~
 cd zero-appliance
-sudo pip install -r requirements.txt
+sudo pip3 install -r requirements.txt
 cd ~
-
-pip install prometheus_client
-
 
 # Install and run node exporter for pi stats
 curl -SL https://github.com/prometheus/node_exporter/releases/download/v0.16.0/node_exporter-0.16.0.linux-armv6.tar.gz > node_exporter.tar.gz && \
