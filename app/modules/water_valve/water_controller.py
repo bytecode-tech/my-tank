@@ -1,5 +1,5 @@
 from flask import (Blueprint, request)
-import water
+from . import water
 
 water_controller = Blueprint('water-controller', __name__, url_prefix='/api/water')
 

@@ -1,5 +1,5 @@
 from flask import (Blueprint, request)
-import soil
+from . import soil
 
 soil_controller = Blueprint('soil-controller', __name__, url_prefix='/api/soil')
 
