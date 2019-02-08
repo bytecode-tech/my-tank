@@ -3,7 +3,7 @@ Description=Node Exporter
 
 [Service]
 User=pi
-ExecStart=/usr/bin/python /home/pi/zero-appliance/run.py
+ExecStart=/usr/bin/python3 /home/pi/zero-appliance/run.py
 Restart=always
 RestartSec=3
 

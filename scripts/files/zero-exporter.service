@@ -6,7 +6,7 @@ Requires=zero-appliance.service
 [Service]
 User=pi
 ExecStartPre=/bin/sleep 10
-ExecStart=/usr/bin/python /home/pi/zero-appliance/exporter.py
+ExecStart=/usr/bin/python3 /home/pi/zero-appliance/exporter.py
 Restart=always
 RestartSec=3
 
