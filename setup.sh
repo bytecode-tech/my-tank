@@ -1,9 +1,9 @@
 #!/bin/bash
 
-sudo apt-get install python3-pip python3-gpiozero
+sudo apt-get install python3-pip python3-gpiozero -y
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
-sudo apt-get install git-core
+sudo apt-get install git-core -y
 #GEN SSH Keys before git
 
 cd zero-appliance
