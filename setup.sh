@@ -22,8 +22,6 @@ node_exporter &
 sudo apt-get install docker-ce=18.06.1~ce~3-0~raspbian
 
 # run prometheus docker image
-docker run -dit --restart unless-stopped --net=host -p 9090:9090 -v /home/pi/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -v prometheus-data:/var/lib/prometheus/ faucet/prometheus-pi
+docker run -dit --restart unless-stopped --net=host -p 9090:9090 -v /home/pi/zero-appliance/prometheus.yml:/etc/prometheus/prometheus.yml -v prometheus-data:/var/lib/prometheus/ faucet/prometheus-pi
 
-git clone git@github.com:bytecode-tech/zero-appliance.git
-
-git clone git@github.com:bytecode-tech/aspen-app.git
+sudo  docker run --net=host -d -p 80:80 --restart unless-stopped joshdmoore/aspen-app:latest
