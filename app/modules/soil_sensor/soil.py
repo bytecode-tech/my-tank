@@ -12,5 +12,6 @@ ss = Seesaw(i2c_bus, addr=0x36)
 
 def moist():
     raw_value = ss.moisture_read()
-    value = ((raw_value - MIN) / (MAX - MIN)) * 100
-    return int(round(value))
+#    value = ((raw_value - MIN) / (MAX - MIN)) * 100
+#    return int(round(value))
+    return raw_value
