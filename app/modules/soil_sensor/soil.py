@@ -14,4 +14,8 @@ def moist():
     raw_value = ss.moisture_read()
 #    value = ((raw_value - MIN) / (MAX - MIN)) * 100
 #    return int(round(value))
-    return raw_value
+    if raw_value >= MIN or raw_value <= MAX:
+        return raw_value
+    else:
+        raise Exception('Moisture value out of range')
+    
