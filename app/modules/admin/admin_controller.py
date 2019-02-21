@@ -3,7 +3,7 @@ from . import appliance
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
 
-@admin_controller.route('/server/update', methods=["GET"])
+@admin_controller.route('/server/update', methods=["GET", "POST"])
 def api_admin_server_update():
     if request.method == "POST":
         gitStatus = appliance.updateSource()
