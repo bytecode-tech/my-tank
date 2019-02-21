@@ -10,8 +10,14 @@ def checkUpdate():
     g = git.Git('/home/pi/zero-appliance')
     return g.status()
 
-def restartAppliance():
+def applianceRestart():
     sysbus = dbus.SystemBus()
     systemd1 = sysbus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
     manager = dbus.Interface(systemd1, 'org.freedesktop.systemd1.Manager')
     return manager.RestartUnit('zero-appliance.service', 'fail')
+
+def applianceState():
+    sysbus = dbus.SystemBus()
+    systemd1 = sysbus.get_object('org.freedesktop.systemd1', '/org/freedesktop/systemd1')
+    manager = dbus.Interface(systemd1, 'org.freedesktop.systemd1.Manager')
+    return manager.ActiveState

@@ -12,11 +12,14 @@ def api_admin_server_update():
         gitStatus = appliance.checkUpdate()
         return {'gitStatus': gitStatus}
 
-@admin_controller.route('/server/appliance', methods=["POST"])
+@admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance_restart():
     if request.method == "POST":
-        status = appliance.restartAppliance()
+        status = appliance.applianceRestart()
         return {'applianceRestartStatus': status}
+    elif request.method == "GET":
+        gitStatus = appliance.applianceState()
+        return {'gitStatus': gitStatus}
 
 
 
