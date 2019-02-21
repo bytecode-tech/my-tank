@@ -11,6 +11,7 @@ from .modules.water_valve import water_controller
 from .modules.light import light_controller
 from .modules.soil_temp import soil_temp_controller
 from .modules.schedule import schedule_controller
+from .modules.admin import admin_controller
 
 # For import *
 __all__ = ['create_app']
@@ -22,7 +23,8 @@ DEFAULT_BLUEPRINTS = [
     water_controller,
     light_controller,
     soil_temp_controller,
-    schedule_controller
+    schedule_controller,
+    admin_controller
 ]
 
 def create_app(config=None, app_name=None, blueprints=None):
