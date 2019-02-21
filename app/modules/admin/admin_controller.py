@@ -12,5 +12,12 @@ def api_admin_server_update():
         gitStatus = appliance.checkUpdate()
         return {'gitStatus': gitStatus}
 
+@admin_controller.route('/server/appliance', methods=["POST"])
+def api_admin_appliance_restart():
+    if request.method == "POST":
+        status = appliance.restartAppliance()
+        return {'applianceRestartStatus': status}
+
+
 
 
