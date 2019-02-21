@@ -1,5 +1,6 @@
 from flask import (Blueprint, request)
 from . import appliance
+import os
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
 
@@ -19,7 +20,8 @@ def api_admin_appliance_restart():
         return {'applianceRestartStatus': status}
     elif request.method == "GET":
         #gitStatus = appliance.applianceState()
-        return {'gitStatus': ""}
+        status = os.system('systemctl status zreo-appliance')
+        return {'applianceStatus': status }
 
 
 
