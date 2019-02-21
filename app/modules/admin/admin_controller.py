@@ -18,8 +18,8 @@ def api_admin_appliance_restart():
         status = appliance.applianceRestart()
         return {'applianceRestartStatus': status}
     elif request.method == "GET":
-        gitStatus = appliance.applianceState()
-        return {'gitStatus': gitStatus}
+        #gitStatus = appliance.applianceState()
+        return {'gitStatus': ""}
 
 
 
