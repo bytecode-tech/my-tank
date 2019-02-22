@@ -9,7 +9,7 @@ def updateSource():
 
 def checkUpdate():
     g = git.Git('/home/pi/zero-appliance')
-    return g.status()
+    return g.status('-uno')
 
 def applianceRestart():
     return os.system('sudo systemctl restart zero-appliance')
