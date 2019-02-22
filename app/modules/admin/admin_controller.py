@@ -13,14 +13,19 @@ def api_admin_server_update():
         gitStatus = appliance.checkUpdate()
         return {'gitStatus': gitStatus}
 
+@admin_controller.route('/server', methods=["GET"])
+def api_admin_server_status():
+    applianceState = appliance.applianceState()
+    exporterState = appliance.exporterState()
+    return {'zero-appliance': applianceState, 'zero-exporter': exporterState}
+
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance_restart():
     if request.method == "POST":
         status = appliance.applianceRestart()
         return {'applianceRestartStatus': status}
     elif request.method == "GET":
-        #gitStatus = appliance.applianceState()
-        status = os.system('systemctl status zreo-appliance')
+        status = appliance.applianceState()
         return {'applianceStatus': status }
 
 
