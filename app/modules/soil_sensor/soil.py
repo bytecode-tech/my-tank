@@ -16,7 +16,7 @@ except:
 
 
 def moist():
-    if ss:
+    try:
         raw_value = ss.moisture_read()
         if raw_value >= MIN and raw_value <= MAX:
             value = (((raw_value - MIN) / (MAX - MIN)) * 100)
@@ -24,4 +24,7 @@ def moist():
         else:
             logging.exception('Moisture value out of range')
             raise Exception('Moisture value out of range')
+    except:
+        logging.exception('Moisture sensor not reporting')
+        
     
