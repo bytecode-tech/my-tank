@@ -13,11 +13,16 @@ def api_admin_server_update():
         gitStatus = appliance.checkUpdate()
         return {'gitStatus': gitStatus}
 
-@admin_controller.route('/server', methods=["GET"])
+@admin_controller.route('/server', methods=["GET", "POST"])
 def api_admin_server_status():
-    applianceState = appliance.applianceState()
-    exporterState = appliance.exporterState()
-    return {'zero-appliance': applianceState, 'zero-exporter': exporterState}
+    if request.method == "POST":
+        exporterStatus = appliance.applianceRestart()
+        applianceStatus = appliance.applianceRestart()
+        return {'applianceRestartStatus': applianceStatus, 'exporterRestartStatus': exporterStatus}
+    elif request.method == "GET":
+        applianceState = appliance.applianceState()
+        exporterState = appliance.exporterState()
+        return {'zero-appliance': applianceState, 'zero-exporter': exporterState}
 
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance():
