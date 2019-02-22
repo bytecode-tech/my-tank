@@ -21,4 +21,3 @@ def moist():
     except:
         logging.exception('Moisture sensor not reporting')
         
-    

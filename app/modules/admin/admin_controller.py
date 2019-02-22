@@ -41,7 +41,3 @@ def api_admin_exporter():
     elif request.method == "GET":
         state = appliance.exporterState()
         return {'exporterState': state }
-
-
-
-
