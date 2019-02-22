@@ -12,7 +12,7 @@ def checkUpdate():
     return g.status()
 
 def applianceRestart():
-    return os.system('systemctl restart zero-appliance')
+    return os.system('sudo systemctl restart zero-appliance')
 
 def applianceState():
     bus = SystemBus()
@@ -24,7 +24,7 @@ def applianceState():
     return appliance_properties.Get('org.freedesktop.systemd1.Unit', 'ActiveState')
 
 def exporterRestart():
-    return os.system('systemctl restart zero-exporter')
+    return os.system('sudo systemctl restart zero-exporter')
 
 def exporterState():
     bus = SystemBus()
