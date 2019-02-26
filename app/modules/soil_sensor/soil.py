@@ -1,7 +1,23 @@
 #!/usr/bin/python
-from gpiozero import DigitalInputDevice
+from board import SCL, SDA
+import busio
+import logging
 
-soil_sensor = DigitalInputDevice(23)
+from adafruit_seesaw.seesaw import Seesaw
+
+MIN = 320
+MAX = 480
+
+try:
+    i2c_bus = busio.I2C(SCL, SDA)
+    ss = Seesaw(i2c_bus, addr=0x36)
+except:
+    logging.exception('Could not open soil moisture sensor')
 
 def moist():
-    return not soil_sensor.value
+    try:
+        raw_value = ss.moisture_read()
+        return int(round(raw_value))
+    except:
+        logging.exception('Moisture sensor not reporting')
+        

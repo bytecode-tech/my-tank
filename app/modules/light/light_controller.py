@@ -1,5 +1,5 @@
 from flask import (Blueprint, request)
-import light
+from . import light
 
 light_controller = Blueprint('light-controller', __name__, url_prefix='/api/light')
 

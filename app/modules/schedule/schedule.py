@@ -65,9 +65,7 @@ class UserJob():
             self.comment = args[4]
             self.enabled = args[5]
 
-class Scheduler():
-    __metaclass__ = Singleton
-
+class Scheduler(metaclass=Singleton):
     def jobs(self):
         jobList = []
         cron = CronTab(user=True)
