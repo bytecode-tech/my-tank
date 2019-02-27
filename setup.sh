@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sudo apt-get update
-sudo apt-get install python3-pip python3-gpiozero -y
+sudo apt-get install python3-pip python3-gpiozero libpcre3 libpcre3-dev -y
 sudo python3 -m pip install --upgrade pip setuptools wheel
 
 sudo apt-get install git-core -y

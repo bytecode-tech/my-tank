@@ -8,3 +8,4 @@ Adafruit_DHT
 adafruit-circuitpython-seesaw
 gitpython
 dbus-python
+uwsgi
