@@ -41,16 +41,17 @@ def create_app(config=None, app_name=None, blueprints=None):
    configure_app(app, config)   
    configure_blueprints(app, blueprints)
 
-   app_dispatch = DispatcherMiddleware(app, {
-      '/metrics': make_wsgi_app()
-   })
-
    REGISTRY.register(sensor_collector.SensorCollector())
 
    if app.debug:
       print('running in debug mode')
    else:
       print('NOT running in debug mode')
+
+   app = DispatcherMiddleware(app, {
+      '/metrics': make_wsgi_app()
+   })
+
    return app
 
 def configure_app(app, config=None):
