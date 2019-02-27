@@ -3,6 +3,9 @@ import os
 from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 from flask_cors import CORS
+from werkzeug.wsgi import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
+from prometheus_client.core import REGISTRY
 from . import config as Config
 
 from .modules.dht_sensor import temp_controller
@@ -12,6 +15,7 @@ from .modules.light import light_controller
 from .modules.soil_temp import soil_temp_controller
 from .modules.schedule import schedule_controller
 from .modules.admin import admin_controller
+from .modules.sensor_collector import sensor_collector
 
 # For import *
 __all__ = ['create_app']
@@ -37,11 +41,17 @@ def create_app(config=None, app_name=None, blueprints=None):
    configure_app(app, config)   
    configure_blueprints(app, blueprints)
 
+   REGISTRY.register(sensor_collector.SensorCollector())
 
    if app.debug:
       print('running in debug mode')
    else:
       print('NOT running in debug mode')
+
+   app = DispatcherMiddleware(app, {
+      '/metrics': make_wsgi_app()
+   })
+
    return app
 
 def configure_app(app, config=None):

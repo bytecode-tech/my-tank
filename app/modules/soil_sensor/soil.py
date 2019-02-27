@@ -14,7 +14,7 @@ try:
 except:
     logging.exception('Could not open soil moisture sensor')
 
-def moist():
+def moisture():
     try:
         raw_value = ss.moisture_read()
         return int(round(raw_value))
