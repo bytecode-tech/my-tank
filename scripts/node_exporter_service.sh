@@ -15,8 +15,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable zero-appliance
 sudo systemctl start zero-appliance
 
-sudo cp ./files/zero-exporter.service   /etc/systemd/system/zero-exporter.service
+#sudo cp ./files/zero-exporter.service   /etc/systemd/system/zero-exporter.service
 
-sudo systemctl daemon-reload
-sudo systemctl enable zero-exporter
-sudo systemctl start zero-exporter
+#sudo systemctl daemon-reload
+#sudo systemctl enable zero-exporter
+#sudo systemctl start zero-exporter
