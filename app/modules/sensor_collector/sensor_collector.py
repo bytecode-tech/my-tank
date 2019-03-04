@@ -36,6 +36,6 @@ class SensorCollector(object):
     
     try:
       lightStatus = light.value()
-      yield GaugeMetricFamily('sensor_light', 'Light value', lightStatus)
+      yield GaugeMetricFamily('weegrow_light', 'Light value', lightStatus)
     except:
       pass
