@@ -32,10 +32,10 @@ def app_state():
 
 def app_update():
     client = docker.from_env()
-    image = client.images.pull('joshdmoore/aspen-app:dev')
+    current_image = client.images.get('joshdmoore/aspen-app:dev')
+    pulled_image = client.images.pull('joshdmoore/aspen-app:dev')
 
-    if image:
-        client = docker.from_env()
+    if current_image.id != pulled_image.id:
         container = client.containers.get('weegrow_app')
         container.stop()
         container.remove()
