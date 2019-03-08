@@ -3,6 +3,7 @@ import git
 import os
 from dbus import SystemBus, Interface
 import docker
+import logging
 
 def update_source():
     g = git.Git('/home/pi/zero-appliance')
@@ -37,13 +38,19 @@ def app_restart():
     return container.status
 
 def app_check_update():
-    client = docker.from_env()
-    current_image = client.images.get('joshdmoore/aspen-app:dev')
-    registry_date = client.images.get_registry_data('joshdmoore/aspen-app:dev')
-    if current_image.id != registry_date.id:
-        return 'Update Available'
-    else:
-        return 'No Update Available'
+    try:
+        client = docker.from_env()
+        current_image = client.images.get('joshdmoore/aspen-app:dev')
+        registry_date = client.images.get_registry_data('joshdmoore/aspen-app:dev')
+        if current_image.id != registry_date.id:
+            return 'Update Available'
+        else:
+            return 'No Update Available'
+    except Exception:
+        message = "Failed to check for update"
+        logging.exception(message)
+        return message
+    
 
 def app_update():
     client = docker.from_env()
