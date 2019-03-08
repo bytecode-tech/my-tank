@@ -29,3 +29,17 @@ def app_state():
     client = docker.from_env()
     container = client.containers.get('weegrow_app')
     return container.status
+
+def app_update():
+    client = docker.from_env()
+    image = client.images.pull('joshdmoore/aspen-app:dev')
+
+    if image:
+        client = docker.from_env()
+        container = client.containers.get('weegrow_app')
+        container.stop()
+        container.remove()
+        new_container = client.containers.run('joshdmoore/aspen-app:dev', detach=True, network_mode="host", restart_policy={"Name": "on-failure", "MaximumRetryCount": 5})
+        return new_container.status
+    else:
+        return 'No Update'

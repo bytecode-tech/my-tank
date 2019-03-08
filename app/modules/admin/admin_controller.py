@@ -32,3 +32,13 @@ def api_admin_appliance():
         state = appliance.appliance_state()
         return {'appliance_state': state }
 
+@admin_controller.route('/server/weegrow-app', methods=["GET", "POST"])
+def api_admin_app():
+    if request.method == "POST":
+        app_status = appliance.app_update()
+        return {'weegrow_app': app_status}
+    elif request.method == "GET":
+        app_state = appliance.app_state()
+        return {'weegrow_app': app_state }
+
+
