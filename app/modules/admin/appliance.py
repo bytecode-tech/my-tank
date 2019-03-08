@@ -30,6 +30,21 @@ def app_state():
     container = client.containers.get('weegrow_app')
     return container.status
 
+def app_restart():
+    client = docker.from_env()
+    container = client.containers.get('weegrow_app')
+    container.restart()
+    return container.status
+
+def app_check_update():
+    client = docker.from_env()
+    current_image = client.images.get('joshdmoore/aspen-app:dev')
+    registry_date = client.images.get_registry_data('joshdmoore/aspen-app:dev')
+    if current_image.id != registry_date.id:
+        return 'Update Available'
+    else:
+        return 'No Update Available'
+
 def app_update():
     client = docker.from_env()
     current_image = client.images.get('joshdmoore/aspen-app:dev')
@@ -42,7 +57,7 @@ def app_update():
         new_container = client.containers.run('joshdmoore/aspen-app:dev', name="weegrow_app", detach=True, network_mode="host", restart_policy={"Name": "on-failure", "MaximumRetryCount": 5})
         return new_container.status
     else:
-        return 'No Update'
+        return 'No Update Available'
 
 def prometheus_state():
     client = docker.from_env()
