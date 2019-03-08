@@ -7,37 +7,28 @@ admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admi
 @admin_controller.route('/server/update', methods=["GET", "POST"])
 def api_admin_server_update():
     if request.method == "POST":
-        gitStatus = appliance.updateSource()
+        gitStatus = appliance.update_source()
         return {'gitPullStatus': gitStatus}
     elif request.method == "GET":
-        gitStatus = appliance.checkUpdate()
+        gitStatus = appliance.check_update()
         return {'gitStatus': gitStatus}
 
 @admin_controller.route('/server', methods=["GET", "POST"])
 def api_admin_server_status():
     if request.method == "POST":
-        exporterStatus = appliance.applianceRestart()
-        applianceStatus = appliance.applianceRestart()
-        return {'applianceRestartStatus': applianceStatus, 'exporterRestartStatus': exporterStatus}
+        applianceStatus = appliance.appliance_restart()
+        return {'appliance_restartStatus': applianceStatus}
     elif request.method == "GET":
-        applianceState = appliance.applianceState()
-        exporterState = appliance.exporterState()
-        return {'zero-appliance': applianceState, 'zero-exporter': exporterState}
+        appliance_state = appliance.appliance_state()
+        app_state = appliance.app_state()
+        return {'weegrow-appliance': appliance_state, 'weegrow_app': app_state}
 
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance():
     if request.method == "POST":
-        status = appliance.applianceRestart()
-        return {'applianceRestartStatus': status}
+        status = appliance.appliance_restart()
+        return {'appliance_restartStatus': status}
     elif request.method == "GET":
-        state = appliance.applianceState()
-        return {'applianceState': state }
+        state = appliance.appliance_state()
+        return {'appliance_state': state }
 
-@admin_controller.route('/server/exporter', methods=["GET", "POST"])
-def api_admin_exporter():
-    if request.method == "POST":
-        status = appliance.exporterRestart()
-        return {'exporterRestartStatus': status}
-    elif request.method == "GET":
-        state = appliance.exporterState()
-        return {'exporterState': state }

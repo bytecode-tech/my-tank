@@ -9,3 +9,4 @@ adafruit-circuitpython-seesaw
 gitpython
 dbus-python
 uwsgi
+docker
