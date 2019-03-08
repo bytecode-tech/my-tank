@@ -43,3 +43,8 @@ def app_update():
         return new_container.status
     else:
         return 'No Update'
+
+def prometheus_state():
+    client = docker.from_env()
+    container = client.containers.get('weegrow_prometheus')
+    return container.status

@@ -21,7 +21,8 @@ def api_admin_server_status():
     elif request.method == "GET":
         appliance_state = appliance.appliance_state()
         app_state = appliance.app_state()
-        return {'weegrow-appliance': appliance_state, 'weegrow_app': app_state}
+        prometheus_state = appliance.prometheus_state()
+        return {'weegrow-appliance': appliance_state, 'weegrow_app': app_state, "weegrow_stats_db":prometheus_state}
 
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance():
