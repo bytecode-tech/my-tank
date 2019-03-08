@@ -48,7 +48,7 @@ def api_admin_app_update():
         update_status = appliance.app_update()
         return {'weegrowAppUpdateStatus': update_status}
     elif request.method == "GET":
-#        update_status = appliance.app_check_update()
-        return {'weegrowAppUpdateStatus': "Not Implemented" }
+        update_status = appliance.app_check_update()
+        return {'weegrowAppUpdateStatus': update_status }
 
 
