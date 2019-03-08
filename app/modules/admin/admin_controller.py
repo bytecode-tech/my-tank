@@ -4,40 +4,51 @@ import os
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
 
-@admin_controller.route('/server/update', methods=["GET", "POST"])
-def api_admin_server_update():
-    if request.method == "POST":
-        gitStatus = appliance.updateSource()
-        return {'gitPullStatus': gitStatus}
-    elif request.method == "GET":
-        gitStatus = appliance.checkUpdate()
-        return {'gitStatus': gitStatus}
-
 @admin_controller.route('/server', methods=["GET", "POST"])
 def api_admin_server_status():
     if request.method == "POST":
-        exporterStatus = appliance.applianceRestart()
-        applianceStatus = appliance.applianceRestart()
-        return {'applianceRestartStatus': applianceStatus, 'exporterRestartStatus': exporterStatus}
+        applianceStatus = appliance.appliance_restart()
+        return {'applianceRestartStatus': applianceStatus}
     elif request.method == "GET":
-        applianceState = appliance.applianceState()
-        exporterState = appliance.exporterState()
-        return {'zero-appliance': applianceState, 'zero-exporter': exporterState}
+        appliance_state = appliance.appliance_state()
+        app_state = appliance.app_state()
+        prometheus_state = appliance.prometheus_state()
+        return {'weegrowApplianceStatus': appliance_state, 'weegrowAppStatus': app_state, "weegrowStatsDbStatus":prometheus_state}
 
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance():
     if request.method == "POST":
-        status = appliance.applianceRestart()
+        status = appliance.appliance_restart()
         return {'applianceRestartStatus': status}
     elif request.method == "GET":
-        state = appliance.applianceState()
-        return {'applianceState': state }
+        state = appliance.appliance_state()
+        return {'applianceStatus': state }
 
-@admin_controller.route('/server/exporter', methods=["GET", "POST"])
-def api_admin_exporter():
+@admin_controller.route('/server/appliance/update', methods=["GET", "POST"])
+def api_admin_server_update():
     if request.method == "POST":
-        status = appliance.exporterRestart()
-        return {'exporterRestartStatus': status}
+        gitStatus = appliance.update_source()
+        return {'gitPullStatus': gitStatus}
     elif request.method == "GET":
-        state = appliance.exporterState()
-        return {'exporterState': state }
+        gitStatus = appliance.check_update()
+        return {'gitStatus': gitStatus}
+
+@admin_controller.route('/server/weegrow-app', methods=["GET", "POST"])
+def api_admin_app():
+    if request.method == "POST":
+        status = appliance.app_restart()
+        return {'weegrowAppStatus': status}
+    elif request.method == "GET":
+        app_state = appliance.app_state()
+        return {'weegrowAppStatus': app_state }
+
+@admin_controller.route('/server/weegrow-app/update', methods=["GET", "POST"])
+def api_admin_app_update():
+    if request.method == "POST":
+        update_status = appliance.app_update()
+        return {'weegrowAppUpdateStatus': update_status}
+    elif request.method == "GET":
+#        update_status = appliance.app_check_update()
+        return {'weegrowAppUpdateStatus': "Not Implemented" }
+
+
