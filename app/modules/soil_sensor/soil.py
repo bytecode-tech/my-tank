@@ -17,8 +17,9 @@ except:
 def moisture():
     try:
         raw_value = ss.moisture_read()
-        if  raw_value > 0  and raw_value < 2500:
-            return int(round(raw_value))
+        value = int(round(raw_value))
+        if  value > 0  and value < 2500:
+            return value
         else:
             return
     except:
