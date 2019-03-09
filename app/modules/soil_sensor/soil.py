@@ -5,8 +5,8 @@ import logging
 
 from adafruit_seesaw.seesaw import Seesaw
 
-MIN = 320
-MAX = 480
+MIN = 0
+MAX = 2500
 
 try:
     i2c_bus = busio.I2C(SCL, SDA)
@@ -18,7 +18,7 @@ def moisture():
     try:
         raw_value = ss.moisture_read()
         value = int(round(raw_value))
-        if  value > 0  and value < 2500:
+        if  value > MIN  and value < MAX:
             return value
         else:
             return
