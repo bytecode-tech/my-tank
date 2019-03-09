@@ -17,7 +17,10 @@ except:
 def moisture():
     try:
         raw_value = ss.moisture_read()
-        return int(round(raw_value))
+        if  raw_value > 0  and raw_value < 2500:
+            return int(round(raw_value))
+        else:
+            return
     except:
         logging.exception('Moisture sensor not reporting')
         
