@@ -37,27 +37,28 @@ def app_restart():
     container.restart()
     return container.status
 
-def app_check_update():
-    try:
-        client = docker.from_env()
-        current_image = client.images.get('joshdmoore/aspen-app:dev')
-        registry_date = client.images.get_registry_data('joshdmoore/aspen-app:dev')
-        if current_image.id != registry_date.id:
-            return 'Update Available'
-        else:
-            return 'No Update Available'
-    except Exception:
-        message = "Failed to check for update"
-        logging.exception(message)
-        return message
-    
+def app_update_available():
+    client = docker.from_env()
+    container = client.containers.get('weegrow_app')
+    current_image = container.image
+    current_tag = container.attrs['Config']['Image']
+
+    latest_image = client.images.pull(current_tag)
+
+    if current_image.id != latest_image.id:
+        return True
+    else:
+        return False
 
 def app_update():
     client = docker.from_env()
-    current_image = client.images.get('joshdmoore/aspen-app:dev')
-    pulled_image = client.images.pull('joshdmoore/aspen-app:dev')
+    container = client.containers.get('weegrow_app')
+    current_image = container.image
+    current_tag = container.attrs['Config']['Image']
 
-    if current_image.id != pulled_image.id:
+    latest_image = client.images.pull(current_tag)
+
+    if current_image.id != latest_image.id:
         container = client.containers.get('weegrow_app')
         container.stop()
         container.remove()
