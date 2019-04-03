@@ -13,7 +13,14 @@ def api_admin_server_status():
         appliance_state = appliance.appliance_state()
         app_state = appliance.app_state()
         prometheus_state = appliance.prometheus_state()
-        return {'weegrowApplianceStatus': appliance_state, 'weegrowAppStatus': app_state, "weegrowStatsDbStatus":prometheus_state}
+        app_updatable = appliance.app_update_available()
+        appliance_updatable = appliance.appliance_update_available()
+        return {'weegrowApplianceStatus': appliance_state, 
+            'weegrowAppStatus': app_state, 
+            'weegrowStatsDbStatus':prometheus_state,
+            'weegrowAppUpdateAvailable':app_updatable,
+            'weegrowApplianceUpdateAvailable':appliance_updatable
+            }
 
 @admin_controller.route('/server/appliance', methods=["GET", "POST"])
 def api_admin_appliance():
@@ -31,8 +38,7 @@ def api_admin_server_update():
         return {'gitPullStatus': gitStatus}
     elif request.method == "GET":
         gitStatus = appliance.check_update()
-        index = gitStatus.find('up-to-date')
-        update_available = True if index < 0 else False
+        update_available = appliance.appliance_update_available()
         return {'updateAvailable' : update_available, 'gitStatus': gitStatus}
 
 @admin_controller.route('/server/weegrow-app', methods=["GET", "POST"])

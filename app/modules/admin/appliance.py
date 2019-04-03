@@ -14,6 +14,11 @@ def check_update():
     g.fetch('origin')
     return g.status('-uno')
 
+def appliance_update_available():
+    git_status = check_update()
+    index = git_status.find('up-to-date')
+    return True if index < 0 else False
+
 def appliance_restart():
     return os.system('sudo systemctl restart zero-appliance')
 
