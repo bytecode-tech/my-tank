@@ -31,7 +31,9 @@ def api_admin_server_update():
         return {'gitPullStatus': gitStatus}
     elif request.method == "GET":
         gitStatus = appliance.check_update()
-        return {'gitStatus': gitStatus}
+        index = gitStatus.find('up-to-date')
+        update_available = index if index >= 0 else False
+        return {'updateAvailable' : update_available, 'gitStatus': gitStatus}
 
 @admin_controller.route('/server/weegrow-app', methods=["GET", "POST"])
 def api_admin_app():
