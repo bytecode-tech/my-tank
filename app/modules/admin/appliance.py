@@ -21,7 +21,7 @@ def appliance_update_available():
     return True if index < 0 else False
 
 def appliance_restart():
-    time.sleep(5)
+    time.sleep(15)
     return os.system('sudo systemctl restart zero-appliance')
 
 def appliance_state():
