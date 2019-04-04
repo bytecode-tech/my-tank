@@ -79,6 +79,6 @@ def api_update_restart():
         return {'weegrowAppUpdateAvailable': update_status,
             'weegrowApplianceUpdateAvailable': gitStatus,
             'weegrowAppStatus': app_status,
-            'weegrowApplianceStatus-1': appliance_status}
+            'weegrowApplianceStatus': appliance_status}
 
 
