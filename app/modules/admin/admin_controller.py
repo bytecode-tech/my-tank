@@ -74,6 +74,12 @@ def api_update_restart():
             'weegroqApplianceStatus': 'restarting'}
     elif request.method == "GET":
         update_status = appliance.app_update_available()
-        return {'weegrowAppUpdateAvailable': update_status }
+        gitStatus = appliance.update_source()
+        app_status = appliance.app_state()
+        appliance_status = appliance.appliance_state()
+        return {'weegrowAppUpdateAvailable': update_status,
+            'weegrowApplianceUpdateStatus': gitStatus,
+            'weegrowAppStatus': app_status,
+            'weegroqApplianceStatus': appliance_status}
 
 
