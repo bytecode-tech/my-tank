@@ -3,6 +3,8 @@ import git
 import os
 from dbus import SystemBus, Interface
 import docker
+import logging
+import time
 
 def update_source():
     g = git.Git('/home/pi/zero-appliance')
@@ -13,7 +15,13 @@ def check_update():
     g.fetch('origin')
     return g.status('-uno')
 
+def appliance_update_available():
+    git_status = check_update()
+    index = git_status.find('up-to-date')
+    return True if index < 0 else False
+
 def appliance_restart():
+    time.sleep(15)
     return os.system('sudo systemctl restart zero-appliance')
 
 def appliance_state():
