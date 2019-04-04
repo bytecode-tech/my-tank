@@ -1,5 +1,6 @@
 from flask import (Blueprint, request)
 from . import appliance
+import _thread
 import os
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
@@ -55,6 +56,22 @@ def api_admin_app_update():
     if request.method == "POST":
         update_status = appliance.app_update()
         return {'weegrowAppUpdateStatus': update_status}
+    elif request.method == "GET":
+        update_status = appliance.app_update_available()
+        return {'weegrowAppUpdateAvailable': update_status }
+
+@admin_controller.route('/server/update-restart', methods=["GET", "POST"])
+def api_update_restart():
+    if request.method == "POST":
+        update_status = appliance.app_update()
+        app_status = appliance.app_restart()
+        gitStatus = appliance.update_source()
+        thread = _thread.start_new_thread ( appliance.appliance_restart)
+        thread.start()
+        return {'weegrowAppUpdateStatus': update_status, 
+            'weegrowApplianceUpdateStatus': gitStatus,
+            'weegrowAppStatus': app_status,
+            'weegroqApplianceStatus': 'restarting'}
     elif request.method == "GET":
         update_status = appliance.app_update_available()
         return {'weegrowAppUpdateAvailable': update_status }

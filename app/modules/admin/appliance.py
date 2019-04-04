@@ -4,6 +4,7 @@ import os
 from dbus import SystemBus, Interface
 import docker
 import logging
+import time
 
 def update_source():
     g = git.Git('/home/pi/zero-appliance')
@@ -20,6 +21,7 @@ def appliance_update_available():
     return True if index < 0 else False
 
 def appliance_restart():
+    time.sleep(5)
     return os.system('sudo systemctl restart zero-appliance')
 
 def appliance_state():
