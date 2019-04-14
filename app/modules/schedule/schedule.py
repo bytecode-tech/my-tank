@@ -43,8 +43,8 @@ class UserJob():
             command_components = cron_job.command.rsplit("/")
             component_count = len(command_components)
             if component_count >= 2:
-                self.agent = command_components[-2]
-                self.action = command_components[-1]            
+                self.agent = command_components[-2].lower()
+                self.action = command_components[-1].lower()            
             
             comment_data = cron_job.comment.split(';')
             stringcount = len(comment_data)
@@ -60,8 +60,17 @@ class UserJob():
         else:
             self.id = args[0]
             self.schedule = args[1]
-            self.agent = args[2]
-            self.action = args[3]
+            self.agent = args[2].lower()
+
+            # handle booleans
+            if isinstance(args[3], bool):
+                if args[3]:
+                    self.action = "on"
+                else:
+                    self.action = "off"
+            else:
+                self.action = args[3].lower()
+
             self.comment = args[4]
             self.enabled = args[5]
 
