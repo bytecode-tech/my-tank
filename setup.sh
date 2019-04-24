@@ -21,6 +21,9 @@ sudo tar -xvf node_exporter.tar.gz -C /usr/local/bin/ --strip-components=1
 #Depricated, now use apt with older ver
 sudo apt-get install docker-ce=18.06.1~ce~3-0~raspbian
 
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
 #Fix/Add dtoverlay param to boot/config.txt
 sudo grep -q '^dtoverlay=w1-gpio' /boot/config.txt && sudo sed -i 's/^dtoverlay=w1-gpio.*/dtoverlay=w1-gpio,gpiopin=24/' /boot/config.txt || sudo echo 'dtoverlay=w1-gpio,gpiopin=24' >> /boot/config.txt
 
