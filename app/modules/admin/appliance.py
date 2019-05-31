@@ -1,17 +1,18 @@
 #!/usr/bin/python
 import git
 import os
+from flask import current_app
 from dbus import SystemBus, Interface
 import docker
 import logging
 import time
 
 def update_source():
-    g = git.Git('/home/pi/zero-appliance')
+    g = git.Git(current_app.config['PROJECT_ROOT'])
     return g.pull('origin')
 
 def check_update():
-    g = git.Git('/home/pi/zero-appliance')
+    g = git.Git(current_app.config['PROJECT_ROOT'])
     g.fetch('origin')
     return g.status('-uno')
 
@@ -19,6 +20,9 @@ def appliance_update_available():
     git_status = check_update()
     index = git_status.find('up-to-date')
     return True if index < 0 else False
+
+def update_dependencies():
+    return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
 
 def appliance_restart():
     time.sleep(15)
