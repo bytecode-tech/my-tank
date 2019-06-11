@@ -10,3 +10,5 @@ gitpython
 dbus-python
 uwsgi
 docker
+twisted
+wpa_supplicant

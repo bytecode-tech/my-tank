@@ -1,5 +1,6 @@
 from flask import (Blueprint, request)
 from . import appliance
+from . import network
 import _thread
 import os
 
@@ -82,4 +83,9 @@ def api_update_restart():
             'weegrowAppStatus': app_status,
             'weegrowApplianceStatus': appliance_status}
 
+@admin_controller.route('/server/wifi/ssids', methods=["GET"])
+def api_wifi_ssids():
+    if request.method == "GET":
+        ssids = network.scan()
+        return {'wifiSsidsAvailable': ssids}
 
