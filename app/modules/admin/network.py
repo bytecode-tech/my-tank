@@ -6,6 +6,7 @@ import time
 class WifiNetwork():
     def __init__(self, *args, **kwargs):
         self.bssid = None
+        self.ssid = None
         self.channel = None
         self.frequency = None
         self.mode = None
@@ -19,6 +20,7 @@ class WifiNetwork():
             bss = kwargs.get('bss')
 
             self.bssid = bss.get_bssid()
+            self.ssid = bss.get_ssid()
             self.channel = bss.get_channel()
             self.frequency = bss.get_frequency()
             self.mode = bss.get_mode()
