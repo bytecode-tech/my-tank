@@ -6,6 +6,7 @@ from dbus import SystemBus, Interface
 import docker
 import logging
 import time
+import uwsgi
 
 def update_source():
     g = git.Git(current_app.config['PROJECT_ROOT'])
@@ -25,8 +26,8 @@ def update_dependencies():
     return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
 
 def appliance_restart():
-    time.sleep(15)
-    return os.system('sudo systemctl restart zero-appliance')
+    #return os.system('sudo systemctl restart zero-appliance')
+    uwsgi.reload()
 
 def appliance_state():
     bus = SystemBus()

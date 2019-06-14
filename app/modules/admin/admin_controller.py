@@ -87,5 +87,5 @@ def api_update_restart():
 def api_wifi_ssids():
     if request.method == "GET":
         ssids = network.scan()
-        return jsonify(ssids)
+        return {'wifiSsidsAvailable': jsonify(ssids)}
 
