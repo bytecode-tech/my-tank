@@ -15,12 +15,11 @@ def scan():
     interface = supplicant.get_interface('wlan0')
 
     scan_results = interface.scan(block=True)
-    ssids = {}
+    networks = []
 
     for bss in scan_results:
-        ssid = bss.get_ssid()
-        if ssid not in ssids:
-            ssids[ssid] = bss.to_dict()
+        networks.append(bss)
 
     reactor.stop()
-    return ssids
+    return networks
+
