@@ -86,6 +86,6 @@ def api_update_restart():
 @admin_controller.route('/server/wifi/ssids', methods=["GET"])
 def api_wifi_ssids():
     if request.method == "GET":
-        ssids = network.scan()
-        return {'wifiSsidsAvailable': jsonify(ssids)}
+        networks = network.scan()
+        return {'wifiNetworksAvailable': networks}
 
