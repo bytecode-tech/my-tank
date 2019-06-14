@@ -19,7 +19,8 @@ def scan():
 
     for bss in scan_results:
         ssid = bss.get_ssid()
-        ssids[ssid] = bss.to_dict()
+        if ssid not in ssids:
+            ssids[ssid] = bss.to_dict()
 
     reactor.stop()
     return ssids
