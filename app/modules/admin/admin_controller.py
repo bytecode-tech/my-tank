@@ -1,4 +1,4 @@
-from flask import (Blueprint, request)
+from flask import (Blueprint, request, jsonify)
 from . import appliance
 from . import network
 import _thread
@@ -87,5 +87,5 @@ def api_update_restart():
 def api_wifi_ssids():
     if request.method == "GET":
         ssids = network.scan()
-        return {'wifiSsidsAvailable': ssids}
+        return jsonify(ssids)
 
