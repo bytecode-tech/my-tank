@@ -102,8 +102,8 @@ def api_wifi_ssids():
         networks = network.scan()
 
         response_list = []
-        for network in networks:
-            response_list.append(wifi_network_response(network))
+        for wifi_network in networks:
+            response_list.append(wifi_network_response(wifi_network))
 
         return {'wifiNetworksAvailable': response_list}
 
