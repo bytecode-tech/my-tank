@@ -19,6 +19,13 @@ def wifi_network_response(wifi_network):
         'signal_quality': wifi_network.signal_quality
     }
 
+def network_response(network):
+    return {
+        'enabled': network.get_enabled(),
+        'ssid':  network.get_properties().get('ssid'),
+        'priority': network.get_properties().get('priority')
+    }
+
 @admin_controller.route('/server', methods=["GET", "POST"])
 def api_admin_server_status():
     if request.method == "POST":
@@ -107,3 +114,21 @@ def api_wifi_ssids():
 
         return {'wifiNetworksAvailable': response_list}
 
+@admin_controller.route('/server/wifi/networks', methods=["GET"])
+def api_wifi_networks():
+    if request.method == "GET":
+        saved_networks = network.savedNetworks()
+
+        response_list = []
+        for saved_network in saved_networks:
+            response_list.append(network_response(saved_network))
+
+        return {'savedNetworks': response_list}
+
+@admin_controller.route('/server/wifi/network/<name>', methods=["GET", "POST"])
+def api_wifi_network(name):
+    if request.method == "POST":
+        password = request.data.get('password')
+        enabled = request.data.get('enabled')
+        priority = request.data.get('priority')
+        network.saveNetwork(name, password, enabled, priority)

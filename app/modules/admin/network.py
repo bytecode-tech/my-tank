@@ -29,11 +29,25 @@ class WifiNetwork():
             self.signal_dbm = bss.get_signal_dbm()
             self.signal_quality = bss.get_signal_quality()
             
+class Network():
+    def __init__(self, *args, **kwargs):
+        self.ssid = None
+        self.password = None
+        self.enalbed = None
+        self.priority = None
+
+        if 'network' in kwargs:
+            network = kwargs.get('network')
+
+            self.enalbed = network.get_enabled()
+            properties = network.get_properties()
+            self.ssid = properties.get('ssid')
+            self.priority = properties.get('priority', '')
 
 def scan():
     reactor = SelectReactor()
     threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.5)  # let reactor start
+    time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
 
@@ -49,3 +63,42 @@ def scan():
 
     reactor.stop()
     return networks
+
+def savedNetworks():
+    reactor = SelectReactor()
+    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
+    time.sleep(0.1)  # let reactor start
+
+    driver = WpaSupplicantDriver(reactor)
+
+    supplicant = driver.connect()
+
+    interface = supplicant.get_interface('wlan0')
+
+    results = interface.get_networks()
+    networks = []
+    for network in results:
+        networks.append(Network(network=network))
+
+    return networks
+
+
+def saveNetwork(name, password, enabled, priority):
+    reactor = SelectReactor()
+    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
+    time.sleep(0.1)  # let reactor start
+
+    driver = WpaSupplicantDriver(reactor)
+
+    supplicant = driver.connect()
+
+    interface = supplicant.get_interface('wlan0')
+
+    network = {
+            "ssid": name,
+            "password": password,
+            "enabled": enabled,
+            "priority": priority
+        }
+
+    interface.add_network(network)
