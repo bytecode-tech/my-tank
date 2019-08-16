@@ -21,9 +21,9 @@ def wifi_network_response(wifi_network):
 
 def network_response(network):
     return {
-        'enabled': network.get_enabled(),
-        'ssid':  network.get_properties().get('ssid'),
-        'priority': network.get_properties().get('priority')
+        'enabled': network.enabled,
+        'ssid':  network.ssid,
+        'priority': network.priority
     }
 
 @admin_controller.route('/server', methods=["GET", "POST"])
