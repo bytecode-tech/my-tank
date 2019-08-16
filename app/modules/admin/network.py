@@ -33,13 +33,13 @@ class Network():
     def __init__(self, *args, **kwargs):
         self.ssid = None
         self.password = None
-        self.enalbed = None
+        self.enabled = None
         self.priority = None
 
         if 'network' in kwargs:
             network = kwargs.get('network')
 
-            self.enalbed = network.get_enabled()
+            self.enabled = network.get_enabled()
             properties = network.get_properties()
             self.ssid = properties.get('ssid')
             self.priority = properties.get('priority', '')
