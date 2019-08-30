@@ -29,6 +29,8 @@ def network_response(network):
 
 def device_response(device):
     return {
+        'name': device.alias,
+        'host': device.host,
         'sys_info': device.sys_info
     }
 
