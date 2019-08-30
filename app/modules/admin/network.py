@@ -95,10 +95,23 @@ def saveNetwork(name, password, enabled, priority):
     interface = supplicant.get_interface('wlan0')
 
     network = {
-            "ssid": name,
-            "password": password,
-            "enabled": enabled,
-            "priority": priority
-        }
+        "ssid": name,
+        "password": password,
+        "enabled": enabled,
+        "priority": priority
+    }
 
-    interface.add_network(network)
+    return interface.add_network(network)
+
+# def networkInfo(name):
+#     reactor = SelectReactor()
+#     threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
+#     time.sleep(0.1)  # let reactor start
+
+#     driver = WpaSupplicantDriver(reactor)
+
+#     supplicant = driver.connect()
+
+#     interface = supplicant.get_interface('wlan0')
+
+#     return interface.

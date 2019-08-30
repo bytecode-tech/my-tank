@@ -12,3 +12,4 @@ uwsgi
 docker
 twisted
 wpa_supplicant
+pyHS100

@@ -1,6 +1,7 @@
 from flask import (Blueprint, request, jsonify)
 from . import appliance
 from . import network
+from app.modules.plugs import smartplug
 import _thread
 import os
 
@@ -24,6 +25,11 @@ def network_response(network):
         'enabled': network.enabled,
         'ssid':  network.ssid,
         'priority': network.priority
+    }
+
+def device_response(device):
+    return {
+        'sys_info': device.sys_info
     }
 
 @admin_controller.route('/server', methods=["GET", "POST"])
@@ -125,10 +131,25 @@ def api_wifi_networks():
 
         return {'savedNetworks': response_list}
 
-@admin_controller.route('/server/wifi/network/<name>', methods=["GET", "POST"])
-def api_wifi_network(name):
-    if request.method == "POST":
-        password = request.data.get('password')
-        enabled = request.data.get('enabled')
-        priority = request.data.get('priority')
-        network.saveNetwork(name, password, enabled, priority)
+# @admin_controller.route('/server/wifi/network/<name>', methods=["GET", "POST", "DELETE"])
+# def api_wifi_network(name):
+#     if request.method == "GET":
+#         network.
+#     elif request.method == "POST":
+#         password = request.data.get('password')
+#         enabled = request.data.get('enabled')
+#         priority = request.data.get('priority')
+#         saved_network = network.saveNetwork(name, password, enabled, priority)
+
+#         return {network_response(saved_network)}
+
+@admin_controller.route('/server/smart-devices/scan', methods=["GET"])
+def api_smartplug_scan():
+    smart_plugs = smartplug.discover_plugs()
+
+    response_list = []
+    for smart_plug in smart_plugs:
+        response_list.append(device_response(smart_plug))
+
+    return {'devices': response_list}
+
