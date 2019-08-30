@@ -145,11 +145,12 @@ def api_wifi_networks():
 
 @admin_controller.route('/server/smart-devices/scan', methods=["GET"])
 def api_smartplug_scan():
-    smart_plugs = smartplug.discover_plugs()
+    if request.method == "GET":
+        smart_plugs = smartplug.discover_plugs()
 
-    response_list = []
-    for smart_plug in smart_plugs:
-        response_list.append(device_response(smart_plug))
+        response_list = []
+        for smart_plug in smart_plugs:
+            response_list.append(device_response(smart_plug))
 
-    return {'devices': response_list}
+        return {'devices': response_list}
 
