@@ -1,10 +1,6 @@
-from datetime import datetime, timedelta
 import logging
-from collections import defaultdict
 from typing import Any, Dict, Optional
 from enum import Enum
-
-from deprecation import deprecated
 
 _LOGGER = logging.getLogger(__name__)
 
