@@ -1,7 +1,7 @@
 from flask import (Blueprint, request, jsonify)
 from . import appliance
 from . import network
-from app.modules.plugs import smartplug
+from app.modules.devices.unearth import Unearth
 import _thread
 import os
 
@@ -145,14 +145,14 @@ def api_wifi_networks():
 
 #         return {network_response(saved_network)}
 
-@admin_controller.route('/server/smart-devices/scan', methods=["GET"])
+@admin_controller.route('/server/devices/scan', methods=["GET"])
 def api_smartplug_scan():
     if request.method == "GET":
-        smart_plugs = smartplug.discover_plugs()
+        devices = Unearth.unearth()
 
         response_list = []
-        for smart_plug in smart_plugs:
-            response_list.append(device_response(smart_plug))
+        for device in devices:
+            response_list.append(device_response(device))
 
         return {'devices': response_list}
 
