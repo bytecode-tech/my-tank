@@ -148,7 +148,7 @@ def api_wifi_networks():
 @admin_controller.route('/server/devices/scan', methods=["GET"])
 def api_smartplug_scan():
     if request.method == "GET":
-        devices = Unearth.unearth()
+        devices = Unearth.unearth().values()
 
         response_list = []
         for device in devices:
