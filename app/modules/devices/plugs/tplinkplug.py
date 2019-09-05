@@ -17,7 +17,7 @@ class TplinkPlug(Plug):
     
         self.host = vendor_plug.host
         self.brand = "tp-link"
-        self.model = "smartplug"
+        self.style = "smartplug"
         self.native_api = vendor_plug
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",

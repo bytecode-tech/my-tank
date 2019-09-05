@@ -27,12 +27,12 @@ class Device:
         self,
         host: str,
         brand: str,
-        model: str = None,
+        style: str = None,
     ) -> None:
     
         self.host = host
         self.brand = brand
-        self.model = model
+        self.style = style
         _LOGGER.debug(
             "Initializing %s",
             self.host,
