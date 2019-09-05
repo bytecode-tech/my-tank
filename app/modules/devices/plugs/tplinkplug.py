@@ -44,6 +44,15 @@ class TplinkPlug(Plug):
         """
         raise NotImplementedError("Device subclass needs to implement this.")
 
+    def get_sysinfo(self) -> Dict:
+        """Retrieve system information.
+
+        :return: sysinfo
+        :rtype dict
+        :raises SmartDeviceException: on error
+        """
+        return self.native_api.sys_info
+
     @property
     def is_off(self) -> bool:
         """Return True if device is off.
