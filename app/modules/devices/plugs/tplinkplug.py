@@ -27,6 +27,24 @@ class TplinkPlug(Plug):
         # self.initialize()
 
     @property
+    def alias(self) -> str:
+        """Return device name (alias).
+
+        :return: Device name aka alias.
+        :rtype: str
+        """
+        return self.native_api.alias
+
+    @alias.setter
+    def alias(self, alias: str) -> None:
+        """Set the device name (alias).
+
+        :param alias: New alias (name)
+        :raises SmartDeviceException: on error
+        """
+        raise NotImplementedError("Device subclass needs to implement this.")
+
+    @property
     def is_off(self) -> bool:
         """Return True if device is off.
 

@@ -25,11 +25,13 @@ class Device:
 
     def __init__(
         self,
+        alias: str,
         host: str,
         brand: str,
         style: str = None,
     ) -> None:
     
+        self.alias = alias
         self.host = host
         self.brand = brand
         self.style = style
@@ -75,12 +77,10 @@ class Device:
         :return: Device name aka alias.
         :rtype: str
         """
-        return str(self.sys_info["alias"])
-
-    def get_alias(self) -> str:
         return self.alias
 
-    def set_alias(self, alias: str) -> None:
+    @alias.setter
+    def alias(self, alias: str) -> None:
         """Set the device name (alias).
 
         :param alias: New alias (name)
