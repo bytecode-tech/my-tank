@@ -17,8 +17,8 @@ _LOGGER = logging.getLogger(__name__)
 
 class Unearth:
 
-    @lru_cache()
     @staticmethod
+    @lru_cache()
     def unearth(ttl_hash=None) -> Dict[str, Device]:
 
         devices = {}
