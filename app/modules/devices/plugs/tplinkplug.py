@@ -1,6 +1,8 @@
 import logging
 from pyHS100 import SmartPlug
 from typing import Any, Dict
+import pickle
+import redis
 
 from app.modules.devices.plugs import (
     Plug,
@@ -88,4 +90,11 @@ class TplinkPlug(Plug):
         :rtype: dict
         """
         return self.native_api.state_information
+
+    def save(self) -> None:
+        """Save object to local Redis"""
+
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        
+        r.set(self.alias, {'host': self.host, 'device-type': 'tplinkplug'})
 

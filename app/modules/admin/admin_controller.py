@@ -4,6 +4,7 @@ from . import network
 from app.modules.devices.unearth import Unearth
 import _thread
 import os
+import time
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
 
@@ -31,6 +32,8 @@ def device_response(device):
     return {
         'name': device.alias,
         'host': device.host,
+        'brand': device.brand,
+        'style':device.style,
         'sys_info': device.sys_info
     }
 
@@ -145,10 +148,14 @@ def api_wifi_networks():
 
 #         return {network_response(saved_network)}
 
+def get_ttl_hash(seconds=3600):
+    """Return the same value withing `seconds` time period"""
+    return round(time.time() / seconds)
+
 @admin_controller.route('/server/devices/scan', methods=["GET"])
 def api_smartplug_scan():
     if request.method == "GET":
-        devices = Unearth.unearth().values()
+        devices = Unearth.unearth(ttl_hash=get_ttl_hash()).values()
 
         response_list = []
         for device in devices:

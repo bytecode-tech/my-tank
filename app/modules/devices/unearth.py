@@ -1,4 +1,5 @@
 import logging
+from functools import lru_cache
 from pyHS100 import Discover, SmartPlug
 from typing import Dict, Type, Optional
 
@@ -16,8 +17,9 @@ _LOGGER = logging.getLogger(__name__)
 
 class Unearth:
 
+    @lru_cache()
     @staticmethod
-    def unearth() -> Dict[str, Device]:
+    def unearth(ttl_hash=None) -> Dict[str, Device]:
 
         devices = {}
         _LOGGER.debug("Searching for new devices...")
