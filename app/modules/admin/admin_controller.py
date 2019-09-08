@@ -148,7 +148,7 @@ def api_wifi_networks():
 
 #         return {network_response(saved_network)}
 
-def get_ttl_hash(seconds=3600):
+def get_ttl_hash(seconds=30):
     """Return the same value withing `seconds` time period"""
     return round(time.time() / seconds)
 
