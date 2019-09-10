@@ -174,11 +174,11 @@ def api_manage_device(alias):
         return device_response(device)
     else:
         return {
-            'name': device.alias,
-            'host': device.host,
-            'brand': device.brand,
-            'style':device.style,
-            'sys_info': device.sys_info
+            'name': '',
+            'host': '',
+            'brand': '',
+            'style': '',
+            'sys_info': ''
         }
 
 @admin_controller.route('/server/devices', methods=["GET"])
