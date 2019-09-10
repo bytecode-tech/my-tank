@@ -163,9 +163,23 @@ def api_smartplug_scan():
 
 @admin_controller.route('/server/device/<alias>', methods=["GET", "POST", "DELETE"])
 def api_manage_device(alias):
+    device = None
+    if request.method == "GET":
+        device = manager.retrieve_device(alias)
     if request.method == "POST":
         device = TplinkPlug(alias, request.data.get('ip'))
         manager.add_device(device)
+
+    if device:
+        return device_response(device)
+    else:
+        return {
+            'name': device.alias,
+            'host': device.host,
+            'brand': device.brand,
+            'style':device.style,
+            'sys_info': device.sys_info
+        }
 
 @admin_controller.route('/server/devices', methods=["GET"])
 def api_list_devices():
