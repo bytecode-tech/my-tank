@@ -35,6 +35,7 @@ class Device:
         self.host = host
         self.brand = brand
         self.style = style
+
         _LOGGER.debug(
             "Initializing %s",
             self.host,

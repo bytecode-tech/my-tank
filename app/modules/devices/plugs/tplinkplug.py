@@ -4,7 +4,7 @@ from typing import Any, Dict
 import pickle
 import redis
 
-from app.modules.devices.plugs import (
+from . import (
     Plug,
 )
 
@@ -14,37 +14,18 @@ class TplinkPlug(Plug):
 
     def __init__(
         self,
-        vendor_plug: SmartPlug,
+        alias: str,
+        host: str,
     ) -> None:
     
-        self.host = vendor_plug.host
-        self.brand = "tp-link"
-        self.style = "smartplug"
-        self.native_api = vendor_plug
+        Plug.__init__(self, alias, host, "tp-link")
+        self.native_api = SmartPlug(host)
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",
             self.host,
         )
 
         # self.initialize()
-
-    @property
-    def alias(self) -> str:
-        """Return device name (alias).
-
-        :return: Device name aka alias.
-        :rtype: str
-        """
-        return self.native_api.alias
-
-    @alias.setter
-    def alias(self, alias: str) -> None:
-        """Set the device name (alias).
-
-        :param alias: New alias (name)
-        :raises SmartDeviceException: on error
-        """
-        raise NotImplementedError("Device subclass needs to implement this.")
 
     def get_sysinfo(self) -> Dict:
         """Retrieve system information.
@@ -95,6 +76,6 @@ class TplinkPlug(Plug):
         """Save object to local Redis"""
 
         r = redis.StrictRedis(host='localhost', port=6379, db=0)
-        
+
         r.set(self.alias, {'host': self.host, 'device-type': 'tplinkplug'})
 

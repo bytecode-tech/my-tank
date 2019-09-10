@@ -2,6 +2,8 @@ from flask import (Blueprint, request, jsonify)
 from . import appliance
 from . import network
 from app.modules.devices.unearth import Unearth
+from app.modules.devices.plugs.tplinkplug import TplinkPlug
+from app.modules.devices import manager
 import _thread
 import os
 import time
@@ -148,14 +150,10 @@ def api_wifi_networks():
 
 #         return {network_response(saved_network)}
 
-def get_ttl_hash(seconds=30):
-    """Return the same value withing `seconds` time period"""
-    return round(time.time() / seconds)
-
 @admin_controller.route('/server/devices/scan', methods=["GET"])
 def api_smartplug_scan():
     if request.method == "GET":
-        devices = Unearth.unearth(ttl_hash=get_ttl_hash()).values()
+        devices = Unearth.unearth().values()
 
         response_list = []
         for device in devices:
@@ -163,3 +161,19 @@ def api_smartplug_scan():
 
         return {'devices': response_list}
 
+@admin_controller.route('/server/device/<alias>', methods=["GET", "POST", "DELETE"])
+def api_manage_device(alias):
+    if request.method == "POST":
+        device = TplinkPlug(alias, request.data.get('ip'))
+        manager.add_device(device)
+
+@admin_controller.route('/server/devices', methods=["GET"])
+def api_list_devices():
+
+    devices = manager.retrieve_devices()
+
+    response_list = []
+    for device in devices:
+        response_list.append(device_response(device))
+
+    return {'devices': response_list}
