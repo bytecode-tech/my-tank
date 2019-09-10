@@ -25,7 +25,7 @@ class Unearth:
         try:
             for dev in Discover.discover().values():
                 if isinstance(dev, SmartPlug):
-                    devices[dev.alias] = TplinkPlug(dev.host)
+                    devices[dev.alias] = TplinkPlug(dev.alias, dev.host)
         except Exception as ex:
             _LOGGER.error("Got exception %s", ex, exc_info=True)
         _LOGGER.debug("Found %s devices", len(devices))
