@@ -167,7 +167,7 @@ def api_manage_device(alias):
     if request.method == "GET":
         device = manager.retrieve_device(alias)
     if request.method == "POST":
-        device = TplinkPlug(alias, request.data.get('ip'))
+        device = TplinkPlug(alias, request.data.get('host'))
         manager.add_device(device)
 
     if device:
@@ -180,6 +180,26 @@ def api_manage_device(alias):
             'style': '',
             'sys_info': ''
         }
+
+@admin_controller.route('/server/device/<alias>/on', methods=["GET", "POST"])
+def api_device_on(alias):
+    device = manager.retrieve_device(alias)
+
+    if request.method == "POST":
+        device.turn_on()
+    return {
+        'is_on': device.is_on,
+    }
+
+@admin_controller.route('/server/device/<alias>/off', methods=["GET", "POST"])
+def api_device_off(alias):
+    device = manager.retrieve_device(alias)
+
+    if request.method == "POST":
+        device.turn_off()
+    return {
+        'is_off': device.is_off,
+    }
 
 @admin_controller.route('/server/devices', methods=["GET"])
 def api_list_devices():
