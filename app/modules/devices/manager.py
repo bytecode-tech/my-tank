@@ -10,7 +10,7 @@ def add_device(device):
     return
 
 def retrieve_device(alias):
-    return __DEVICES__[alias]
+    return __DEVICES__.get(alias)
 
 def retrieve_devices():
     return __DEVICES__.values()
