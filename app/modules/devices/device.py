@@ -72,24 +72,6 @@ class Device:
         return str(self.sys_info["model"])
 
     @property
-    def alias(self) -> str:
-        """Return device name (alias).
-
-        :return: Device name aka alias.
-        :rtype: str
-        """
-        return self.alias
-
-    @alias.setter
-    def alias(self, alias: str) -> None:
-        """Set the device name (alias).
-
-        :param alias: New alias (name)
-        :raises SmartDeviceException: on error
-        """
-        raise NotImplementedError("Device subclass needs to implement this.")
-
-    @property
     def icon(self) -> Dict:
         """Return device icon.
 
