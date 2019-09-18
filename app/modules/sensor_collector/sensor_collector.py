@@ -1,8 +1,7 @@
 from app.modules.dht_sensor import temp
 from app.modules.soil_sensor import soil
-from app.modules.water_valve import water
-from app.modules.light import light
 from app.modules.soil_temp import soil_temp
+from app.modules.devices import manager
 from prometheus_client.core import GaugeMetricFamily
 
 class SensorCollector(object):
@@ -29,13 +28,10 @@ class SensorCollector(object):
       pass
     
     try:
-      flowStatus = water.value()
-      yield GaugeMetricFamily('weegrow_water', 'weeGrow water flow status', flowStatus)
+      devices = manager.retrieve_devices()
+      for device in devices:
+        alias = device.alias
+        yield GaugeMetricFamily('weegrow_' + alias, 'weeGrow ' + alias + ' status is: ', device.is_on)
     except:
       pass
     
-    try:
-      lightStatus = light.value()
-      yield GaugeMetricFamily('weegrow_light', 'Light value', lightStatus)
-    except:
-      pass
