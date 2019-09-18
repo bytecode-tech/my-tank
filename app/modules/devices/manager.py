@@ -1,9 +1,11 @@
 #!/usr/bin/python
 from app.modules.devices import (
     Device,
+    OnboardReplay,
 )
 
-__DEVICES__ = {}
+__DEVICES__ = {"12v-1": OnboardReplay("12v-1", 26),
+                "12v-2": OnboardReplay("12v-2", 19)}
 
 def add_device(device):
     __DEVICES__[device.alias] = device
