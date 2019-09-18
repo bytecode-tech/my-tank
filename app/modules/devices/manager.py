@@ -4,8 +4,8 @@ from app.modules.devices import (
     OnboardReplay,
 )
 
-__DEVICES__ = {"12v-1": OnboardReplay("12v-1", 26),
-                "12v-2": OnboardReplay("12v-2", 19)}
+__DEVICES__ = {"onboard_1": OnboardReplay("onboard_1", 26),
+                "onboard_2": OnboardReplay("onboard_2", 19)}
 
 def add_device(device):
     __DEVICES__[device.alias] = device
