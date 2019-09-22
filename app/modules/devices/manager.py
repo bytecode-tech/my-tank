@@ -8,7 +8,6 @@ from app.modules.devices import (
     OnboardReplay,
 )
 
-
 _DATA_DIR = '/home/weegrow/weegrow-data/'
 _DEVICES_DB = 0
 _DEVICES = {'onboard_1': OnboardReplay('onboard_1', 26),

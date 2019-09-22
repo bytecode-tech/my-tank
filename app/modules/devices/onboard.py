@@ -78,7 +78,9 @@ class OnboardReplay(Device):
         me = { 
                 "gpio": self.gpio,
             }
-        me.update(fields)
+        if fields:
+            me.update( fields )
+
         return Device.save(self, file, me)
 
     

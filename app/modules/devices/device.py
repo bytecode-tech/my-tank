@@ -166,7 +166,9 @@ class Device:
                 "style": self.style,
                 "class": self.__class__.__name__,
             }
-        me.update( fields )
+        if fields:
+            me.update( fields )
+            
         json_data = json.dumps(me)
 
         file.write(json_data)
