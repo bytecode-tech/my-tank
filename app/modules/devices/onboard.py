@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Dict
+import json
+from typing import Any, Dict, TextIO
 from app.gpiozeroext.output_devices import Relay
 
 from . import (
@@ -72,4 +73,12 @@ class OnboardReplay(Device):
         :raises SmartDeviceException: on error
         """
         return { "GPIO": self.gpio}
+
+    def save(self, file: TextIO, fields: dict=None):
+        me = { 
+                "gpio": self.gpio,
+            }
+        me.update(fields)
+        return Device.save(self, file, me)
+
     

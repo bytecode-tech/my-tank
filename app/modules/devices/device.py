@@ -1,5 +1,6 @@
 import logging
-from typing import Any, Dict, Optional
+import json
+from typing import Any, Dict, Optional, TextIO
 from enum import Enum
 
 _LOGGER = logging.getLogger(__name__)
@@ -41,6 +42,10 @@ class Device:
             self.host,
         )
         self._device_type = DeviceType.Unknown
+
+    @property
+    def encoded_alias(self) -> str:
+        return self.alias
 
     @property
     def sys_info(self) -> Dict[str, Any]:
@@ -151,7 +156,21 @@ class Device:
 
     @property
     def is_strip(self) -> bool:
-        return self._device_type == DeviceType.Strip
+        return self._device_type == DeviceType.Stripß
+
+    def save(self, file: TextIO, fields: dict=None):
+        me = { "alias": self.alias,
+                "encoded_alias": self.encoded_alias,
+                "host": self.host,
+                "brand": self.brand,
+                "style": self.style,
+                "class": self.__class__.__name__,
+            }
+        me.update( fields )
+        json_data = json.dumps(me)
+
+        file.write(json_data)
+        file.close()
 
     def __repr__(self):
         is_on = self.is_on
