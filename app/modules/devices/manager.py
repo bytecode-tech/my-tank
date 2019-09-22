@@ -27,12 +27,13 @@ def retrieve_device(encoded_alias):
         if path.exists(file_path):
             f = open(file_path)
             json_data = f.read()
-            device_props = json.loads(json_data)
-            device_class = device_props.get('class')
-            if device_class is 'onboard':
-                device = device_class(device_props['alias'], device_props['gpio'])
-            else:
-                device = device_class(device_props['alias'], device_props['host'])
+            if json_data:
+                device_props = json.loads(json_data)
+                device_class = device_props.get('class')
+                if device_class is 'onboard':
+                    device = device_class(device_props['alias'], device_props['gpio'])
+                else:
+                    device = device_class(device_props['alias'], device_props['host'])
 
     return device
 
