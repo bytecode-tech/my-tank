@@ -24,7 +24,7 @@ def retrieve_device(encoded_alias):
     device = _DEVICES.get(encoded_alias)
 
     if device is None:
-        file_path = _DATA_DIR + device.encoded_alias + '.json'
+        file_path = _DATA_DIR + encoded_alias + '.json'
         if path.exists(file_path):
             f = open(file_path)
             json_data = f.read()
