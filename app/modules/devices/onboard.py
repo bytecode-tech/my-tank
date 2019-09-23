@@ -18,7 +18,7 @@ class OnboardReplay(Device):
         gpio: int,
     ) -> None:
     
-        Device.__init__(self, alias, 'local', "onboard")
+        Device.__init__(self, alias, 'local', "onboard", "relay")
         self.gpio = gpio
         self.native_api = Relay(gpio)
         _LOGGER.debug(

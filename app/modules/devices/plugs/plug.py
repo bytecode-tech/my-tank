@@ -17,7 +17,7 @@ class Plug(Device):
         brand: str,
     ) -> None:
     
-        Device.__init__(self, alias, host, brand, "Plug")
+        Device.__init__(self, alias, host, brand, "plug")
         _LOGGER.debug(
             "Initializing %s",
             self.host,

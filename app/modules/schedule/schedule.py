@@ -30,7 +30,7 @@ class UserJob():
     def __init__(self, *args, **kwargs):
         self.id = None
         self.schedule = None
-        self.agent = None
+        self.device = None
         self.action = None
         self.command = None
         self.comment = None
@@ -43,7 +43,7 @@ class UserJob():
             command_components = cron_job.command.rsplit("/")
             component_count = len(command_components)
             if component_count >= 2:
-                self.agent = command_components[-2].lower()
+                self.device = command_components[-2].lower()
                 self.action = command_components[-1].lower()            
             
             comment_data = cron_job.comment.split(';')
@@ -60,7 +60,7 @@ class UserJob():
         else:
             self.id = args[0]
             self.schedule = args[1]
-            self.agent = args[2].lower()
+            self.device = args[2].lower()
 
             # handle booleans
             if isinstance(args[3], bool):
@@ -89,11 +89,11 @@ class Scheduler(metaclass=Singleton):
 
         if job:
             job.setall(user_job.schedule)
-            job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job.set_command("curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.action)
             job.set_comment(user_job.id + ';' + user_job.comment)
             job.enable(user_job.enabled)
         else:
-            job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job = cron.new(command="curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.action)
             job.setall(user_job.schedule)
             job.set_comment(user_job.id + ';' + user_job.comment)
 
