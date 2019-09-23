@@ -3,6 +3,7 @@ import logging
 import json
 import os.path
 from os import path
+from .plugs import TplinkPlug
 from app.modules.devices import (
     Device,
     OnboardReplay,
@@ -30,10 +31,10 @@ def retrieve_device(encoded_alias):
             if json_data:
                 device_props = json.loads(json_data)
                 device_class = device_props.get('class')
-                if device_class is 'onboard':
-                    device = device_class(device_props['alias'], device_props['gpio'])
+                if device_class is 'OnboardReplay':
+                    device = OnboardReplay(device_props['alias'], device_props['gpio'])
                 else:
-                    device = device_class(device_props['alias'], device_props['host'])
+                    device = TplinkPlug(device_props['alias'], device_props['host'])
 
     return device
 
