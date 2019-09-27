@@ -27,7 +27,8 @@ def network_response(network):
     return {
         'enabled': network.enabled,
         'ssid':  network.ssid,
-        'priority': network.priority
+        'priority': network.priority,
+        'path': network.get_path()
     }
 
 def device_response(device):
