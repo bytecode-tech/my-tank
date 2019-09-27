@@ -24,12 +24,11 @@ def wifi_network_response(wifi_network):
     }
 
 def network_response(network):
-    network_path = network.get_path()
     return {
         'enabled': network.enabled,
         'ssid':  network.ssid,
         'priority': network.priority,
-        'path': network_path
+        'path': network.path
     }
 
 def device_response(device):

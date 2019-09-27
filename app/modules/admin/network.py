@@ -35,11 +35,13 @@ class Network():
         self.password = None
         self.enabled = None
         self.priority = None
+        self.path = None
 
         if 'network' in kwargs:
             network = kwargs.get('network')
 
             self.enabled = network.get_enabled()
+            self.path = network.get_path()
             properties = network.get_properties()
             self.ssid = properties.get('ssid')
             self.priority = properties.get('priority', '')
