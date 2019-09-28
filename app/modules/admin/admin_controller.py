@@ -142,14 +142,14 @@ def api_wifi_networks():
 @admin_controller.route('/server/wifi/networks/<name>', methods=["GET", "POST", "DELETE"])
 def api_wifi_network(name):
     if request.method == "GET":
-        return {network_response(network.network_info(name))}
+        return {'network': network_response(network.network_info(name))}
     elif request.method == "POST":
         password = request.data.get('password')
         enabled = request.data.get('enabled')
         priority = request.data.get('priority')
         saved_network = network.save_network(name, password, enabled, priority)
 
-        return {network_response(saved_network)}
+        return {'network': network_response(saved_network)}
     elif request.method == "DELETE":
         network.delete_network(name)
         return {}
