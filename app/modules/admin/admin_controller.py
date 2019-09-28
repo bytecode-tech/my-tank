@@ -24,6 +24,20 @@ def wifi_network_response(wifi_network):
     }
 
 def network_response(network):
+    if network:
+        return {
+            'enabled': network.enabled,
+            'ssid':  network.ssid,
+            'priority': network.priority,
+            'path': network.path
+        }
+    else:
+        return {
+            'enabled': '',
+            'ssid':  '',
+            'priority': '',
+            'path': ''
+        }
     return {
         'enabled': network.enabled,
         'ssid':  network.ssid,
