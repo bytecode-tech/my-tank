@@ -157,7 +157,7 @@ def api_wifi_network(name):
 @admin_controller.route('/server/wifi/networks/active', methods=["GET"])
 def api_active_networks():
     if request.method == "GET":
-        network = network.activate_network
+        active_network = network.activate_network
 
-        return {'networks': network_response(network)}
+        return {'networks': network_response(active_network)}
 
