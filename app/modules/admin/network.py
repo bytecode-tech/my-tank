@@ -33,7 +33,7 @@ class Network():
     def __init__(self, *args, **kwargs):
         self.ssid = None
         self.password = None
-        self.enabled = None
+        self.enabled = False
         self.priority = None
         self.path = None
 

@@ -161,16 +161,15 @@ def api_active_networks():
 
         return {'networks': network_response(active_network)}
 
-@admin_controller.route('/server/wifi/networks/<name>/activate', methods=["GET", "POST"])
+@admin_controller.route('/server/wifi/networks/activate/<name>', methods=["GET", "POST"])
 def api_activate_network(name):
     if request.method == "GET":
         active_name = network.active_network().ssid
         if name.lower() == active_name.lower():
-            return{'isActive': True}
+            return{'isActive': "True"}
         else:
-            return {'isActive': False}
+            return {'isActive': "False"}
     elif request.method == "POST":
         network.activate_network(name)
 
-        return{'isActive': True}
-
+        return{'isActive': "True"}
