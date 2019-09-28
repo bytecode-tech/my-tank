@@ -90,13 +90,13 @@ def save_network(name, password, enabled, priority):
     supplicant = driver.connect()
     interface = supplicant.get_interface('wlan0')
 
-    network = { }
-    network['ssid'] = name
-    network['password'] = password
-    network['enabled'] = enabled
-    network['priority'] = priority
+    network_config = { }
+    network_config['ssid'] = name
+    network_config['password'] = password
+    network_config['enabled'] = enabled
+    network_config['priority'] = priority
 
-    return interface.add_network(network)
+    return interface.add_network(network_config)
 
 def network_info(name):
     reactor = SelectReactor()
