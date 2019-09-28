@@ -120,7 +120,7 @@ def network_info(name):
 
     found_network = None
     for network in results:
-        ssid = network.get_properties.get('ssid')
+        ssid = network.get_properties().get('ssid')
         if ssid.lower() == name.lower():
             found_network = Network(network=network)
     
@@ -140,7 +140,7 @@ def delete_network(name):
     results = interface.get_networks()
 
     for network in results:
-        ssid = network.get_properties.get('ssid')
+        ssid = network.get_properties().get('ssid')
         if ssid.lower() == name.lower():
             interface.remove_network(network.get_path())
             break
@@ -159,7 +159,7 @@ def activate_network(name):
     results = interface.get_networks()
 
     for network in results:
-        ssid = network.get_properties.get('ssid')
+        ssid = network.get_properties().get('ssid')
         if ssid.lower() == name.lower():
             interface.select_network(network.get_path())
             break
