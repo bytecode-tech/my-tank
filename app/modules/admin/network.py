@@ -81,7 +81,7 @@ def saved_networks():
     return networks
 
 
-def save_network(name, password, enabled, priority):
+def save_network(name: str, password: str, enabled: bool, priority: str):
     reactor = SelectReactor()
     threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
     time.sleep(0.1)  # let reactor start
@@ -95,6 +95,7 @@ def save_network(name, password, enabled, priority):
     network_config['password'] = password
     network_config['enabled'] = enabled
     network_config['priority'] = priority
+    network_config['key_mgmt'] = "WPA-PSK"
 
     return interface.add_network(network_config)
 
