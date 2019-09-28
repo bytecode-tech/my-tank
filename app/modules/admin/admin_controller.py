@@ -32,13 +32,23 @@ def network_response(network):
     }
 
 def device_response(device):
-    return {
-        'name': device.alias,
-        'host': device.host,
-        'brand': device.brand,
-        'style':device.style,
-        'sys_info': device.sys_info
-    }
+    if device:
+        return {
+            'name': device.alias,
+            'host': device.host,
+            'brand': device.brand,
+            'style':device.style,
+            'sys_info': device.sys_info
+        }
+    else:
+        return {
+            'name': '',
+            'host': '',
+            'brand': '',
+            'style': '',
+            'sys_info': ''
+        }
+    
 
 @admin_controller.route('/server', methods=["GET", "POST"])
 def api_admin_server_status():
