@@ -154,3 +154,10 @@ def api_wifi_network(name):
         network.delete_network(name)
         return {}
 
+@admin_controller.route('/server/wifi/networks/active', methods=["GET"])
+def api_active_networks():
+    if request.method == "GET":
+        network = network.activate_network
+
+        return {'networks': network_response(network)}
+

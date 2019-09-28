@@ -52,9 +52,7 @@ def scan():
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     scan_results = interface.scan(block=True)
@@ -72,9 +70,7 @@ def saved_networks():
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     results = interface.get_networks()
@@ -91,9 +87,7 @@ def save_network(name, password, enabled, priority):
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     network = {
@@ -111,9 +105,7 @@ def network_info(name):
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     results = interface.get_networks()
@@ -132,9 +124,7 @@ def delete_network(name):
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     results = interface.get_networks()
@@ -151,9 +141,7 @@ def activate_network(name):
     time.sleep(0.1)  # let reactor start
 
     driver = WpaSupplicantDriver(reactor)
-
     supplicant = driver.connect()
-
     interface = supplicant.get_interface('wlan0')
 
     results = interface.get_networks()
@@ -163,3 +151,15 @@ def activate_network(name):
         if ssid.lower() == name.lower():
             interface.select_network(network.get_path())
             break
+
+def active_network():
+    reactor = SelectReactor()
+    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
+    time.sleep(0.1)  # let reactor start
+
+    driver = WpaSupplicantDriver(reactor)
+    supplicant = driver.connect()
+    interface = supplicant.get_interface('wlan0')
+
+    network = interface.get_current_network()
+    return Network(network=network)
