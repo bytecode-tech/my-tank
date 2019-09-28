@@ -131,7 +131,7 @@ def api_wifi_ssids():
 @admin_controller.route('/server/wifi/networks', methods=["GET"])
 def api_wifi_networks():
     if request.method == "GET":
-        saved_networks = network.savedNetworks()
+        saved_networks = network.saved_networks()
 
         response_list = []
         for saved_network in saved_networks:
@@ -139,15 +139,18 @@ def api_wifi_networks():
 
         return {'savedNetworks': response_list}
 
-# @admin_controller.route('/server/wifi/network/<name>', methods=["GET", "POST", "DELETE"])
-# def api_wifi_network(name):
-#     if request.method == "GET":
-#         network.
-#     elif request.method == "POST":
-#         password = request.data.get('password')
-#         enabled = request.data.get('enabled')
-#         priority = request.data.get('priority')
-#         saved_network = network.saveNetwork(name, password, enabled, priority)
+@admin_controller.route('/server/wifi/networks/<name>', methods=["GET", "POST", "DELETE"])
+def api_wifi_network(name):
+    if request.method == "GET":
+        return {network_response(network.network_info(name))}
+    elif request.method == "POST":
+        password = request.data.get('password')
+        enabled = request.data.get('enabled')
+        priority = request.data.get('priority')
+        saved_network = network.save_network(name, password, enabled, priority)
 
-#         return {network_response(saved_network)}
+        return {network_response(saved_network)}
+    elif request.method == "DELETE":
+        network.delete_network(name)
+        return {}
 
