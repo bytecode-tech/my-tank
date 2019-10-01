@@ -98,7 +98,7 @@ def save_network(name: str, password: str, enabled: bool, priority: str):
     network_config['ssid'] = name
     network_config['key_mgmt'] = "WPA-PSK"
 
-    _LOGGER.info("network config:" + network_config)
+    _LOGGER.info('network config: %s', network_config)
 
     return interface.add_network(network_config)
 
