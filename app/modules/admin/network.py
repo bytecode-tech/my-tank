@@ -1,7 +1,10 @@
 from wpa_supplicant.core import WpaSupplicantDriver
 from twisted.internet.selectreactor import SelectReactor
 import threading
+import logging
 import time
+
+_LOGGER = logging.getLogger(__name__)
 
 class WifiNetwork():
     def __init__(self, *args, **kwargs):
@@ -94,6 +97,8 @@ def save_network(name: str, password: str, enabled: bool, priority: str):
     network_config['psk'] = password
     network_config['ssid'] = name
     network_config['key_mgmt'] = "WPA-PSK"
+
+    _LOGGER.info("network config:" + network_config)
 
     return interface.add_network(network_config)
 
