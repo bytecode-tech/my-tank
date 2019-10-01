@@ -91,9 +91,9 @@ def save_network(name: str, password: str, enabled: bool, priority: str):
     interface = supplicant.get_interface('wlan0')
 
     network_config = { }
-    sample_network_cfg['psk'] = password
-    sample_network_cfg['ssid'] = name
-    sample_network_cfg['key_mgmt'] = "WPA-PSK"
+    network_config['psk'] = password
+    network_config['ssid'] = name
+    network_config['key_mgmt'] = "WPA-PSK"
 
     return interface.add_network(network_config)
 
