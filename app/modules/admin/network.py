@@ -1,10 +1,10 @@
 from wpa_supplicant.core import WpaSupplicantDriver
 from twisted.internet.selectreactor import SelectReactor
+import os.path
+import os
 import threading
 import logging
 import time
-
-_LOGGER = logging.getLogger(__name__)
 
 class WifiNetwork():
     def __init__(self, *args, **kwargs):
@@ -49,120 +49,88 @@ class Network():
             self.ssid = properties.get('ssid')
             self.priority = properties.get('priority', '')
 
-def scan():
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
+class Wifi():
+    _LOGGER = logging.getLogger(__name__)
 
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
+    def __init__(self):
+        self._reactor = SelectReactor()
+        threading.Thread(target=self._reactor.run, kwargs={'installSignalHandlers': 0}).start()
+        time.sleep(0.1)  # let reactor start
+        driver = WpaSupplicantDriver(self._reactor)
+        supplicant = driver.connect()
+        self.interface = supplicant.get_interface('wlan0')
 
-    scan_results = interface.scan(block=True)
-    networks = []
+    def __del__(self): 
+        self._reactor.stop()
 
-    for bss in scan_results:
-        networks.append(WifiNetwork(bss=bss))
+    def scan(self):
+        scan_results = self.interface.scan(block=True)
+        networks = []
 
-    reactor.stop()
-    return networks
+        for bss in scan_results:
+            networks.append(WifiNetwork(bss=bss))
 
-def saved_networks():
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
+        return networks
 
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
+    def get_known_networks(self):
+        results = self.interface.get_networks()
+        networks = []
+        for network in results:
+            networks.append(Network(network=network))
 
-    results = interface.get_networks()
-    networks = []
-    for network in results:
-        networks.append(Network(network=network))
-
-    return networks
+        return networks
 
 
-def save_network(name: str, password: str, enabled: bool, priority: str):
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
+    def save_network(self, ssid: str, psk: str, enabled: bool, priority: str):
+        network_config = { }
 
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
+        #network_config['psk'] = psk
+        network_config['ssid'] = ssid
+        network_config['key_mgmt'] = "WPA-PSK"
 
-    network_config = { }
-    network_config['psk'] = password
-    network_config['ssid'] = name
-    network_config['key_mgmt'] = "WPA-PSK"
+        network = self.interface.add_network(network_config)
 
-    _LOGGER.info('network config: %s', network_config)
+        #Work around for psk invalid message format error
+        #txdbus.error.RemoteError: org.freedesktop.DBus.Error.InvalidArgs: invalid message format
+        network_id = os.path.basename(network.get_path())
+        cmd = "wpa_cli -i wlan0 set_network " + network_id + " psk " + psk
+        os.system(cmd)
 
-    return interface.add_network(network_config)
+        return Network(network=network)
 
-def network_info(name):
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
+    def get_network_info(self, name:str):
+        results = self.interface.get_networks()
 
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
+        found_network = None
+        for network in results:
+            ssid = network.get_properties().get('ssid')
+            if ssid.lower() == name.lower():
+                found_network = Network(network=network)
+        
+        return found_network
 
-    results = interface.get_networks()
+    def delete_network(self, name:str):
+        results = self.interface.get_networks()
 
-    found_network = None
-    for network in results:
-        ssid = network.get_properties().get('ssid')
-        if ssid.lower() == name.lower():
-            found_network = Network(network=network)
+        for network in results:
+            ssid = network.get_properties().get('ssid')
+            if ssid.lower() == name.lower():
+                self.interface.remove_network(network.get_path())
+                break
     
-    return found_network
+    def activate_network(self, name:str):
+        results = self.interface.get_networks()
 
-def delete_network(name):
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
+        for network in results:
+            ssid = network.get_properties().get('ssid')
+            if ssid.lower() == name.lower():
+                self.interface.select_network(network.get_path())
+                break
 
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
-
-    results = interface.get_networks()
-
-    for network in results:
-        ssid = network.get_properties().get('ssid')
-        if ssid.lower() == name.lower():
-            interface.remove_network(network.get_path())
-            break
+    def get_active_network(self):
+        network = self.interface.get_current_network()
+        return Network(network=network)
     
-def activate_network(name):
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
-
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
-
-    results = interface.get_networks()
-
-    for network in results:
-        ssid = network.get_properties().get('ssid')
-        if ssid.lower() == name.lower():
-            interface.select_network(network.get_path())
-            break
-
-def active_network():
-    reactor = SelectReactor()
-    threading.Thread(target=reactor.run, kwargs={'installSignalHandlers': 0}).start()
-    time.sleep(0.1)  # let reactor start
-
-    driver = WpaSupplicantDriver(reactor)
-    supplicant = driver.connect()
-    interface = supplicant.get_interface('wlan0')
-
-    network = interface.get_current_network()
-    return Network(network=network)
+    def save_config(self):
+        cmd = "wpa_cli -i wlan0 save_config"
+        os.system(cmd)

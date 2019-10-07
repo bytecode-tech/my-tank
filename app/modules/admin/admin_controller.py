@@ -1,10 +1,8 @@
 from flask import (Blueprint, request, jsonify)
-from . import appliance
-from . import network
+from . import appliance, Wifi, Network, WifiNetwork
 from app.modules.devices.unearth import Unearth
 from app.modules.devices.plugs.tplinkplug import TplinkPlug
 from app.modules.devices import manager
-import _thread
 import os
 import time
 
@@ -144,7 +142,8 @@ def api_update_restart():
 @admin_controller.route('/server/wifi/scan', methods=["GET"])
 def api_wifi_ssids():
     if request.method == "GET":
-        networks = network.scan()
+        
+        networks = Wifi().scan()
 
         response_list = []
         for wifi_network in networks:
@@ -152,48 +151,53 @@ def api_wifi_ssids():
 
         return {'wifiNetworksAvailable': response_list}
 
-@admin_controller.route('/server/wifi/networks', methods=["GET"])
+@admin_controller.route('/server/wifi/networks', methods=["GET", "POST"])
 def api_wifi_networks():
-    if request.method == "GET":
-        saved_networks = network.saved_networks()
+    wifi = Wifi()
+    if request.method == "POST":
+        wifi.save_config()
 
-        response_list = []
-        for saved_network in saved_networks:
-            response_list.append(network_response(saved_network))
+    saved_networks = wifi.get_known_networks()
 
-        return {'savedNetworks': response_list}
+    response_list = []
+    for saved_network in saved_networks:
+        response_list.append(network_response(saved_network))
+
+    return {'savedNetworks': response_list}
 
 @admin_controller.route('/server/wifi/networks/<name>', methods=["GET", "POST", "DELETE"])
 def api_wifi_network(name):
+    wifi = Wifi()
     if request.method == "GET":
-        return {'network': network_response(network.network_info(name))}
+        return {'network': network_response(wifi.get_network_info(name))}
     elif request.method == "POST":
         password = request.data.get('password')
         enabled = request.data.get('enabled')
         priority = request.data.get('priority')
-        saved_network = network.save_network(name, password, enabled, priority)
+        saved_network = wifi.save_network(name, password, enabled, priority)
 
         return {'network': network_response(saved_network)}
     elif request.method == "DELETE":
-        network.delete_network(name)
+        wifi.delete_network(name)
         return {}
 
 @admin_controller.route('/server/wifi/networks/active', methods=["GET"])
 def api_active_networks():
     if request.method == "GET":
-        active_network = network.active_network()
+        active_network = Wifi().get_active_network()
 
         return {'networks': network_response(active_network)}
 
 @admin_controller.route('/server/wifi/networks/<name>/activate', methods=["GET", "POST"])
 def api_activate_network(name):
+    wifi = Wifi()
     if request.method == "GET":
-        active_name = network.active_network().ssid
+        active_name = wifi.get_active_network().ssid
         if name.lower() == active_name.lower():
             return{'isActive': "True"}
         else:
             return {'isActive': "False"}
     elif request.method == "POST":
-        network.activate_network(name)
+        wifi.activate_network(name)
 
         return{'isActive': "True"}
