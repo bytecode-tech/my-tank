@@ -94,6 +94,7 @@ class Wifi():
         #Work around for psk invalid message format error
         #txdbus.error.RemoteError: org.freedesktop.DBus.Error.InvalidArgs: invalid message format
         network_id = os.path.basename(network.get_path())
+        self._LOGGER.info("Saving network....Network path:" + network.get_path() + " Network Id: " + network_id)
         cmd = "wpa_cli -i wlan0 set_network " + network_id + " psk " + psk
         os.system(cmd)
 
