@@ -172,8 +172,8 @@ def api_wifi_network(name):
     if request.method == "GET":
         return {'network': network_response(wifi.get_network_info(name))}
     elif request.method == "POST":
-        password = request.data.get('password')
-        enabled = request.data.get('enabled')
+        password = request.data.get('psk')
+        enabled = request.data.get('enabled', 'True') == 'True'
         priority = request.data.get('priority')
         saved_network = wifi.save_network(name, password, enabled, priority)
 
