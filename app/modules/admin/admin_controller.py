@@ -1,5 +1,6 @@
 from flask import (Blueprint, request, jsonify)
-from . import appliance, Wifi, Network, WifiNetwork
+from . import appliance
+from . import Wifi, Network, WifiNetwork
 from app.modules.devices.unearth import Unearth
 from app.modules.devices.plugs.tplinkplug import TplinkPlug
 from app.modules.devices import manager
