@@ -180,7 +180,7 @@ def api_wifi_network(name):
         return {'network': network_response(saved_network)}
     elif request.method == "DELETE":
         wifi.delete_network(name)
-        return {}
+        return {'network': network_response(wifi.get_network_info(name))}
 
 @admin_controller.route('/server/wifi/networks/active', methods=["GET"])
 def api_active_networks():

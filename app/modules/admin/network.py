@@ -88,7 +88,9 @@ class Wifi():
         network_config['ssid'] = ssid
         network_config['key_mgmt'] = "WPA-PSK"
         if enabled:
-            network_config['enabled'] = 1
+            network_config['disabled'] = 0
+        else:
+            network_config['disabled'] = 1
 
         network = self.interface.add_network(network_config)
 
