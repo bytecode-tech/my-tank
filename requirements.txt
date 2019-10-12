@@ -10,6 +10,7 @@ gitpython
 dbus-python
 uwsgi
 docker
+smbus
 twisted
 wpa_supplicant
 pyHS100

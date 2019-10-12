@@ -10,11 +10,10 @@ _LOGGER = logging.getLogger(__name__)
 class SensorCollector(object):
   def collect(self):
     try:
-      humidity, temperature = temp.read_temp()
+      ht_result = temp.read_temp()
 
-      temperature = 9.0/5.0 * temperature + 32
-      yield GaugeMetricFamily('weegrow_temperature', 'weeGrow air temperature in degrees F', temperature)
-      yield GaugeMetricFamily('weegrow_humidity', 'weeGrow humidity', humidity)
+      yield GaugeMetricFamily('weegrow_temperature', 'weeGrow air temperature in degrees F', ht_result['temperature'])
+      yield GaugeMetricFamily('weegrow_humidity', 'weeGrow humidity', ht_result['humidity'])
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex, exc_info=True)
 
