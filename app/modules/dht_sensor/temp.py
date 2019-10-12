@@ -28,8 +28,8 @@ def read_dht_22():
 
 def read_sht_30():
     try:
-        fTemp = sensor.temperature * 1.8 + 32
-        humidity = sensor.relative_humidity
+        fTemp = sensor.temperature[0] * 1.8 + 32
+        humidity = sensor.relative_humidity[0]
         return {'temperature': fTemp, 'humidity': humidity}
     except:
         _LOGGER.exception("SHT-30 not reporting")
