@@ -1,9 +1,7 @@
 import logging
-import redis
 from pyHS100 import SmartPlug
 from typing import Any, Dict
 import pickle
-import redis
 
 from . import (
     Plug,
