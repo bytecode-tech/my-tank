@@ -7,7 +7,7 @@ import logging
 _LOGGER = logging.getLogger(__name__)
 
 def read_temp():
-    return read_dht_22()
+    return read_sht_30()
 
 def read_dht_22():
     humidity, temperature = Adafruit_DHT.read_retry(22, 4)
