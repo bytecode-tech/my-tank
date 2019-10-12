@@ -5,7 +5,6 @@ from app.modules.devices.unearth import Unearth
 from app.modules.devices.plugs.tplinkplug import TplinkPlug
 from app.modules.devices import manager
 import os
-import time
 
 admin_controller = Blueprint('admin-controller', __name__, url_prefix='/api/admin')
 
@@ -174,7 +173,7 @@ def api_wifi_network(name):
     elif request.method == "POST":
         psk = request.data.get('psk')
         enabled = request.data.get('enabled', 'True') == 'True'
-        priority = request.data.get('priority')
+        priority = request.data.get('priority', '0')
         saved_network = wifi.save_network(name, psk, enabled, priority)
 
         return {'network': network_response(saved_network)}
@@ -202,3 +201,16 @@ def api_activate_network(name):
         wifi.activate_network(name)
 
         return{'isActive': "True"}
+
+@admin_controller.route('/server/wifi/networks/ap-mode', methods=["GET", "POST", "DELETE"])
+def api_network_ap_mode():
+    wifi = Wifi()
+    if request.method == "POST":
+        wifi.enable_ap_mode()
+    elif request.method == "DELETE":
+        wifi.disable_ap_mode()
+
+    if wifi.is_ap_mode:
+        return{'isApMode': "True"}
+    else:
+        return {'isApMode': "False"}

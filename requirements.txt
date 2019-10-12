@@ -13,4 +13,3 @@ docker
 twisted
 wpa_supplicant
 pyHS100
-redis

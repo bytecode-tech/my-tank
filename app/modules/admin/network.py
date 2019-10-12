@@ -1,7 +1,9 @@
 from wpa_supplicant.core import WpaSupplicantDriver
 from twisted.internet.selectreactor import SelectReactor
+from subprocess import call
 import os.path
 import os
+from dbus import SystemBus, Interface
 import threading
 import logging
 import time
@@ -97,7 +99,7 @@ class Wifi():
         #Work around for psk invalid message format error
         #txdbus.error.RemoteError: org.freedesktop.DBus.Error.InvalidArgs: invalid message format
         network_id = os.path.basename(network.get_path())
-        self._LOGGER.info("Saving network....Network path:" + network.get_path() + " Network Id: " + network_id)
+        self._LOGGER.debug("Saving network....Network path:" + network.get_path() + " Network Id: " + network_id)
         cmd = "wpa_cli -i wlan0 set_network " + network_id + " psk " + psk
         os.system(cmd)
 
@@ -139,3 +141,20 @@ class Wifi():
     def save_config(self):
         cmd = "wpa_cli -i wlan0 save_config"
         os.system(cmd)
+
+    def enable_ap_mode(self):
+        status = call("",cwd="/home/weegrow/ansible-weegrow",shell=True)
+        return
+    
+    def disable_ap_mode(self):
+        return
+
+    @property
+    def is_ap_mode(self) -> bool:
+        bus = SystemBus()
+        systemd = bus.get_object('org.freedesktop.systemd1','/org/freedesktop/systemd1')
+        manager = Interface(systemd, dbus_interface='org.freedesktop.systemd1.Manager')
+        appliance_unit = manager.LoadUnit('hostapd.service')
+        appliance_proxy = bus.get_object('org.freedesktop.systemd1', str(appliance_unit))
+        appliance_properties = Interface(appliance_proxy, dbus_interface='org.freedesktop.DBus.Properties')
+        return appliance_properties.Get('org.freedesktop.systemd1.Unit', 'ActiveState') != 'inactive'

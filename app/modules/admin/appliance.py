@@ -5,7 +5,6 @@ from flask import current_app
 from dbus import SystemBus, Interface
 import docker
 import logging
-import time
 import uwsgi
 
 def update_source():
