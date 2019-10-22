@@ -6,13 +6,13 @@ from os import path
 from .plugs import TplinkPlug
 from app.modules.devices import (
     Device,
-    OnboardReplay,
+    OnboardRelay,
 )
 
 _DATA_DIR = '/home/weegrow/weegrow-data/'
 _DEVICES_DB = 0
-_DEVICES = {'onboard_1': OnboardReplay('onboard_1', 26),
-                'onboard_2': OnboardReplay('onboard_2', 19)}
+_DEVICES = {'onboard_1': OnboardRelay('onboard_1', 26),
+                'onboard_2': OnboardRelay('onboard_2', 19)}
 
 def add_device(device: Device):
     f = open(_DATA_DIR + device.encoded_alias + '.json', 'w+')
@@ -57,8 +57,8 @@ def _retrieve_device_from_file(file_path):
     if json_data:
         device_props = json.loads(json_data)
         device_class = device_props.get('class')
-        if device_class is 'OnboardReplay':
-            device = OnboardReplay(device_props['alias'], device_props['gpio'])
+        if device_class is 'OnboardRelay':
+            device = OnboardRelay(device_props['alias'], device_props['gpio'])
         else:
             device = TplinkPlug(device_props['alias'], device_props['host'])
             

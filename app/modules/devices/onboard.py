@@ -10,7 +10,7 @@ from . import (
 
 _LOGGER = logging.getLogger(__name__)
 
-class OnboardReplay(Device):
+class OnboardRelay(Device):
 
     def __init__(
         self,
