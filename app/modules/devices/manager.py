@@ -57,8 +57,8 @@ def _retrieve_device_from_file(file_path):
     if json_data:
         device_props = json.loads(json_data)
         device_class = device_props.get('class')
-        if device_class is 'OnboardRelay':
-            device = OnboardRelay(device_props['alias'], device_props['gpio'])
+        if device_class == 'OnboardRelay':
+            device = _DEVICES[device_props['alias']]
         else:
             device = TplinkPlug(device_props['alias'], device_props['host'])
             

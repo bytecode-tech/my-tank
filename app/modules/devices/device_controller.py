@@ -40,9 +40,11 @@ def api_manage_device(alias):
     device = None
     if request.method == "GET":
         device = manager.retrieve_device(alias)
-    if request.method == "POST":
-        device = TplinkPlug(alias, request.data.get('host'))
-        manager.add_device(device)
+    elif request.method == "POST":
+        if request.data.get('brand') == 'tp-link':
+            if request.data.get('style') == 'plug':
+                device = TplinkPlug(alias, request.data.get('host'))
+                manager.add_device(device)
 
     if device:
         return device_response(device)
