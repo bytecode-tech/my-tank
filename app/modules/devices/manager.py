@@ -61,5 +61,6 @@ def _retrieve_device_from_file(file_path):
             device = OnboardReplay(device_props['alias'], device_props['gpio'])
         else:
             device = TplinkPlug(device_props['alias'], device_props['host'])
-
+            
+    f.close()
     return device
