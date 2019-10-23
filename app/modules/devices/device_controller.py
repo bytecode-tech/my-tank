@@ -10,6 +10,7 @@ def device_response(device):
         'host': device.host,
         'brand': device.brand,
         'style':device.style,
+        'is_on':device.is_on,
         'sys_info': device.sys_info
     }
 
@@ -54,6 +55,7 @@ def api_manage_device(alias):
             'host': '',
             'brand': '',
             'style': '',
+            'is_on': '',
             'sys_info': ''
         }
 
@@ -75,4 +77,14 @@ def api_device_off(alias):
         device.turn_off()
     return {
         'is_off': device.is_off,
+    }
+
+@device_controller.route('/<alias>/toggle', methods=["GET", "POST"])
+def api_device_toggle(alias):
+    device = manager.retrieve_device(alias)
+
+    if request.method == "POST":
+        device.toggle()
+    return {
+        'is_on': device.is_on,
     }

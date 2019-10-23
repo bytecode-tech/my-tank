@@ -122,6 +122,10 @@ class Device:
         """Turn device on."""
         raise NotImplementedError("Device subclass needs to implement this.")
 
+    def toggle(self) -> None:
+        """Toggle device state"""
+        self.turn_on() if self.is_off else self.turn_off()
+
     @property
     def is_on(self) -> bool:
         """Return if the device is on.
