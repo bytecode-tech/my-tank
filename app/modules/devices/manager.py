@@ -20,6 +20,14 @@ def add_device(device: Device):
     _DEVICES[device.encoded_alias] = device
     return
 
+def delete_device(encoded_alias: str):
+    full_path = _DATA_DIR + encoded_alias + '.json'
+    if os.path.exists(full_path):
+        os.remove(full_path)
+
+    _DEVICES.pop(encoded_alias, None)
+    return
+
 def retrieve_device(encoded_alias):
     device = _DEVICES.get(encoded_alias)
 
