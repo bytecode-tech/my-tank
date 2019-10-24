@@ -26,8 +26,7 @@ def retrieve_device(encoded_alias):
     device = None
 
     file_name = encoded_alias + '.json'
-    if path.exists(file_name):
-        device = _retrieve_device_from_file(file_name)
+    device = _retrieve_device_from_file(file_name)
 
     return device
 
