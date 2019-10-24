@@ -25,7 +25,6 @@ def update_dependencies():
     return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
 
 def appliance_restart():
-    #return os.system('sudo systemctl restart zero-appliance')
     uwsgi.reload()
 
 def appliance_state():
