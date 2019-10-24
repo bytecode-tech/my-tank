@@ -25,18 +25,18 @@ def delete_device(encoded_alias: str):
 def retrieve_device(encoded_alias):
     device = None
 
-    file_path = _DATA_DIR + encoded_alias + '.json'
-    if path.exists(file_path):
-        device = _retrieve_device_from_file(file_path)
+    file_name = encoded_alias + '.json'
+    if path.exists(file_name):
+        device = _retrieve_device_from_file(file_name)
 
     return device
 
 def retrieve_devices():
     devices = []
-    for file_path in os.listdir(_DATA_DIR):
+    for file_name in os.listdir(_DATA_DIR):
         device = None
-        if file_path.endswith(".json"):
-            device = _retrieve_device_from_file(file_path)
+        if file_name.endswith(".json"):
+            device = _retrieve_device_from_file(file_name)
 
         #if lookup worked, add to devices 
         if device:
@@ -44,9 +44,9 @@ def retrieve_devices():
 
     return devices
         
-def _retrieve_device_from_file(file_path):
+def _retrieve_device_from_file(file_name):
     device = None
-    f = open(_DATA_DIR + file_path)
+    f = open(_DATA_DIR + file_name)
     json_data = f.read()
     if json_data:
         device_props = json.loads(json_data)
