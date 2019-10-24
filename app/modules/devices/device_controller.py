@@ -45,7 +45,7 @@ def api_manage_device(alias):
         if request.data.get('brand') == 'tp-link':
             if request.data.get('style') == 'plug':
                 device = TplinkPlug(alias, request.data.get('host'))
-                manager.add_device(device)
+                manager.save_device(device)
     elif request.method == "DELETE":
         manager.delete_device(alias)
     if device:

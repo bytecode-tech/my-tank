@@ -4,49 +4,44 @@ import json
 import os.path
 from os import path
 from .plugs import TplinkPlug
+from multiprocessing import Lock
 from app.modules.devices import (
     Device,
     OnboardRelay,
 )
 
-_DATA_DIR = '/home/weegrow/weegrow-data/'
-_DEVICES_DB = 0
-_DEVICES = {'onboard_1': OnboardRelay('onboard_1', 26),
-                'onboard_2': OnboardRelay('onboard_2', 19)}
+_LOCK = Lock()
+_DATA_DIR = '/home/weegrow/weegrow-data/devices/'
 
-def add_device(device: Device):
+def save_device(device: Device):
+    _LOCK.acquire()
     f = open(_DATA_DIR + device.encoded_alias + '.json', 'w+')
     device.save(f)
-    _DEVICES[device.encoded_alias] = device
+    _LOCK.release()
     return
 
 def delete_device(encoded_alias: str):
+    _LOCK.acquire()
     full_path = _DATA_DIR + encoded_alias + '.json'
     if os.path.exists(full_path):
         os.remove(full_path)
-
-    _DEVICES.pop(encoded_alias, None)
+    _LOCK.release()
     return
 
 def retrieve_device(encoded_alias):
-    device = _DEVICES.get(encoded_alias)
+    _LOCK.acquire()
+    device = None
 
-    if device:
-        f = open(_DATA_DIR + device.encoded_alias + '.json', 'w+')
-        device.save(f)
-    else:
-        if device is None:
-            file_path = _DATA_DIR + encoded_alias + '.json'
-            if path.exists(file_path):
-                device = _retrieve_device_from_file(file_path)
+    file_path = _DATA_DIR + encoded_alias + '.json'
+    if path.exists(file_path):
+        device = _retrieve_device_from_file(file_path)
 
-            #if lookup worked, add to devices 
-            if device:
-                _DEVICES[device.encoded_alias] = device
-
+    _LOCK.release()
     return device
 
 def retrieve_devices():
+    _LOCK.acquire()
+    devices = []
     for file_path in os.listdir(_DATA_DIR):
         device = None
         if file_path.endswith(".json"):
@@ -54,9 +49,10 @@ def retrieve_devices():
 
         #if lookup worked, add to devices 
         if device:
-            _DEVICES[device.encoded_alias] = device
+            devices.append(device)
 
-    return _DEVICES.values()
+    _LOCK.release()
+    return devices
         
 def _retrieve_device_from_file(file_path):
     device = None
@@ -66,7 +62,7 @@ def _retrieve_device_from_file(file_path):
         device_props = json.loads(json_data)
         device_class = device_props.get('class')
         if device_class == 'OnboardRelay':
-            device = _DEVICES[device_props['alias']]
+            device = OnboardRelay(device_props['alias'], device_props['gpio'])
         else:
             device = TplinkPlug(device_props['alias'], device_props['host'])
             
