@@ -9,7 +9,7 @@ from app.modules.devices import (
     OnboardRelay,
 )
 
-_DATA_DIR = '/home/weegrow/weegrow-data/devices/'
+_DATA_DIR = '/var/lib/weegrow-data/devices/'
 
 def save_device(device: Device):
     f = open(_DATA_DIR + device.encoded_alias + '.json', 'w+')
