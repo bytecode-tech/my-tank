@@ -72,7 +72,7 @@ def app_update():
         container = client.containers.get('weegrow_app')
         container.stop()
         container.remove()
-        new_container = client.containers.run('joshdmoore/aspen-app:dev', name="weegrow_app", detach=True, network_mode="host", restart_policy="always")
+        new_container = client.containers.run('joshdmoore/aspen-app:dev', name="weegrow_app", detach=True, network_mode="host", restart_policy={"Name": "always"})
         return new_container.status
     else:
         return 'No Update Available'
