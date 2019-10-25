@@ -1,5 +1,6 @@
 Flask>=1.0.0
 Flask-API>=1.0
+Flask-uWSGI-WebSocket
 prometheus_client>=0.3.0
 w1thermsensor>=1.0.5
 flask-cors

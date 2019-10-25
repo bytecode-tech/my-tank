@@ -6,7 +6,12 @@ from flask_cors import CORS
 from werkzeug.wsgi import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
+from flask_uwsgi_websocket import GeventWebSocket
 from . import config as Config
+import cv2
+from PIL import Image
+import io
+import base64
 
 from .modules.dht_sensor import temp_controller
 from .modules.soil_sensor import soil_controller
@@ -29,6 +34,14 @@ DEFAULT_BLUEPRINTS = [
     device_controller
 ]
 
+camera = cv2.VideoCapture(0)
+
+resolutions = {"high": (1280, 720), "medium": (640, 480), "low": (320, 240)}
+
+w, h = resolutions["medium"]
+camera.set(3, w)
+camera.set(4, h)
+
 def create_app(config=None, app_name=None, blueprints=None):
    """Create a Flask app."""
 
@@ -40,6 +53,21 @@ def create_app(config=None, app_name=None, blueprints=None):
    configure_blueprints(app, blueprints)
 
    REGISTRY.register(sensor_collector.SensorCollector())
+
+   websocket = GeventWebSocket(app)
+
+   @websocket.route('/image')
+   def image(ws):
+      while True:
+         msg = ws.receive()
+         """Sends camera images in an infinite loop."""
+         sio = io.StringIO()
+
+         _, frame = camera.read()
+         img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+         img.save(sio, "JPEG")
+         
+         ws.send(base64.b64encode(sio.getvalue()))
 
    if app.debug:
       print('running in debug mode')
