@@ -23,5 +23,5 @@ def moisture():
         else:
             return
     except:
-        logging.exception('Moisture sensor not reporting')
+        logging.error('Moisture sensor not reporting')
         
