@@ -22,7 +22,7 @@ class TplinkStrip(Strip):
         host: str
     ) -> None:
     
-        Strip.__init__(self, alias, host, DeviceBrand.tplink)
+        Strip.__init__(self, alias, host, DeviceBrand.tp_link)
         self.native_api = SmartStrip(host)
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",

@@ -22,7 +22,7 @@ class TplinkPlug(Plug):
         host: str,
     ) -> None:
     
-        Plug.__init__(self, alias, host, DeviceBrand.tplink)
+        Plug.__init__(self, alias, host, DeviceBrand.tp_link)
         self.native_api = SmartPlug(host)
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",

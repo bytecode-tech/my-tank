@@ -55,7 +55,7 @@ def _retrieve_device_from_file(file_name):
         device_type = device_props.get('type')
         if device_brand == DeviceBrand.onboard.name:
             device = OnboardRelay(device_props['alias'], device_props['gpio'])
-        elif device_brand == DeviceBrand.tplink.name:
+        elif device_brand == DeviceBrand.tp_link.name:
             if device_type == DeviceType.plug.name:
                 device = TplinkPlug(device_props['alias'], device_props['host'])
             elif device_type == DeviceType.strip.name:

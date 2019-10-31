@@ -65,7 +65,7 @@ def api_manage_device(alias):
     if request.method == "GET":
         device = manager.retrieve_device(alias)
     elif request.method == "POST":
-        if request.data.get('brand').lower() == DeviceBrand.tplink.name:
+        if request.data.get('brand').lower() == DeviceBrand.tp_link.name:
             if request.data.get('type').lower() == DeviceType.plug.name:
                 device = TplinkPlug(alias, request.data.get('host'))
                 manager.save_device(device)
