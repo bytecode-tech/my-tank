@@ -70,8 +70,8 @@ class TplinkStrip(Strip):
     @property
     def children_info(self) -> Dict[int, Any]:
         info = {}
-        children_on_state = self.native_api.get_is_on(index=-1)
-        children_alias = self.native_api.get_alias(index=-1)
+        children_on_state = self.native_api.get_is_on()
+        children_alias = self.native_api.get_alias()
 
         for child in children_on_state:
             info[child] = {'is_on': children_on_state[child], 'alias': children_alias[child]}
