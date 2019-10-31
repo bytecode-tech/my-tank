@@ -2,18 +2,14 @@
 from board import SCL, SDA
 import busio
 import logging
-from flask import current_app
 from adafruit_seesaw.seesaw import Seesaw
 
 MIN = 0
 MAX = 2500
 
 try:
-    if current_app.config['SOIL_MOISTURE']:
-        i2c_bus = busio.I2C(SCL, SDA)
-        ss = Seesaw(i2c_bus, addr=0x36)
-    else:
-        logging.info('Soil Moisture sensor diabled')
+    i2c_bus = busio.I2C(SCL, SDA)
+    ss = Seesaw(i2c_bus, addr=0x36)
 except:
     logging.exception('Could not open soil moisture sensor')
 
