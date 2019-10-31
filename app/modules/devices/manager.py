@@ -3,7 +3,7 @@ import logging
 import json
 import os.path
 from os import path
-from .plugs import TplinkPlug
+from .plugs import TplinkPlug, TplinkStrip
 from app.modules.devices import (
     Device,
     DeviceBrand,
@@ -58,6 +58,8 @@ def _retrieve_device_from_file(file_name):
         elif device_brand == DeviceBrand.tplink.name:
             if device_type == DeviceType.plug.name:
                 device = TplinkPlug(device_props['alias'], device_props['host'])
+            elif device_type == DeviceType.strip.name:
+                device = TplinkStrip(device_props['alias'], device_props['host'])
             
     f.close()
     return device

@@ -1,11 +1,21 @@
 from flask import (Blueprint, request, jsonify)
 from . import Unearth, manager
 from .device import DeviceType, DeviceBrand
-from .plugs.tplinkplug import TplinkPlug
+from .plugs import TplinkPlug, TplinkStrip
 
 device_controller = Blueprint('device-controller', __name__, url_prefix='/api/devices')
 
 def device_response(device):
+    if not device:
+        return {
+            'name': '',
+            'host': '',
+            'brand': '',
+            'type': '',
+            'is_on': '',
+            'children_info': {},
+            'sys_info': ''
+        }
     if device.has_children:
         return {
             'name': device.alias,
@@ -23,7 +33,7 @@ def device_response(device):
             'brand': device.brand,
             'type':device.type,
             'is_on':device.is_on,
-            'children_state': {},
+            'children_info': {},
             'sys_info': device.sys_info
         }
 
@@ -59,19 +69,15 @@ def api_manage_device(alias):
             if request.data.get('type').lower() == DeviceType.plug.name:
                 device = TplinkPlug(alias, request.data.get('host'))
                 manager.save_device(device)
+            elif request.data.get('type').lower() == DeviceType.strip.name:
+                device = TplinkStrip(alias, request.data.get('host'))
+                manager.save_device(device)
     elif request.method == "DELETE":
         manager.delete_device(alias)
     if device:
         return device_response(device)
     else:
-        return {
-            'name': '',
-            'host': '',
-            'brand': '',
-            'type': '',
-            'is_on': '',
-            'sys_info': ''
-        }
+        return device_response(None)
 
 @device_controller.route('/<alias>/on', methods=["GET", "POST"])
 def api_device_on(alias):
