@@ -91,7 +91,7 @@ def api_device_on(alias):
     }
 
 @device_controller.route('/<alias>/<id>/on', methods=["GET", "POST"])
-def api_device_child_on(alias):
+def api_device_child_on(alias, id):
     device = manager.retrieve_device(alias)
 
     if device.has_children:
@@ -114,6 +114,20 @@ def api_device_off(alias):
     return {
         'is_off': device.is_off,
     }
+
+@device_controller.route('/<alias>/<id>/off', methods=["GET", "POST"])
+def api_device_child_off(alias, id):
+    device = manager.retrieve_device(alias)
+
+    if device.has_children:
+        index = id - 1
+        if request.method == "POST":
+            device.turn_off(index=index)
+        return {
+            'is_on': device.get_is_off(index=index),
+    }
+    else:
+        raise exceptions.NotFound
 
 @device_controller.route('/<alias>/toggle', methods=["GET", "POST"])
 def api_device_toggle(alias):
