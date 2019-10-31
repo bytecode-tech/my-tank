@@ -51,7 +51,7 @@ def _retrieve_device_from_file(file_name):
     device = None
     file_path = _DATA_DIR + file_name
     if path.exists(file_path):
-        f = open()
+        f = open(file_path)
         json_data = f.read()
         if json_data:
             device_props = json.loads(json_data)
