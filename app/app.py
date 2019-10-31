@@ -1,5 +1,5 @@
 import os
-
+import logging
 from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 from flask_cors import CORS

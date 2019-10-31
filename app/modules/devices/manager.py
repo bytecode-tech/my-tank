@@ -11,6 +11,8 @@ from app.modules.devices import (
     OnboardRelay,
 )
 
+_LOGGER = logging.getLogger(__name__)
+
 _DATA_DIR = '/var/lib/weegrow-data/devices/'
 
 def save_device(device: Device):
@@ -53,6 +55,7 @@ def _retrieve_device_from_file(file_name):
         device_props = json.loads(json_data)
         device_brand = device_props.get('brand')
         device_type = device_props.get('type')
+        _LOGGER.debug('Looking up: ' + device_brand + " :" + device_type)
         if device_brand == DeviceBrand.onboard.name:
             device = OnboardRelay(device_props['alias'], device_props['gpio'])
         elif device_brand == DeviceBrand.tp_link.name:
