@@ -16,7 +16,7 @@ class DeviceType(Enum):
 class DeviceBrand(Enum):
     """Device brand enum."""
     onboard = 1
-    tplink = 2
+    tp_link = 2
     unkown = -1
 
 
