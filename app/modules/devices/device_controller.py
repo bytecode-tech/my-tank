@@ -1,18 +1,31 @@
 from flask import (Blueprint, request, jsonify)
 from . import Unearth, manager
+from .device import DeviceType, DeviceBrand
 from .plugs.tplinkplug import TplinkPlug
 
 device_controller = Blueprint('device-controller', __name__, url_prefix='/api/devices')
 
 def device_response(device):
-    return {
-        'name': device.alias,
-        'host': device.host,
-        'brand': device.brand,
-        'style':device.style,
-        'is_on':device.is_on,
-        'sys_info': device.sys_info
-    }
+    if device.has_children:
+        return {
+            'name': device.alias,
+            'host': device.host,
+            'brand': device.brand,
+            'type':device.type,
+            'is_on':device.is_on,
+            'children_info': device.children_info,
+            'sys_info': device.sys_info
+        }
+    else:
+        return {
+            'name': device.alias,
+            'host': device.host,
+            'brand': device.brand,
+            'type':device.type,
+            'is_on':device.is_on,
+            'children_state': {},
+            'sys_info': device.sys_info
+        }
 
 @device_controller.route('/', methods=["GET"])
 def api_list_devices():
@@ -42,8 +55,8 @@ def api_manage_device(alias):
     if request.method == "GET":
         device = manager.retrieve_device(alias)
     elif request.method == "POST":
-        if request.data.get('brand') == 'tp-link':
-            if request.data.get('style') == 'plug':
+        if request.data.get('brand').lower() == DeviceBrand.tplink.name:
+            if request.data.get('type').lower() == DeviceType.plug.name:
                 device = TplinkPlug(alias, request.data.get('host'))
                 manager.save_device(device)
     elif request.method == "DELETE":
@@ -55,7 +68,7 @@ def api_manage_device(alias):
             'name': '',
             'host': '',
             'brand': '',
-            'style': '',
+            'type': '',
             'is_on': '',
             'sys_info': ''
         }

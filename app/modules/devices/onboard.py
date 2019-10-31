@@ -6,6 +6,7 @@ from app.gpiozeroext.output_devices import Relay
 from . import (
     Device,
     DeviceType,
+    DeviceBrand
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -18,7 +19,7 @@ class OnboardRelay(Device):
         gpio: int,
     ) -> None:
     
-        Device.__init__(self, alias, 'local', "onboard", "relay")
+        Device.__init__(self, alias, 'local', DeviceType.RELAY, DeviceBrand.ONBOARD)
         self.gpio = gpio
         self.native_api = Relay(gpio)
         _LOGGER.debug(
@@ -26,8 +27,6 @@ class OnboardRelay(Device):
             self.alias,
             gpio,
         )
-
-        self._device_type = DeviceType.GPIO
 
     def turn_off(self) -> None:
         """Turn device off."""
@@ -64,6 +63,12 @@ class OnboardRelay(Device):
         :rtype: dict
         """
         raise NotImplementedError("Device subclass needs to implement this.")
+
+    @property
+    def has_children(self) -> bool:
+        """Return if the device has children"""
+
+        return False
 
     def get_sysinfo(self) -> Dict:
         """Retrieve system information.

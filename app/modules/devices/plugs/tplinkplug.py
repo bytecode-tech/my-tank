@@ -1,7 +1,12 @@
 import logging
 from pyHS100 import SmartPlug
 from typing import Any, Dict
-import pickle
+
+from app.modules.devices import (
+    Device,
+    DeviceType,
+    DeviceBrand
+)
 
 from . import (
     Plug,
@@ -17,7 +22,7 @@ class TplinkPlug(Plug):
         host: str,
     ) -> None:
     
-        Plug.__init__(self, alias, host, "tp-link")
+        Plug.__init__(self, alias, host, DeviceBrand.tplink)
         self.native_api = SmartPlug(host)
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",

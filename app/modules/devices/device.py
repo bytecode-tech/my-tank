@@ -5,14 +5,19 @@ from enum import Enum
 
 _LOGGER = logging.getLogger(__name__)
 
-
 class DeviceType(Enum):
     """Device type enum."""
 
-    GPIO = 1
-    Plug = 2
-    Strip = 3
-    Unknown = -1
+    relay = 1
+    plug = 2
+    strip = 3
+    unkown = -1
+
+class DeviceBrand(Enum):
+    """Device brand enum."""
+    onboard = 1
+    tplink = 2
+    unkown = -1
 
 
 class DeviceException(Exception):
@@ -28,20 +33,20 @@ class Device:
         self,
         alias: str,
         host: str,
-        brand: str,
-        style: str = None,
+        device_type: DeviceType = DeviceType.unkown,
+        device_brand: DeviceBrand = DeviceBrand.unkown
     ) -> None:
     
         self.alias = alias
         self.host = host
-        self.brand = brand
-        self.style = style
 
         _LOGGER.debug(
             "Initializing %s",
             self.host,
         )
-        self._device_type = DeviceType.Unknown
+        
+        self._device_type = device_type
+        self._device_brand = device_brand
 
     @property
     def encoded_alias(self) -> str:
@@ -146,6 +151,20 @@ class Device:
         raise NotImplementedError("Device subclass needs to implement this.")
 
     @property
+    def has_children(self) -> bool:
+        """Return if the device has children"""
+
+        raise NotImplementedError("Device subclass needs to implement this.")
+
+    @property
+    def brand(self) -> str:
+        return self._device_brand.name
+
+    @property
+    def type(self) -> str:
+        return self._device_type.name
+
+    @property
     def device_type(self) -> DeviceType:
         """Return the device type."""
         return self._device_type
@@ -156,18 +175,18 @@ class Device:
 
     @property
     def is_plug(self) -> bool:
-        return self._device_type == DeviceType.Plug
+        return self._device_type == DeviceType.plug
 
     @property
     def is_strip(self) -> bool:
-        return self._device_type == DeviceType.Stripß
+        return self.device_type == DeviceType.strip
 
     def save(self, file: TextIO, fields: dict=None):
         me = { "alias": self.alias,
                 "encoded_alias": self.encoded_alias,
                 "host": self.host,
-                "brand": self.brand,
-                "style": self.style,
+                "brand": self._device_brand.name,
+                "type": self._device_type.name,
                 "class": self.__class__.__name__,
             }
         if fields:

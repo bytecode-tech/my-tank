@@ -1,4 +1,5 @@
 import logging
+from pyHS100 import SmartPlug, SmartStrip
 from typing import Any, Dict
 
 from app.modules.devices import (
@@ -7,24 +8,37 @@ from app.modules.devices import (
     DeviceBrand
 )
 
+from . import (
+    Strip,
+)
+
 _LOGGER = logging.getLogger(__name__)
 
-class Plug(Device):
+class TplinkStrip(Strip):
 
     def __init__(
         self,
         alias: str,
-        host: str,
-        brand: DeviceBrand,
+        host: str
     ) -> None:
     
-        Device.__init__(self, alias, host, DeviceType.plug, brand)
+        Strip.__init__(self, alias, host, DeviceBrand.tplink)
+        self.native_api = SmartStrip(host)
         _LOGGER.debug(
-            "Initializing %s",
+            "Initializing tp-link smartplug: %s",
             self.host,
         )
 
         # self.initialize()
+
+    def get_sysinfo(self) -> Dict:
+        """Retrieve system information.
+
+        :return: sysinfo
+        :rtype dict
+        :raises SmartDeviceException: on error
+        """
+        return self.native_api.sys_info
 
     @property
     def is_off(self) -> bool:
@@ -33,15 +47,15 @@ class Plug(Device):
         :return: True if device is off, False otherwise.
         :rtype: bool
         """
-        return not self.is_on
+        return not self.native_api.is_on
 
     def turn_on(self) -> None:
         """Turn device on."""
-        raise NotImplementedError("Device subclass needs to implement this.")
+        return self.native_api.turn_on()
 
     def turn_off(self) -> None:
         """Turn device off."""
-        raise NotImplementedError("Device subclass needs to implement this.")
+        return self.native_api.turn_off()
 
     @property
     def is_on(self) -> bool:
@@ -51,14 +65,18 @@ class Plug(Device):
         :rtype: bool
         :return:
         """
-        raise NotImplementedError("Device subclass needs to implement this.")
-
+        return self.native_api.is_on
 
     @property
-    def has_children(self) -> bool:
-        """Return if the device has children"""
+    def children_info(self) -> Dict[int, Any]:
+        info = {}
+        children_on_state = self.native_api.get_is_on(index=-1)
+        children_alias = self.native_api.get_alias(index=-1)
 
-        return False
+        for child in children_on_state:
+            info[child] = {'is_on': children_on_state[child], 'alias': children_alias[child]}
+        
+        return info
 
     @property
     def state_information(self) -> Dict[str, Any]:
@@ -67,13 +85,6 @@ class Plug(Device):
         :return: dict with state information.
         :rtype: dict
         """
-        raise NotImplementedError("Device subclass needs to implement this.")
+        return self.native_api.state_information
 
-    def get_sysinfo(self) -> Dict:
-        """Retrieve system information.
 
-        :return: sysinfo
-        :rtype dict
-        :raises SmartDeviceException: on error
-        """
-        raise NotImplementedError("Device subclass needs to implement this.")

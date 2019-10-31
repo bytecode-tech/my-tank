@@ -6,6 +6,8 @@ from os import path
 from .plugs import TplinkPlug
 from app.modules.devices import (
     Device,
+    DeviceBrand,
+    DeviceType,
     OnboardRelay,
 )
 
@@ -49,11 +51,13 @@ def _retrieve_device_from_file(file_name):
     json_data = f.read()
     if json_data:
         device_props = json.loads(json_data)
-        device_class = device_props.get('class')
-        if device_class == 'OnboardRelay':
+        device_brand = device_props.get('brand')
+        device_type = device_props.get('type')
+        if device_brand == DeviceBrand.onboard.name:
             device = OnboardRelay(device_props['alias'], device_props['gpio'])
-        else:
-            device = TplinkPlug(device_props['alias'], device_props['host'])
+        elif device_brand == DeviceBrand.tplink.name:
+            if device_type == DeviceType.plug.name:
+                device = TplinkPlug(device_props['alias'], device_props['host'])
             
     f.close()
     return device

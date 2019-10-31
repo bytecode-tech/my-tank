@@ -10,6 +10,10 @@ class BaseConfig(object):
    USE_EMAIL = True
    TESTING = False
    PROD      = False
+
+   SOIL_MOISTURE = False
+   SOIL_TEMP = True
+   DHT = True
    
    ADMINS = ['youremail@yourdomain.com']
    
