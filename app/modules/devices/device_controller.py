@@ -95,7 +95,7 @@ def api_device_child_on(alias, id):
     device = manager.retrieve_device(alias)
 
     if device.has_children:
-        index = id - 1
+        index = int(id) - 1
         if request.method == "POST":
             device.turn_on(index=index)
         return {
@@ -120,7 +120,7 @@ def api_device_child_off(alias, id):
     device = manager.retrieve_device(alias)
 
     if device.has_children:
-        index = id - 1
+        index = int(id) - 1
         if request.method == "POST":
             device.turn_off(index=index)
         return {
