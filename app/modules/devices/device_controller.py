@@ -141,3 +141,18 @@ def api_device_toggle(alias):
     return {
         'is_on': device.is_on,
     }
+
+@device_controller.route('/<alias>/<id>/toggle', methods=["GET", "POST"])
+def api_device_child_toggle(alias, id):
+    device = manager.retrieve_device(alias)
+
+    if device.has_children:
+        index = int(id) - 1
+        if request.method == "POST":
+            device.toggle(index=index)
+            time.sleep(5)
+        return {
+            'is_on': device.get_is_on(index=index),
+    }
+    else:
+        raise exceptions.NotFound
