@@ -49,13 +49,16 @@ class TplinkStrip(Strip):
         """
         return not self.native_api.is_on
 
-    def turn_on(self) -> None:
-        """Turn device on."""
-        return self.native_api.turn_on()
-
-    def turn_off(self) -> None:
-        """Turn device off."""
-        return self.native_api.turn_off()
+    def get_is_off(self, *, index: int = -1) -> Any:
+        """
+        Returns whether device is off.
+        :param index: plug index (-1 for all)
+        :return: True if device is off, False otherwise, Dict without index
+        :rtype: bool if index is provided
+                Dict[int, bool] if no index provided
+        :raises SmartStripException: index out of bounds
+        """
+        return self.native_api.get_is_off(index=index)
 
     @property
     def is_on(self) -> bool:
@@ -66,6 +69,31 @@ class TplinkStrip(Strip):
         :return:
         """
         return self.native_api.is_on
+
+    def get_is_on(self, *, index: int = -1) -> Any:
+        """
+        Returns whether device is on.
+        :param index: plug index (-1 for all)
+        :return: True if device is on, False otherwise, Dict without index
+        :rtype: bool if index is provided
+                Dict[int, bool] if no index provided
+        :raises SmartStripException: index out of bounds
+        """
+        return self.native_api.get_is_on(index=index)
+
+    def turn_on(self, *, index: int = -1):
+        """
+        Turns outlets on
+        :param index: plug index (-1 for all)
+        """
+        return self.native_api.turn_on(index=index)
+
+    def turn_off(self, *, index: int = -1):
+        """
+        Turns outlets off
+        :param index: plug index (-1 for all)
+        """
+        return self.native_api.turn_off(index=index)
 
     @property
     def children_info(self) -> Dict[int, Any]:

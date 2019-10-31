@@ -13,4 +13,4 @@ docker
 smbus
 twisted
 wpa_supplicant
-pyHS100
+pyHS100>=0.3.5

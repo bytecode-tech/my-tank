@@ -1,4 +1,5 @@
 from flask import (Blueprint, request, jsonify)
+from flask_api import exceptions
 from . import Unearth, manager
 from .device import DeviceType, DeviceBrand
 from .plugs import TplinkPlug, TplinkStrip
@@ -88,6 +89,21 @@ def api_device_on(alias):
     return {
         'is_on': device.is_on,
     }
+
+@device_controller.route('/<alias>/<id>/on', methods=["GET", "POST"])
+def api_device_child_on(alias):
+    device = manager.retrieve_device(alias)
+
+    if device.has_children:
+        index = id - 1
+        if request.method == "POST":
+            device.turn_on(index=index)
+        return {
+            'is_on': device.get_is_on(index=index),
+    }
+    else:
+        raise exceptions.NotFound
+
 
 @device_controller.route('/<alias>/off', methods=["GET", "POST"])
 def api_device_off(alias):
