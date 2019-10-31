@@ -1,3 +1,4 @@
+import time
 from flask import (Blueprint, request, jsonify)
 from flask_api import exceptions
 from . import Unearth, manager
@@ -98,6 +99,7 @@ def api_device_child_on(alias, id):
         index = int(id) - 1
         if request.method == "POST":
             device.turn_on(index=index)
+            time.sleep(1)
         return {
             'is_on': device.get_is_on(index=index),
     }
@@ -123,8 +125,9 @@ def api_device_child_off(alias, id):
         index = int(id) - 1
         if request.method == "POST":
             device.turn_off(index=index)
+            time.sleep(1)
         return {
-            'is_on': device.get_is_off(index=index),
+            'is_off': device.get_is_off(index=index),
     }
     else:
         raise exceptions.NotFound
