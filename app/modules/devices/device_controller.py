@@ -53,10 +53,10 @@ def api_list_devices():
 @device_controller.route('/scan', methods=["GET"])
 def api_smartplug_scan():
     if request.method == "GET":
-        devices = Unearth.unearth().values()
+        # devices = Unearth.unearth().values()
 
-        response_list = []
-        return
+        # response_list = []
+        # return
         # for device in devices:
         #     response_list.append(device_response(device))
 
