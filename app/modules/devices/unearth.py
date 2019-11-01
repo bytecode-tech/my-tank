@@ -1,5 +1,5 @@
 import logging
-from pyHS100 import Discover, SmartPlug, SmartStrip
+from pyHS100 import Discover, SmartPlug
 from typing import Dict, Type, Optional
 
 from app.modules.devices import (
@@ -9,7 +9,6 @@ from app.modules.devices import (
 from app.modules.devices.plugs import (
     Plug,
     TplinkPlug,
-    TplinkStrip
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -25,8 +24,6 @@ class Unearth:
 
         try:
             for dev in Discover.discover().values():
-                if isinstance(dev, SmartStrip):
-                    devices[dev.alias] = TplinkStrip(dev.alias, dev.host)
                 if isinstance(dev, SmartPlug):
                     devices[dev.alias] = TplinkPlug(dev.alias, dev.host)
         except Exception as ex:
