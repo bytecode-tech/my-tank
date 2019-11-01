@@ -97,7 +97,7 @@ class TplinkStrip(Strip):
 
     def toggle(self, *, index: int = -1):
         """Toggle device state"""
-        self.native_api.turn_on(index=index) if self.native_api.get_is_off(index=index) else self.native_api.turn_off(index=index)
+        self.turn_on(index=index) if self.get_is_off(index=index) else self.turn_off(index=index)
 
     @property
     def children_info(self) -> Dict[int, Any]:
