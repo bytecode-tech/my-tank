@@ -65,7 +65,7 @@ class TplinkPlug(Plug):
         :rtype: bool
         :return:
         """
-        return self.native_api.is_onzz
+        return self.native_api.is_on
 
     @property
     def state_information(self) -> Dict[str, Any]:

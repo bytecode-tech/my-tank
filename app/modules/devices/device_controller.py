@@ -17,7 +17,7 @@ def device_response(device):
             'is_on': '',
             'children_info': {},
             'sys_info': ''
-        },
+        }
     if device.has_children:
         return {
             'name': device.alias,
@@ -27,7 +27,7 @@ def device_response(device):
             'is_on':device.is_on,
             'children_info': device.children_info,
             'sys_info': device.sys_info
-        },
+        }
     else:
         return {
             'name': device.alias,
@@ -56,10 +56,10 @@ def api_smartplug_scan():
         devices = Unearth.unearth().values()
 
         response_list = []
-        # for device in devices:
-        #     response_list.append(device_response(device))
+        for device in devices:
+            response_list.append(device_response(device))
 
-        # return {'devices': response_list}
+        return {'devices': response_list}
 
 @device_controller.route('/<alias>', methods=["GET", "POST", "DELETE"])
 def api_manage_device(alias):
