@@ -56,7 +56,6 @@ def api_smartplug_scan():
         devices = Unearth.unearth().values()
 
         response_list = []
-        return
         # for device in devices:
         #     response_list.append(device_response(device))
 
