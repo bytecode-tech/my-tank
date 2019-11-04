@@ -36,12 +36,12 @@ def read_sht_2x():
         # I2C bus=1, Address=0x40
         sht = SHT20(1, 0x40)
 
-        humid = sht.humidity()
-        temp = sht.temperature() * 1.8 + 32
+        humid = sht.humidity().RH
+        temp = sht.temperature().F
 
         return {'temperature': temp, 'humidity': humid}
     except:
-        _LOGGER.exception("SHT-2x not reporting")
+        _LOGGER.error("SHT-2x not reporting")
 
 def read_sht_30():
     try:
@@ -49,4 +49,4 @@ def read_sht_30():
         humidity = sensor.relative_humidity[0]
         return {'temperature': fTemp, 'humidity': humidity}
     except:
-        _LOGGER.exception("SHT-30 not reporting")
+        _LOGGER.error("SHT-30 not reporting")
