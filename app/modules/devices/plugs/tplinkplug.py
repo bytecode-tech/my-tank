@@ -23,6 +23,7 @@ class TplinkPlug(Plug):
     ) -> None:
     
         Plug.__init__(self, alias, host, DeviceBrand.tp_link)
+
         self.native_api = SmartPlug(host)
         _LOGGER.debug(
             "Initializing tp-link smartplug: %s",
@@ -65,7 +66,10 @@ class TplinkPlug(Plug):
         :rtype: bool
         :return:
         """
-        return self.native_api.is_on
+        try:
+            return self.native_api.is_on
+        except:
+            return None
 
     @property
     def state_information(self) -> Dict[str, Any]:
