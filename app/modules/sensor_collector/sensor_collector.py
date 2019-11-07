@@ -15,19 +15,19 @@ class SensorCollector(object):
       yield GaugeMetricFamily('weegrow_temperature', 'weeGrow air temperature in degrees F', ht_result['temperature'])
       yield GaugeMetricFamily('weegrow_humidity', 'weeGrow humidity', ht_result['humidity'])
     except Exception as ex:
-      _LOGGER.error("Got exception %s", ex, exc_info=True)
+      _LOGGER.error("Got exception %s", ex)
 
     try:
       moisture = soil.moisture()
       yield GaugeMetricFamily('weegrow_soil_moisture', 'weeGrow soil moisture', moisture)
     except Exception as ex:
-      _LOGGER.error("Got exception %s", ex, exc_info=True)
+      _LOGGER.error("Got exception %s", ex)
 
     try:
       soiltemp = soil_temp.soil_temp()
       yield GaugeMetricFamily('weegrow_soil_temperature', 'weeGrow soil temperature in degrees F', soiltemp)
     except Exception as ex:
-      _LOGGER.error("Got exception %s", ex, exc_info=True)
+      _LOGGER.error("Got exception %s", ex)
     
     try:
       devices = manager.retrieve_devices()
@@ -35,5 +35,5 @@ class SensorCollector(object):
         alias = device.alias
         yield GaugeMetricFamily('weegrow_' + alias, 'weeGrow ' + alias + ' status is: ', device.is_on)
     except Exception as ex:
-      _LOGGER.error("Got exception %s", ex, exc_info=True)
+      _LOGGER.error("Got exception %s", ex)
     

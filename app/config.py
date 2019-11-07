@@ -22,25 +22,12 @@ class DefaultConfig(BaseConfig):
    # Enable protection agains *Cross-site Request Forgery (CSRF)*
    WTF_CSRF_ENABLED = True
    
-class LocalConfig(DefaultConfig):
+class DevConfig(DefaultConfig):
    DEBUG = True
    USE_EMAIL = False
    DOMAIN_NAME = 'localhost:5000'
    SQLALCHEMY_ECHO = False
    PROD      = False
-   
-   
-class TestConfig(BaseConfig):
-   #Set Testing to False so we still have authentication when unit testing
-   WTF_CSRF_ENABLED = False
-   DOMAIN_NAME = 'localhost:5000'
-   TESTING = False
-   
-class StagingConfig(DefaultConfig):
-   DOMAIN_NAME = 'STAGING_DOMAIN'
-   DEBUG = False
-   USE_EMAIL = False
-   PROD      = True
    
 class ProdConfig(DefaultConfig):
    DOMAIN_NAME = 'raspberrypi.local'
@@ -50,8 +37,7 @@ class ProdConfig(DefaultConfig):
    
 def get_config(MODE):
    SWITCH = {
-      'LOCAL'     : LocalConfig,
-      'STAGING'   : StagingConfig,
+      'DEV'     : DevConfig,
       'PRODUCTION': ProdConfig
    }
    return SWITCH[MODE]
