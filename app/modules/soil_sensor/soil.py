@@ -2,7 +2,6 @@
 from board import SCL, SDA
 import busio
 import logging
-
 from adafruit_seesaw.seesaw import Seesaw
 
 MIN = 0

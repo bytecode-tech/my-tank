@@ -4,6 +4,7 @@ from typing import Any, Dict
 from app.modules.devices import (
     Device,
     DeviceType,
+    DeviceBrand
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -14,15 +15,14 @@ class Plug(Device):
         self,
         alias: str,
         host: str,
-        brand: str,
+        brand: DeviceBrand,
     ) -> None:
     
-        Device.__init__(self, alias, host, brand, "plug")
+        Device.__init__(self, alias, host, DeviceType.plug, brand)
         _LOGGER.debug(
             "Initializing %s",
             self.host,
         )
-        self._device_type = DeviceType.Plug
 
         # self.initialize()
 
@@ -39,6 +39,10 @@ class Plug(Device):
         """Turn device on."""
         raise NotImplementedError("Device subclass needs to implement this.")
 
+    def turn_off(self) -> None:
+        """Turn device off."""
+        raise NotImplementedError("Device subclass needs to implement this.")
+
     @property
     def is_on(self) -> bool:
         """Return if the device is on.
@@ -48,6 +52,13 @@ class Plug(Device):
         :return:
         """
         raise NotImplementedError("Device subclass needs to implement this.")
+
+
+    @property
+    def has_children(self) -> bool:
+        """Return if the device has children"""
+
+        return False
 
     @property
     def state_information(self) -> Dict[str, Any]:
