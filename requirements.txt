@@ -16,4 +16,4 @@ docker
 smbus
 twisted
 wpa_supplicant
-pyHS100
+-e git://github.com/GadgetReactor/pyHS100.git#egg=pyHS100
