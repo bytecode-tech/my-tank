@@ -102,7 +102,7 @@ class TplinkStrip(Strip):
         children_alias = self.native_api.get_alias()
 
         for child in children_on_state:
-            info[child] = {'is_on': children_on_state[child], 'alias': children_alias[child]}
+            info[child + 1] = {'is_on': children_on_state[child], 'alias': children_alias[child]}
         
         return info
 
