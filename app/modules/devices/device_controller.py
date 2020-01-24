@@ -152,8 +152,7 @@ def api_device_child_toggle(alias, id):
             device.toggle(index=index)
             time.sleep(5)
         return {
-            'is_on': device.is_on(index=index),
+            'is_on': device.get_is_on(index=index),
     }
     else:
         raise exceptions.NotFound
-    
