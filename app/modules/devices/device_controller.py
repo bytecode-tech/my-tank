@@ -87,6 +87,7 @@ def api_device_on(alias):
 
     if request.method == "POST":
         device.turn_on()
+        time.sleep(1)
     return {
         'is_on': device.is_on,
     }
@@ -99,7 +100,7 @@ def api_device_child_on(alias, id):
         index = int(id) - 1
         if request.method == "POST":
             device.turn_on(index=index)
-            time.sleep(5)
+            time.sleep(1)
         return {
             'is_on': device.get_is_on(index=index),
     }
@@ -113,6 +114,7 @@ def api_device_off(alias):
 
     if request.method == "POST":
         device.turn_off()
+        time.sleep(1)
     return {
         'is_off': device.is_off,
     }
@@ -125,7 +127,7 @@ def api_device_child_off(alias, id):
         index = int(id) - 1
         if request.method == "POST":
             device.turn_off(index=index)
-            time.sleep(5)
+            time.sleep(1)
         return {
             'is_off': device.get_is_off(index=index),
     }
@@ -138,6 +140,7 @@ def api_device_toggle(alias):
 
     if request.method == "POST":
         device.toggle()
+        time.sleep(1)
     return {
         'is_on': device.is_on,
     }
@@ -150,7 +153,7 @@ def api_device_child_toggle(alias, id):
         index = int(id) - 1
         if request.method == "POST":
             device.toggle(index=index)
-            time.sleep(5)
+            time.sleep(1)
         return {
             'is_on': device.get_is_on(index=index),
     }
