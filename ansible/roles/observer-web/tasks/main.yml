@@ -1,0 +1,17 @@
+---
+# tasks file for observer-web
+- name: Login to Docker Hub
+  docker_login:
+    username: "{{ observer_dockerhub_user }}"
+    password: "{{ observer_dockerhub_pw }}"
+    reauthorize: yes
+  become: true
+  become_user: "{{ observer_user }}"
+- name: Create observer web container
+  docker_container:
+    name: observer_web
+    image: joshdmoore/aspen-app:dev
+    restart_policy: always
+    network_mode: host
+  become: true
+  become_user: "{{ observer_user }}"

@@ -1,0 +1,97 @@
+---
+# tasks file for observer-appliance
+- name: Create {{ observer_group }} group
+  group: 
+    name: "{{ observer_group }}"
+    state: present
+- name: Create {{ observer_user }} user
+  user:
+    name: "{{ observer_user }}"
+    system: yes
+    generate_ssh_key: yes
+    state: present
+    group: "{{ observer_group }}"
+    groups:
+       - "{{ docker_group }}"
+       - adm
+       - dialout
+       - cdrom
+       - sudo
+       - audio
+       - video
+       - plugdev
+       - games
+       - users
+       - input
+       - netdev
+       - gpio
+       - i2c
+       - spi
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+- name: Copy observer-appliance service file to systemd
+  template:
+    src: observer-appliance.service.j2
+    dest: /etc/systemd/system/observer-appliance.service
+    owner: root
+    group: root
+    mode: 0644
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+- name: Enable observer-appliance
+  systemd:
+    name: observer-appliance
+    enabled: yes
+  notify: restart observer-appliance
+- name: create private key file
+  template:
+    src: id_rsa.j2
+    dest: /home/{{ observer_user }}/.ssh/id_rsa
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0600
+- name: create public key file
+  template:
+    src: id_rsa.pub.j2
+    dest: /home/{{ observer_user }}/.ssh/id_rsa.pub
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0644
+- name: Get observer appliance code
+  git:
+    repo: git@github.com:bytecode-tech/zero-appliance.git
+    dest: "{{ observer_basedir }}"
+    version: "{{ observer_appliance_version }}"
+    key_file: /home/{{ observer_user }}/.ssh/id_rsa
+    accept_hostkey: yes
+  notify: restart observer-appliance
+- name: Change observer app permissions
+  file:
+    dest: "{{ observer_basedir }}"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_group }}"
+    recurse: yes
+- name: Install observer appliance dependencies 
+  pip:
+    executable: /usr/local/bin/pip3
+    requirements: "{{ observer_basedir }}/zero-appliance/requirements.txt"
+  notify: restart observer-appliance
+- name: Create a observer data dir
+  file:
+    path: "{{ observer_basedir }}/data/devices/"
+    state: directory
+    owner: "{{ observer_user }}"
+    group: "{{ observer_group }}"
+    mode: 0755
+- name: Create prometheus container
+    docker_container:
+      name: observer_prometheus
+      image: faucet/prometheus-pi:2.12.0
+      restart_policy: always
+      network_mode: host
+      volumes:
+        - "{{ observer_basedir }}/zero-appliance/prometheus.yml:/etc/prometheus/prometheus.yml"
+        - prometheus-data:/var/lib/prometheus/
+    become: true
+    become_user: "{{ observer_user }}"

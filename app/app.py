@@ -3,7 +3,7 @@ import logging
 from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 from flask_cors import CORS
-from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 from . import config as Config
