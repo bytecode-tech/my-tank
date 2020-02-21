@@ -91,7 +91,7 @@
       restart_policy: always
       network_mode: host
       volumes:
-        - "{{ observer_basedir }}/zero-appliance/prometheus.yml:/etc/prometheus/prometheus.yml"
+        - "{{ observer_basedir }}/zero-appliance/config/prometheus.yml:/etc/prometheus/prometheus.yml"
         - prometheus-data:/var/lib/prometheus/
     become: true
     become_user: "{{ observer_user }}"

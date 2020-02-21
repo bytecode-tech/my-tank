@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User={{ observer_user }}
 WorkingDirectory={{ observer_basedir }}
-ExecStart=/usr/local/bin/uwsgi --ini observer.ini
+ExecStart=/usr/local/bin/uwsgi --ini config/observer.ini
 
 [Install]
 WantedBy=multi-user.target
