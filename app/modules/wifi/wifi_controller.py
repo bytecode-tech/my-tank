@@ -40,7 +40,7 @@ def network_response(network):
         'path': network.path
     }
 
-@wifi_controller.route('/server/wifi/scan', methods=["GET"])
+@wifi_controller.route('/scan', methods=["GET"])
 def api_wifi_ssids():
     if request.method == "GET":
         
@@ -52,7 +52,7 @@ def api_wifi_ssids():
 
         return {'wifiNetworksAvailable': response_list}
 
-@wifi_controller.route('/server/wifi/networks', methods=["GET", "POST"])
+@wifi_controller.route('/networks', methods=["GET", "POST"])
 def api_wifi_networks():
     wifi = Wifi()
     if request.method == "POST":
@@ -66,7 +66,7 @@ def api_wifi_networks():
 
     return {'savedNetworks': response_list}
 
-@wifi_controller.route('/server/wifi/networks/<name>', methods=["GET", "POST", "DELETE"])
+@wifi_controller.route('/networks/<name>', methods=["GET", "POST", "DELETE"])
 def api_wifi_network(name):
     wifi = Wifi()
     if request.method == "GET":
@@ -82,14 +82,14 @@ def api_wifi_network(name):
         wifi.delete_network(name)
         return {'network': network_response(wifi.get_network_info(name))}
 
-@wifi_controller.route('/server/wifi/networks/active', methods=["GET"])
+@wifi_controller.route('/networks/active', methods=["GET"])
 def api_active_networks():
     if request.method == "GET":
         active_network = Wifi().get_active_network()
 
         return {'networks': network_response(active_network)}
 
-@wifi_controller.route('/server/wifi/networks/<name>/activate', methods=["GET", "POST"])
+@wifi_controller.route('/networks/<name>/activate', methods=["GET", "POST"])
 def api_activate_network(name):
     wifi = Wifi()
     if request.method == "GET":
@@ -103,7 +103,7 @@ def api_activate_network(name):
 
         return{'isActive': "True"}
 
-@wifi_controller.route('/server/wifi/networks/ap-mode', methods=["GET", "POST", "DELETE"])
+@wifi_controller.route('/networks/ap-mode', methods=["GET", "POST", "DELETE"])
 def api_network_ap_mode():
     wifi = Wifi()
     if request.method == "POST":
