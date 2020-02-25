@@ -56,7 +56,7 @@ def app_update_available():
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
 
-    _LOGGER.debug(
+    _LOGGER.error(
         "Container attrs %s",
             container.attrs,)
 
