@@ -14,6 +14,7 @@ from .modules.schedule import schedule_controller
 from .modules.admin import admin_controller
 from .modules.sensor_collector import sensor_collector
 from .modules.devices import device_controller
+from .modules.wifi import wifi_controller
 
 # For import *
 __all__ = ['create_app']
@@ -21,6 +22,7 @@ __all__ = ['create_app']
 
 DEFAULT_BLUEPRINTS = [
     temp_controller,
+    wifi_controller,
     soil_temp_controller,
     schedule_controller,
     admin_controller,
