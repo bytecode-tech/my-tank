@@ -38,18 +38,18 @@ def appliance_state():
 
 def app_state():
     client = docker.from_env()
-    container = client.containers.get('observer_app')
+    container = client.containers.get('observer_web')
     return container.status
 
 def app_restart():
     client = docker.from_env()
-    container = client.containers.get('observer_app')
+    container = client.containers.get('observer_web')
     container.restart()
     return container.status
 
 def app_update_available():
     client = docker.from_env()
-    container = client.containers.get('observer_app')
+    container = client.containers.get('observer_web')
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
 
@@ -62,17 +62,17 @@ def app_update_available():
 
 def app_update():
     client = docker.from_env()
-    container = client.containers.get('observer_app')
+    container = client.containers.get('observer_web')
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
 
     latest_image = client.images.pull(current_tag)
 
     if current_image.id != latest_image.id:
-        container = client.containers.get('observer_app')
+        container = client.containers.get('observer_web')
         container.stop()
         container.remove()
-        new_container = client.containers.run('joshdmoore/aspen-app:dev', name="observer_app", detach=True, network_mode="host", restart_policy={"Name": "always"})
+        new_container = client.containers.run('joshdmoore/aspen-app:dev', name="observer_web", detach=True, network_mode="host", restart_policy={"Name": "always"})
         return new_container.status
     else:
         return 'No Update Available'
