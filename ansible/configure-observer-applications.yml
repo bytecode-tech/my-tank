@@ -1,0 +1,6 @@
+---
+    - name: Configure observer appliance
+      hosts: all
+      roles:
+       - observer-appliance
+       - observer-web

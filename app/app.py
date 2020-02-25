@@ -9,7 +9,6 @@ from prometheus_client.core import REGISTRY
 from . import config as Config
 
 from .modules.dht_sensor import temp_controller
-from .modules.soil_sensor import soil_controller
 from .modules.soil_temp import soil_temp_controller
 from .modules.schedule import schedule_controller
 from .modules.admin import admin_controller
@@ -22,7 +21,6 @@ __all__ = ['create_app']
 
 DEFAULT_BLUEPRINTS = [
     temp_controller,
-    soil_controller,
     soil_temp_controller,
     schedule_controller,
     admin_controller,

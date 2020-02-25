@@ -6,7 +6,7 @@
     password: "{{ observer_dockerhub_pw }}"
     reauthorize: yes
   become: true
-  become_user: "{{ observer_user }}"
+  become_user: "{{ observer_web_user }}"
 - name: Create observer web container
   docker_container:
     name: observer_web
@@ -14,4 +14,4 @@
     restart_policy: always
     network_mode: host
   become: true
-  become_user: "{{ observer_user }}"
+  become_user: "{{ observer_web_user }}"

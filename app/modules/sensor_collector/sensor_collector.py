@@ -1,6 +1,5 @@
 import logging
 from app.modules.dht_sensor import temp
-from app.modules.soil_sensor import soil
 from app.modules.soil_temp import soil_temp
 from app.modules.devices import manager
 from prometheus_client.core import GaugeMetricFamily
@@ -14,12 +13,6 @@ class SensorCollector(object):
 
       yield GaugeMetricFamily('observer_temperature', 'observer air temperature in degrees F', ht_result['temperature'])
       yield GaugeMetricFamily('observer_humidity', 'observer humidity', ht_result['humidity'])
-    except Exception as ex:
-      _LOGGER.error("Got exception %s", ex)
-
-    try:
-      moisture = soil.moisture()
-      yield GaugeMetricFamily('observer_soil_moisture', 'observer soil moisture', moisture)
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
 

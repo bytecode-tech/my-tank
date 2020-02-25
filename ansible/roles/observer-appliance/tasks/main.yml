@@ -12,7 +12,7 @@
     state: present
     group: "{{ observer_group }}"
     groups:
-       - "{{ docker_group }}"
+       - docker
        - adm
        - dialout
        - cdrom
@@ -61,7 +61,7 @@
 - name: Get observer appliance code
   git:
     repo: git@github.com:bytecode-tech/zero-appliance.git
-    dest: "{{ observer_basedir }}"
+    dest: "{{ observer_app }}"
     version: "{{ observer_appliance_version }}"
     key_file: /home/{{ observer_user }}/.ssh/id_rsa
     accept_hostkey: yes
@@ -74,24 +74,24 @@
     recurse: yes
 - name: Install observer appliance dependencies 
   pip:
-    executable: /usr/local/bin/pip3
-    requirements: "{{ observer_basedir }}/zero-appliance/requirements.txt"
+    requirements: "{{ observer_app }}/requirements.txt"
+    virtualenv: "{{ observer_basedir}}/venv"
   notify: restart observer-appliance
 - name: Create a observer data dir
   file:
-    path: "{{ observer_basedir }}/data/devices/"
+    path: "{{ observer_data }}/devices/"
     state: directory
     owner: "{{ observer_user }}"
     group: "{{ observer_group }}"
     mode: 0755
 - name: Create prometheus container
-    docker_container:
-      name: observer_prometheus
-      image: faucet/prometheus-pi:2.12.0
-      restart_policy: always
-      network_mode: host
-      volumes:
-        - "{{ observer_basedir }}/zero-appliance/config/prometheus.yml:/etc/prometheus/prometheus.yml"
-        - prometheus-data:/var/lib/prometheus/
-    become: true
-    become_user: "{{ observer_user }}"
+  docker_container:
+    name: observer_prometheus
+    image: faucet/prometheus-pi:2.12.0
+    restart_policy: always
+    network_mode: host
+    volumes:
+    - "{{ observer_app }}/config/prometheus.yml:/etc/prometheus/prometheus.yml"
+    - prometheus-data:/var/lib/prometheus/
+  become: true
+  become_user: "{{ observer_user }}"

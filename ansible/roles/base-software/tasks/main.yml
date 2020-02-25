@@ -7,18 +7,26 @@
     packages:
     - python3-pip 
     - python3-gpiozero
+    - python-setuptools
     - libpcre3
     - libpcre3-dev
     - git-core
     - acl #to allow for de-escalation of ansible permissions
 - name: Upgrade pip to latest version
   command: python3 -m pip install --upgrade pip setuptools wheel
+- name: Install system pip packages
+  pip:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - docker
+      - virtualenv
 - name: Download get-docker.sh
   get_url:
     url: https://get.docker.com
     dest: /usr/local/bin/get-docker.sh
     mode: 0755
-- name: Run docker install - NOTE current version has bug on armv6
+- name: Run docker install #- NOTE current version has bug on armv6
   shell:  /usr/local/bin/get-docker.sh
   # VERSION=18.06.3 
 # - name: Prevent docker from being upgraded because of bug on armv6
