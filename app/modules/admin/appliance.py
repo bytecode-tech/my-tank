@@ -57,8 +57,8 @@ def app_update_available():
     current_tag = container.attrs['Config']['Image']
 
     _LOGGER.error(
-        "Container attrs %s",
-            container.attrs,)
+        "Container tag %s",
+            container.attrs['Config']['Image'],)
 
     latest_image = client.images.pull(current_tag)
 
@@ -79,7 +79,7 @@ def app_update():
         container = client.containers.get('observer_web')
         container.stop()
         container.remove()
-        new_container = client.containers.run('joshdmoore/aspen-app:dev', name="observer_web", detach=True, network_mode="host", restart_policy={"Name": "always"})
+        new_container = client.containers.run(current_tag, name="observer_web", detach=True, network_mode="host", restart_policy={"Name": "always"})
         return new_container.status
     else:
         return 'No Update Available'
