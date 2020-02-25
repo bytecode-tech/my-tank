@@ -7,6 +7,9 @@ import docker
 import logging
 import uwsgi
 
+
+_LOGGER = logging.getLogger(__name__)
+
 def update_source():
     g = git.Git(current_app.config['PROJECT_ROOT'])
     return g.pull('origin')
@@ -52,6 +55,10 @@ def app_update_available():
     container = client.containers.get('observer_web')
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
+
+    _LOGGER.debug(
+        "Container attrs %s",
+            container.attrs,)
 
     latest_image = client.images.pull(current_tag)
 

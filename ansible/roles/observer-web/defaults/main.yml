@@ -2,6 +2,8 @@
 # defaults file for observer-web
 observer_web_user: "observer"
 
+observer_web_version: "dev"
+
 observer_dockerhub_user: "weegrow"
 observer_dockerhub_pw: !vault |
           $ANSIBLE_VAULT;1.2;AES256;dev

@@ -10,7 +10,7 @@
 - name: Create observer web container
   docker_container:
     name: observer_web
-    image: joshdmoore/aspen-app:dev
+    image: joshdmoore/aspen-app:{{ observer_web_version }}
     restart_policy: always
     network_mode: host
   become: true
