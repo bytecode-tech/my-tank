@@ -56,10 +56,6 @@ def app_update_available():
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
 
-    _LOGGER.error(
-        "Container tag %s",
-            container.attrs['Config']['Image'],)
-
     latest_image = client.images.pull(current_tag)
 
     if current_image.id != latest_image.id:
