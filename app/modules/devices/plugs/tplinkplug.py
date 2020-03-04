@@ -18,11 +18,12 @@ class TplinkPlug(Plug):
 
     def __init__(
         self,
+        id: str,
         alias: str,
-        host: str,
+        host: str
     ) -> None:
     
-        Plug.__init__(self, alias, host, DeviceBrand.tp_link)
+        Plug.__init__(self, id, alias, host, DeviceBrand.tp_link)
 
         self.native_api = SmartPlug(host)
         _LOGGER.debug(

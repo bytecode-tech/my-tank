@@ -10,6 +10,7 @@ device_controller = Blueprint('device-controller', __name__, url_prefix='/api/de
 def device_response(device):
     if not device:
         return {
+            'id': '',
             'name': '',
             'host': '',
             'brand': '',
@@ -20,6 +21,7 @@ def device_response(device):
         }
     if device.has_children:
         return {
+            'id': device.id,
             'name': device.alias,
             'host': device.host,
             'brand': device.brand,
@@ -30,6 +32,7 @@ def device_response(device):
         }
     else:
         return {
+            'id': device.id,
             'name': device.alias,
             'host': device.host,
             'brand': device.brand,
@@ -61,29 +64,32 @@ def api_smartplug_scan():
 
         return {'devices': response_list}
 
-@device_controller.route('/<alias>', methods=["GET", "POST", "DELETE"])
-def api_manage_device(alias):
+@device_controller.route('/<id>', methods=["GET", "POST", "DELETE"])
+def api_manage_device(id):
     device = None
     if request.method == "GET":
-        device = manager.retrieve_device(alias)
+        device = manager.retrieve_device(id)
     elif request.method == "POST":
+        alias = request.data.get('alias')
+        host = request.data.get('host')
+
         if request.data.get('brand').lower() == DeviceBrand.tp_link.name:
             if request.data.get('type').lower() == DeviceType.plug.name:
-                device = TplinkPlug(alias, request.data.get('host'))
+                device = TplinkPlug(id, alias, host)
                 manager.save_device(device)
             elif request.data.get('type').lower() == DeviceType.strip.name:
-                device = TplinkStrip(alias, request.data.get('host'))
+                device = TplinkStrip(id, alias, host)
                 manager.save_device(device)
     elif request.method == "DELETE":
-        manager.delete_device(alias)
+        manager.delete_device(id)
     if device:
         return device_response(device)
     else:
         return device_response(None)
 
-@device_controller.route('/<alias>/on', methods=["GET", "POST"])
-def api_device_on(alias):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/on', methods=["GET", "POST"])
+def api_device_on(id):
+    device = manager.retrieve_device(id)
 
     if request.method == "POST":
         device.turn_on()
@@ -92,12 +98,12 @@ def api_device_on(alias):
         'is_on': device.is_on,
     }
 
-@device_controller.route('/<alias>/<id>/on', methods=["GET", "POST"])
-def api_device_child_on(alias, id):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/<child_id>/on', methods=["GET", "POST"])
+def api_device_child_on(id, child_id):
+    device = manager.retrieve_device(id)
 
     if device.has_children:
-        index = int(id) - 1
+        index = int(child_id) - 1
         if request.method == "POST":
             device.turn_on(index=index)
             time.sleep(5)
@@ -108,9 +114,9 @@ def api_device_child_on(alias, id):
         raise exceptions.NotFound
 
 
-@device_controller.route('/<alias>/off', methods=["GET", "POST"])
-def api_device_off(alias):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/off', methods=["GET", "POST"])
+def api_device_off(id):
+    device = manager.retrieve_device(id)
 
     if request.method == "POST":
         device.turn_off()
@@ -119,12 +125,12 @@ def api_device_off(alias):
         'is_off': device.is_off,
     }
 
-@device_controller.route('/<alias>/<id>/off', methods=["GET", "POST"])
-def api_device_child_off(alias, id):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/<child_id>/off', methods=["GET", "POST"])
+def api_device_child_off(id, child_id):
+    device = manager.retrieve_device(id)
 
     if device.has_children:
-        index = int(id) - 1
+        index = int(child_id) - 1
         if request.method == "POST":
             device.turn_off(index=index)
             time.sleep(5)
@@ -134,9 +140,9 @@ def api_device_child_off(alias, id):
     else:
         raise exceptions.NotFound
 
-@device_controller.route('/<alias>/toggle', methods=["GET", "POST"])
-def api_device_toggle(alias):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/toggle', methods=["GET", "POST"])
+def api_device_toggle(id):
+    device = manager.retrieve_device(id)
 
     if request.method == "POST":
         device.toggle()
@@ -145,12 +151,12 @@ def api_device_toggle(alias):
         'is_on': device.is_on,
     }
 
-@device_controller.route('/<alias>/<id>/toggle', methods=["GET", "POST"])
-def api_device_child_toggle(alias, id):
-    device = manager.retrieve_device(alias)
+@device_controller.route('/<id>/<child_id>/toggle', methods=["GET", "POST"])
+def api_device_child_toggle(id, child_id):
+    device = manager.retrieve_device(id)
 
     if device.has_children:
-        index = int(id) - 1
+        index = int(child_id) - 1
         if request.method == "POST":
             device.toggle(index=index)
             time.sleep(5)

@@ -15,12 +15,13 @@ class Strip(Plug):
 
     def __init__(
         self,
+        id: str,
         alias: str,
         host: str,
         brand: DeviceBrand,
     ) -> None:
     
-        Device.__init__(self, alias, host, DeviceType.strip, brand)
+        Device.__init__(self, id, alias, host, DeviceType.strip, brand)
         _LOGGER.debug(
             "Initializing %s",
             self.host,
