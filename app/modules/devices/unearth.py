@@ -27,9 +27,9 @@ class Unearth:
             for dev in Discover.discover().values():
                 _LOGGER.error("found device: %s", dev)
                 if isinstance(dev, SmartStrip):
-                    devices[dev.sys_info.deviceId] = TplinkStrip(dev.sys_info.deviceId, dev.alias, dev.host)
+                    devices[dev.sys_info['deviceId']] = TplinkStrip(dev.sys_info['deviceId'], dev.alias, dev.host)
                 elif isinstance(dev, SmartPlug):
-                    devices[dev.sys_info.deviceId] = TplinkPlug(dev.sys_info.deviceId, dev.alias, dev.host)
+                    devices[dev.sys_infodev.sys_info['deviceId']] = TplinkPlug(dev.sys_info['deviceId'], dev.alias, dev.host)
         except Exception as ex:
             _LOGGER.error("Got exception %s", ex, exc_info=True)
         _LOGGER.debug("Found %s devices", len(devices))
