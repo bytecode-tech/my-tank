@@ -25,7 +25,7 @@ class Unearth:
 
         try:
             for dev in Discover.discover().values():
-                _LOGGER.debug("found device: %s", dev)
+                _LOGGER.info("found device: %s", dev)
                 if isinstance(dev, SmartStrip):
                     devices[dev.sys_info.deviceId] = TplinkStrip(dev.sys_info.deviceId, dev.alias, dev.host)
                 elif isinstance(dev, SmartPlug):
