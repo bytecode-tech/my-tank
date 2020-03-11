@@ -11,7 +11,7 @@ def device_response(device):
     if not device:
         return {
             'id': '',
-            'name': '',
+            'alias': '',
             'host': '',
             'brand': '',
             'type': '',
@@ -22,7 +22,7 @@ def device_response(device):
     if device.has_children:
         return {
             'id': device.id,
-            'name': device.alias,
+            'alias': device.alias,
             'host': device.host,
             'brand': device.brand,
             'type':device.type,
@@ -33,7 +33,7 @@ def device_response(device):
     else:
         return {
             'id': device.id,
-            'name': device.alias,
+            'alias': device.alias,
             'host': device.host,
             'brand': device.brand,
             'type':device.type,
