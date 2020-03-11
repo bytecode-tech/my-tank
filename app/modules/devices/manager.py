@@ -37,7 +37,8 @@ def retrieve_devices():
     for file_name in os.listdir(_DATA_DIR):
         device = None
         if file_name.endswith(".json"):
-            device = _retrieve_device_from_file(file_name)
+            id = file_name[:-5]
+            device = _retrieve_device_from_file(id)
 
         #if lookup worked, add to devices 
         if device:
