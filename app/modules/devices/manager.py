@@ -28,7 +28,7 @@ def delete_device(id: str):
 
 def retrieve_device(id):
 
-    device = _retrieve_device(id)
+    device = _retrieve_device_from_file(id)
 
     return device
 
@@ -37,7 +37,7 @@ def retrieve_devices():
     for file_name in os.listdir(_DATA_DIR):
         device = None
         if file_name.endswith(".json"):
-            device = _retrieve_device_from_file(_DATA_DIR + file_name)
+            device = _retrieve_device_from_file(file_name)
 
         #if lookup worked, add to devices 
         if device:
@@ -47,13 +47,10 @@ def retrieve_devices():
 
 def _device_file_path(id):
     return _DATA_DIR + id + '.json'
-
-def _retrieve_device(id):
-    file_path = _device_file_path(id)
-    return _retrieve_device_from_file(file_path)
         
-def _retrieve_device_from_file(file_path):
+def _retrieve_device_from_file(id):
     device = None
+    file_path = _device_file_path(id)
     if path.exists(file_path):
         f = open(file_path)
         json_data = f.read()
