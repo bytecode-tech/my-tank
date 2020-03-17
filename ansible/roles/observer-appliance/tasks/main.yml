@@ -79,11 +79,11 @@
     group: "{{ observer_group }}"
     mode: 0755
 - name: Change observer app permissions
-    file:
-      dest: "{{ observer_basedir }}"
-      owner: "{{ observer_user }}"
-      group: "{{ observer_group }}"
-      recurse: yes
+  file:
+    dest: "{{ observer_basedir }}"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_group }}"
+    recurse: yes
 - name: Create prometheus container
   docker_container:
     name: observer_prometheus
