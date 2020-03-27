@@ -1,0 +1,43 @@
+---
+# tasks file for wifi-ap-setup
+- name: install AP mode depedancies
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - dnsmasq
+    - hostapd
+- name: configure static ip address
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    insertafter: EOF
+    backup: yes
+    block: |
+      interface wlan0
+        static ip_address=192.168.4.1/24
+        nohook wpa_supplicant
+- name: configuring the DHCP server
+  blockinfile:
+    path: /etc/dnsmasq.conf
+    insertafter: EOF
+    backup: yes
+    block: |
+      interface=wlan0
+      dhcp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+- name: create hostapd.conf file
+  template:
+    src: hostapd.conf.j2
+    dest: /etc/hostapd/hostapd.conf
+    backup: true
+- name: configure hostapd with hastapd.conf
+  lineinfile:
+    path: /etc/default/hostapd
+    regexp: '^#DAEMON_CONF'
+    line: DAEMON_CONF="/etc/hostapd/hostapd.conf"
+- name: enable service hostapd and ensure it is not masked
+  systemd:
+    name: hostapd
+    enabled: yes
+    masked: no
+- name: reboot the machine for config to take effect
+  reboot:

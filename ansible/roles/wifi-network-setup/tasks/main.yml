@@ -1,0 +1,21 @@
+---
+# tasks file for wifi-network-setup
+- name: restore static ip address config
+  blockinfile:
+    path: /etc/dhcpcd.conf
+    block: ""
+- name: restore the DHCP server config
+  blockinfile:
+    path: /etc/dnsmasq.conf
+    block: ""
+- name: configure hostapd with hastapd.conf
+  lineinfile:
+    path: /etc/default/hostapd
+    regexp: '^DAEMON_CONF='
+    line: "#DAEMON_CONF="
+- name: disable service hostapd
+  systemd:
+    name: hostapd
+    enabled: no
+- name: reboot the machine for config to take effect
+  reboot:

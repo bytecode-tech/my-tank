@@ -1,0 +1,40 @@
+---
+# tasks file for hardware-setup
+- name: Update all packages to the latest version
+  apt:
+    upgrade: safe
+    update_cache: yes
+- name: Enable i2c
+  command: raspi-config nonint do_i2c 0
+- name: Setup DT Overlay
+  lineinfile:
+    path: /boot/config.txt
+    regexp: '^dtoverlay=w1-gpio'
+    line: 'dtoverlay=w1-gpio,gpiopin={{ observer_one_wire_port }}'
+- name: Change the hostname to our hostname
+  hostname:
+    name: "{{ observer_hostname }}"
+- name: Disable wpa_supplicant service - NOTE-wpa_suplicant is enabled from wlan0 dhcpd
+  systemd:
+    name: wpa_supplicant
+    state: stopped
+    enabled: no
+- name: Connect wlan0 to dbus
+  lineinfile: 
+    dest: "{{ item }}"
+    state:  present
+    regexp: '^(.*)err=\$\(wpa_supplicant -B -c(.*)$'
+    line: '\1err=$(wpa_supplicant -u -B -c\2'
+    backup: yes
+    backrefs: yes
+  with_items:
+      - '/usr/share/dhcpcd/hooks/10-wpa_supplicant'
+      - '/lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant'
+- name: reboot the machine for config to take effect
+  reboot:
+- name: Fix /etc/hosts removing the old hostname
+  lineinfile:
+    state: present
+    dest: /etc/hosts
+    line: "{{ ansible_default_ipv4.address }} {{ observer_hostname }}"
+    regexp: "^{{ ansible_default_ipv4.address }}"

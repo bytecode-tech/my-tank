@@ -30,10 +30,11 @@ class UserJob():
     def __init__(self, *args, **kwargs):
         self.id = None
         self.schedule = None
-        self.agent = None
+        self.device = None
         self.action = None
         self.command = None
         self.comment = None
+        self.child_plug = None
 
         if 'cron_job' in kwargs:
             cron_job = kwargs.get('cron_job')
@@ -42,9 +43,14 @@ class UserJob():
 
             command_components = cron_job.command.rsplit("/")
             component_count = len(command_components)
-            if component_count >= 2:
-                self.agent = command_components[-2]
-                self.action = command_components[-1]            
+            if component_count >= 3:
+                if command_components[-3].lower() == 'devices':
+                    self.device = command_components[-2].lower()
+                    self.action = command_components[-1].lower() 
+                elif command_components[-4].lower() == 'devices':
+                    self.device = command_components[-3].lower()
+                    self.child_plug = command_components[-2].lower()
+                    self.action = command_components[-1].lower()            
             
             comment_data = cron_job.comment.split(';')
             stringcount = len(comment_data)
@@ -60,10 +66,20 @@ class UserJob():
         else:
             self.id = args[0]
             self.schedule = args[1]
-            self.agent = args[2]
-            self.action = args[3]
-            self.comment = args[4]
-            self.enabled = args[5]
+            self.device = args[2].lower()
+            self.child_plug = args[3]
+
+            # handle booleans
+            if isinstance(args[4], bool):
+                if args[4]:
+                    self.action = "on"
+                else:
+                    self.action = "off"
+            else:
+                self.action = args[4].lower()
+
+            self.comment = args[5]
+            self.enabled = args[6]
 
 class Scheduler(metaclass=Singleton):
     def jobs(self):
@@ -78,13 +94,17 @@ class Scheduler(metaclass=Singleton):
         cron = CronTab(user=True)
         job = self.__find_cron_job(cron, user_job.id)
 
+        job_command = "curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.action
+        if user_job.child_plug:
+            job_command = "curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.child_plug + "/" + user_job.action
+
         if job:
             job.setall(user_job.schedule)
-            job.set_command("curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job.set_command(job_command)
             job.set_comment(user_job.id + ';' + user_job.comment)
             job.enable(user_job.enabled)
         else:
-            job = cron.new(command="curl -X POST http://localhost:8080/api/" + user_job.agent + "/" + user_job.action)
+            job = cron.new(command=job_command)
             job.setall(user_job.schedule)
             job.set_comment(user_job.id + ';' + user_job.comment)
 
