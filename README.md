@@ -1,10 +1,10 @@
-# zero-appliance
+# mytank
 
-One Paragraph of project description goes here
+Mytank is a raspberry pi zero w based tank controller.  It can be used in conjuntion with smart devices to control and monitor aquariums, terrariums, ponds and any other type of tank you might want to monitor.  Mytank is built with opensource components and is intended to be completely opensouce.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+To get started you will need to aquire and assemble all of the components in the Build List and then assemble them according to the instructions.  There is minimal soldering needed and should be able to be accoplished by a noviced solderer.  
 
 ### Build List
 
@@ -16,9 +16,20 @@ Here are the components you will need to build the device
 * (1) 4.7k ohm resistor
 * micro sd card - (we recommend a 16 gig)
 
+### Build Instructions
+
+
+### Build Base SD Card
+
+You will need to create a typical raspian install for raspberry pi zero.  This section will walk you though doing a headless install of raspian.
+
+1. Download latest raspian lite image from: https://www.raspberrypi.org/downloads/raspbian/
+2. Burn the image to your SD card.  (We use a tool like Etcher, but there are others) https://www.balena.io/etcher/
+3. Configure wifi
+
+
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
 
 Say what the step will be
 
