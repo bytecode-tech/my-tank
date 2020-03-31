@@ -26,6 +26,10 @@ You will need to create a typical raspian install for raspberry pi zero.  This s
 1. Download latest raspian lite image from: https://www.raspberrypi.org/downloads/raspbian/
 2. Burn the image to your SD card.  (We use a tool like Etcher, but there are others) https://www.balena.io/etcher/
 3. Configure wifi
+  a. Create a wpa_supplicant.conf file and supply your wifi configuration. https://linux.die.net/man/5/wpa_supplicant.conf
+  b. Copy the wpa_supplicant.conf file to the boot partition on your SD card
+4. Enable ssh by creating a blank ssh file on the boot partition of your SD card
+  * ```touch /Volumes/boot/ssh```
 
 
 ### Installing
