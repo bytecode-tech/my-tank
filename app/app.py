@@ -34,7 +34,7 @@ def create_app(config=None, app_name=None, blueprints=None):
 
    blueprints = DEFAULT_BLUEPRINTS
 
-   app = FlaskAPI("zero_controller")
+   app = FlaskAPI("my-tank")
    CORS(app)
    configure_app(app, config)   
    configure_blueprints(app, blueprints)

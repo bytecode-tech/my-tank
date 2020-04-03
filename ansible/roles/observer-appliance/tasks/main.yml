@@ -60,7 +60,7 @@
     mode: 0644
 - name: Get observer appliance code
   git:
-    repo: git@github.com:bytecode-tech/zero-appliance.git
+    repo: git@github.com:bytecode-tech/my-tank.git
     dest: "{{ observer_app }}"
     version: "{{ observer_appliance_version }}"
     key_file: /home/{{ observer_user }}/.ssh/id_rsa
