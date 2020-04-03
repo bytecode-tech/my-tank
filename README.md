@@ -16,7 +16,7 @@ Here are the components you will need to build the device
 * (1) 4.7k ohm resistor
 * micro sd card - (we recommend a 16 gig)
 
-### Build Instructions
+### Hardware Build Instructions
 
 
 ### Build Base SD Card
@@ -25,11 +25,26 @@ You will need to create a typical raspian install for raspberry pi zero.  This s
 
 1. Download latest raspian lite image from: https://www.raspberrypi.org/downloads/raspbian/
 2. Burn the image to your SD card.  (We use a tool like Etcher, but there are others) https://www.balena.io/etcher/
-3. Configure wifi
-  1. Create a wpa_supplicant.conf file and supply your wifi configuration. https://linux.die.net/man/5/wpa_supplicant.conf
-  2. Copy the wpa_supplicant.conf file to the boot partition on your SD card
-4. Enable ssh by creating a blank ssh file on the boot partition of your SD card
-  - ```touch /Volumes/boot/ssh```
+3. create psk for netowrk config
+   ```
+    wpa_passphrase "WifiName"
+    ```
+4. Create a wpa_supplicant.conf file and supply your wifi configuration. https://linux.die.net/man/5/wpa_supplicant.conf
+    ```
+    ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+    update_config=1
+    country=US
+
+    network={
+      ssid="WifiName"
+      psk=f80dc9d2dcb0628264c8be9b2474d017a6562807936d9775aad67116175d7fad
+    }
+    ```
+5. Copy the wpa_supplicant.conf file to the boot partition on your SD card
+6. Enable ssh by creating a blank ssh file on the boot partition of your SD card
+    ```
+    touch /Volumes/boot/ssh
+    ```
 
 
 ### Installing
