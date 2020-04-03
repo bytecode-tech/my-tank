@@ -3,18 +3,18 @@ import logging
 from flask import Flask, make_response, request
 from flask_api import FlaskAPI
 from flask_cors import CORS
-from werkzeug.wsgi import DispatcherMiddleware
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
 from prometheus_client.core import REGISTRY
 from . import config as Config
 
 from .modules.dht_sensor import temp_controller
-from .modules.soil_sensor import soil_controller
 from .modules.soil_temp import soil_temp_controller
 from .modules.schedule import schedule_controller
 from .modules.admin import admin_controller
 from .modules.sensor_collector import sensor_collector
 from .modules.devices import device_controller
+from .modules.wifi import wifi_controller
 
 # For import *
 __all__ = ['create_app']
@@ -22,7 +22,7 @@ __all__ = ['create_app']
 
 DEFAULT_BLUEPRINTS = [
     temp_controller,
-    soil_controller,
+    wifi_controller,
     soil_temp_controller,
     schedule_controller,
     admin_controller,
@@ -34,7 +34,7 @@ def create_app(config=None, app_name=None, blueprints=None):
 
    blueprints = DEFAULT_BLUEPRINTS
 
-   app = FlaskAPI("zero_controller")
+   app = FlaskAPI("my-tank")
    CORS(app)
    configure_app(app, config)   
    configure_blueprints(app, blueprints)

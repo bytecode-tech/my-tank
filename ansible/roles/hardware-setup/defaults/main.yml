@@ -1,0 +1,4 @@
+---
+# defaults file for hardware-setup
+observer_hostname: "observer"
+observer_one_wire_port: 8

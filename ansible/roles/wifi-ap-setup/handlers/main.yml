@@ -1,0 +1,14 @@
+---
+# handlers file for wifi-ap-setup
+- name: reload dnsmasq
+  service:
+    name: dnsmasq
+    state: reloaded
+- name: restart hostapd
+  service:
+    name: hostapd
+    state: restarted
+- name: restart dhcpcd
+  service:
+    name: dhcpcd
+    state: restarted

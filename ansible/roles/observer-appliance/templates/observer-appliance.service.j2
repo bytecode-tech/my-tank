@@ -1,0 +1,11 @@
+[Unit]
+Description=Observer Appliance
+After=network.target
+
+[Service]
+User={{ observer_user }}
+WorkingDirectory={{ observer_app }}
+ExecStart={{ observer_basedir}}/venv/bin/uwsgi --ini config/observer.ini
+
+[Install]
+WantedBy=multi-user.target

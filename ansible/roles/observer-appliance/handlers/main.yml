@@ -1,0 +1,6 @@
+---
+# handlers file for observer-appliance
+- name: restart observer-appliance
+  service:
+    name: observer-appliance
+    state: restarted

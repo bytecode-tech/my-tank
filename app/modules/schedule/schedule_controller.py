@@ -10,6 +10,7 @@ def job_response(job):
         'schedule': job.schedule,
         'command': job.command,
         'device' : job.device,
+        'child_plug' : job.child_plug,
         'action' : job.action,
         'comment' : job.comment,
         'enabled' : job.enabled
@@ -34,7 +35,7 @@ def api_job_control(id):
         user_job = scheduler.find_job(id)
 
     if request.method == "POST":
-        user_job = UserJob(id, request.data.get('schedule'), request.data.get('device'), request.data.get('action'), request.data.get('comment'), request.data.get('enabled'))
+        user_job = UserJob(id, request.data.get('schedule'), request.data.get('device'), request.data.get('child_plug'), request.data.get('action'), request.data.get('comment'), request.data.get('enabled'))
         user_job = scheduler.save_job(user_job)
 
     if request.method == "DELETE":
@@ -48,6 +49,7 @@ def api_job_control(id):
             'schedule': "",
             'action' : "",
             'device' : "",
+            'child_plug': "",
             'command': "",
             'comment' : "",
             'enabled' : ""

@@ -1,6 +1,5 @@
 import logging
 from app.modules.dht_sensor import temp
-from app.modules.soil_sensor import soil
 from app.modules.soil_temp import soil_temp
 from app.modules.devices import manager
 from prometheus_client.core import GaugeMetricFamily
@@ -12,20 +11,14 @@ class SensorCollector(object):
     try:
       ht_result = temp.read_temp()
 
-      yield GaugeMetricFamily('weegrow_temperature', 'weeGrow air temperature in degrees F', ht_result['temperature'])
-      yield GaugeMetricFamily('weegrow_humidity', 'weeGrow humidity', ht_result['humidity'])
-    except Exception as ex:
-      _LOGGER.error("Got exception %s", ex)
-
-    try:
-      moisture = soil.moisture()
-      yield GaugeMetricFamily('weegrow_soil_moisture', 'weeGrow soil moisture', moisture)
+      yield GaugeMetricFamily('observer_temperature', 'observer air temperature in degrees F', ht_result['temperature'])
+      yield GaugeMetricFamily('observer_humidity', 'observer humidity', ht_result['humidity'])
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
 
     try:
       soiltemp = soil_temp.soil_temp()
-      yield GaugeMetricFamily('weegrow_soil_temperature', 'weeGrow soil temperature in degrees F', soiltemp)
+      yield GaugeMetricFamily('observer_soil_temperature', 'observer soil temperature in degrees F', soiltemp)
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
     
@@ -33,7 +26,7 @@ class SensorCollector(object):
       devices = manager.retrieve_devices()
       for device in devices:
         alias = device.alias
-        yield GaugeMetricFamily('weegrow_' + alias, 'weeGrow ' + alias + ' status is: ', device.is_on)
+        yield GaugeMetricFamily('observer_' + alias, 'observer ' + alias + ' status is: ', device.is_on)
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
     

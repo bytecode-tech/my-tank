@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import sys
-import Adafruit_DHT
 import smbus
 import logging
 import time

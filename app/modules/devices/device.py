@@ -31,6 +31,7 @@ class Device:
 
     def __init__(
         self,
+        id: str,
         alias: str,
         host: str,
         device_type: DeviceType = DeviceType.unkown,
@@ -39,6 +40,7 @@ class Device:
     
         self.alias = alias
         self.host = host
+        self.id = id
 
         _LOGGER.debug(
             "Initializing %s",
@@ -47,10 +49,6 @@ class Device:
         
         self._device_type = device_type
         self._device_brand = device_brand
-
-    @property
-    def encoded_alias(self) -> str:
-        return self.alias
 
     @property
     def sys_info(self) -> Dict[str, Any]:
@@ -183,7 +181,7 @@ class Device:
 
     def save(self, file: TextIO, fields: dict=None):
         me = { "alias": self.alias,
-                "encoded_alias": self.encoded_alias,
+                "id": self.id,
                 "host": self.host,
                 "brand": self._device_brand.name,
                 "type": self._device_type.name,

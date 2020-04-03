@@ -13,12 +13,13 @@ class Plug(Device):
 
     def __init__(
         self,
+        id: str,
         alias: str,
         host: str,
-        brand: DeviceBrand,
+        brand: DeviceBrand
     ) -> None:
     
-        Device.__init__(self, alias, host, DeviceType.plug, brand)
+        Device.__init__(self, id, alias, host, DeviceType.plug, brand)
         _LOGGER.debug(
             "Initializing %s",
             self.host,
