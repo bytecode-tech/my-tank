@@ -6,6 +6,7 @@ flask-cors~=3.0.8
 python-crontab~=2.4.0
 adafruit-circuitpython-sht31d~=2.2.0
 sensor==6
+spidev~=3.4
 gitpython~=3.0.8
 dbus-python~=1.2.16
 uwsgi~=2.0.18
