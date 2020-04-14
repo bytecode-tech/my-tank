@@ -82,5 +82,5 @@ def app_update():
 
 def prometheus_state():
     client = docker.from_env()
-    container = client.containers.get('prometheus')
+    container = client.containers.get('observer_prometheus')
     return container.status

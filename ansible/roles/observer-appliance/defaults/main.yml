@@ -3,8 +3,10 @@
 observer_user: "observer"
 observer_group: "observer"
 observer_basedir: "/opt/observer"
-observer_app: "{{ observer_basedir }}/app"
-observer_data: "{{ observer_basedir }}/data"
+observer_appdir: "{{ observer_basedir }}/app"
+observer_datadir: "{{ observer_basedir }}/data"
+observer_configdir: "{{ observer_basedir }}/config"
+observer_rundir: "{{ observer_basedir }}/run"
 observer_appliance_version: "dev"
 observer_public_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGBeYDZm98XxsHx/9dBmuApklayu25b\
           R5kN3y/TvyjXbQWAA7jbaj9x7y29lgyUszp4GUYg2/bSa+1TD+57WXb4nXp/4oNNFlHuXim7Tj+Mh5sk\

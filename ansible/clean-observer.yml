@@ -1,0 +1,5 @@
+---
+    - name: Clean observer appliance
+      hosts: all
+      tasks:
+        

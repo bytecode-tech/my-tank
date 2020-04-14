@@ -1,7 +1,5 @@
 ---
 # defaults file for observer-web
-observer_web_user: "observer"
-
 observer_web_version: "dev"
 
 observer_dockerhub_user: "weegrow"

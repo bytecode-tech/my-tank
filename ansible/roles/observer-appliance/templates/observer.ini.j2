@@ -6,7 +6,7 @@ processes = 5
 threads = 2
 
 http-socket = :8080
-socket = observer.sock
+socket = {{ observer_rundir }}/observer.sock
 chmod-socket = 664
 vacuum = true
 

@@ -1,5 +1,12 @@
 ---
 # tasks file for observer-web
+- name: Copy nginx conf file to system
+  template:
+    src: "{{ role_path }}/files/nginx.conf"
+    dest: "{{ observer_configdir }}/nginx.conf"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0755
 - name: Login to Docker Hub
   docker_login:
     username: "{{ observer_dockerhub_user }}"
@@ -13,5 +20,7 @@
     image: joshdmoore/aspen-app:{{ observer_web_version }}
     restart_policy: always
     network_mode: host
+    volumes:
+      - "{{ observer_configdir }}/nginx.conf:/etc/nginx/conf.d/default.conf"
   become: true
-  become_user: "{{ observer_web_user }}"
+  become_user: "{{ observer_user }}"
