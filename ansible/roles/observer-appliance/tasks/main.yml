@@ -104,6 +104,10 @@
     owner: "{{ observer_user }}"
     group: "{{ observer_group }}"
     recurse: yes
+- name: start observer-appliance
+  service:
+    name: observer-appliance
+    state: started
 - name: Copy prometheus config file to server
   copy:
     src: "{{ role_path }}/files/prometheus.yml"

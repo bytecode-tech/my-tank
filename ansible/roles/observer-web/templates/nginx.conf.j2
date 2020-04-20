@@ -11,7 +11,7 @@ server {
     }
 
     location /api {
-        uwsgi_pass unix:///{{ observer_rundir }}/observer.sock;
+        uwsgi_pass unix://{{ observer_rundir }}/observer.sock;
         include uwsgi_params;
     }
 
