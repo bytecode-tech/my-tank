@@ -17,12 +17,11 @@ def update_source():
 def check_update():
     g = git.Git(current_app.config['PROJECT_ROOT'])
     g.fetch('origin')
-    return g.status('-uno')
+    return g.status('--porcelain')
 
 def appliance_update_available():
     git_status = check_update()
-    index = git_status.find('up-to-date')
-    return True if index < 0 else False
+    return True if git_status < 0 else False
 
 def update_dependencies():
     return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
