@@ -6,6 +6,8 @@ from dbus import SystemBus, Interface
 import docker
 import logging
 import uwsgi
+import re
+
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -17,11 +19,12 @@ def update_source():
 def check_update():
     g = git.Git(current_app.config['PROJECT_ROOT'])
     g.fetch('origin')
-    return g.status('--porcelain')
+    return g.status('--uno')
 
 def appliance_update_available():
     git_status = check_update()
-    return True if git_status < 0 else False
+    result = re.search("up.to.date", git_status)
+    return True if result is None else False
 
 def update_dependencies():
     return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
