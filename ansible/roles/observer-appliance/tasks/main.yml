@@ -115,7 +115,7 @@
 - name: Create prometheus container
   docker_container:
     name: observer_prometheus
-    image: faucet/prometheus-pi:2.12.0
+    image: bytecodetech/prometheus-pi-zero:latest
     restart_policy: always
     network_mode: host
     volumes:

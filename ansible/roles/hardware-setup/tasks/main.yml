@@ -4,6 +4,9 @@
   apt:
     upgrade: safe
     update_cache: yes
+- name: Set default timezone
+  timezone:
+    name: "{{ observer_timezone }}"
 - name: Enable i2c
   command: raspi-config nonint do_i2c 0
 - name: Setup DT Overlay
