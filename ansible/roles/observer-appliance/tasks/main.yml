@@ -29,6 +29,17 @@
        - spi
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
+- name: Create a observer required dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ observer_user }}"
+    group: "{{ observer_group }}"
+    mode: 0755
+  with_items:
+    - "{{ observer_datadir }}/devices/"
+    - "{{ observer_rundir }}"
+    - "{{ observer_configdir }}"
 - name: Copy observer-appliance service file to systemd
   template:
     src: observer-appliance.service.j2
@@ -36,6 +47,13 @@
     owner: root
     group: root
     mode: 0644
+- name: Copy observer ini file to system
+  template:
+    src: observer.ini.j2
+    dest: "{{ observer_configdir }}/observer.ini"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0755
 - name: Reload systemd
   systemd:
     daemon_reload: yes
@@ -51,6 +69,15 @@
     owner: "{{ observer_user }}"
     group: "{{ observer_user }}"
     mode: 0600
+- name: add github to known_hosts
+  lineinfile:
+    dest: /home/{{ observer_user }}/.ssh/known_hosts
+    create: yes
+    state: present
+    line: "{{ lookup('pipe', 'ssh-keyscan -trsa github.com') }}"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0644
 - name: create public key file
   template:
     src: id_rsa.pub.j2
@@ -61,37 +88,38 @@
 - name: Get observer appliance code
   git:
     repo: git@github.com:bytecode-tech/my-tank.git
-    dest: "{{ observer_app }}"
+    dest: "{{ observer_appdir }}"
     version: "{{ observer_appliance_version }}"
     key_file: /home/{{ observer_user }}/.ssh/id_rsa
     accept_hostkey: yes
   notify: restart observer-appliance
 - name: Install observer appliance dependencies 
   pip:
-    requirements: "{{ observer_app }}/requirements.txt"
+    requirements: "{{ observer_appdir }}/requirements.txt"
     virtualenv: "{{ observer_basedir}}/venv"
   notify: restart observer-appliance
-- name: Create a observer data dir
-  file:
-    path: "{{ observer_data }}/devices/"
-    state: directory
-    owner: "{{ observer_user }}"
-    group: "{{ observer_group }}"
-    mode: 0755
 - name: Change observer app permissions
   file:
     dest: "{{ observer_basedir }}"
     owner: "{{ observer_user }}"
     group: "{{ observer_group }}"
     recurse: yes
+- name: start observer-appliance
+  service:
+    name: observer-appliance
+    state: started
+- name: Copy prometheus config file to server
+  copy:
+    src: "{{ role_path }}/files/prometheus.yml"
+    dest: "{{ observer_configdir }}/prometheus.yml"
 - name: Create prometheus container
   docker_container:
     name: observer_prometheus
-    image: faucet/prometheus-pi:2.12.0
+    image: bytecodetech/prometheus-pi-zero:latest
     restart_policy: always
     network_mode: host
     volumes:
-    - "{{ observer_app }}/config/prometheus.yml:/etc/prometheus/prometheus.yml"
+    - "{{ observer_configdir }}//prometheus.yml:/etc/prometheus/prometheus.yml"
     - prometheus-data:/var/lib/prometheus/
   become: true
   become_user: "{{ observer_user }}"

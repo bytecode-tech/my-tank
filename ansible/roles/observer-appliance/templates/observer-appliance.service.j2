@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 User={{ observer_user }}
-WorkingDirectory={{ observer_app }}
-ExecStart={{ observer_basedir}}/venv/bin/uwsgi --ini config/observer.ini
+WorkingDirectory={{ observer_appdir }}
+ExecStart={{ observer_basedir }}/venv/bin/uwsgi --ini {{ observer_configdir }}/observer.ini
 
 [Install]
 WantedBy=multi-user.target

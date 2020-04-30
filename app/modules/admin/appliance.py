@@ -6,6 +6,8 @@ from dbus import SystemBus, Interface
 import docker
 import logging
 import uwsgi
+import re
+
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -21,8 +23,8 @@ def check_update():
 
 def appliance_update_available():
     git_status = check_update()
-    index = git_status.find('up-to-date')
-    return True if index < 0 else False
+    result = re.search("up.to.date", git_status)
+    return True if result is None else False
 
 def update_dependencies():
     return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
@@ -82,5 +84,5 @@ def app_update():
 
 def prometheus_state():
     client = docker.from_env()
-    container = client.containers.get('prometheus')
+    container = client.containers.get('observer_prometheus')
     return container.status

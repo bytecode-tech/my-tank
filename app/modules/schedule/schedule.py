@@ -96,7 +96,7 @@ class Scheduler(metaclass=Singleton):
 
         job_command = "curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.action
         if user_job.child_plug:
-            job_command = "curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + user_job.child_plug + "/" + user_job.action
+            job_command = "curl -X POST http://localhost:8080/api/devices/" + user_job.device + "/" + str(user_job.child_plug) + "/" + user_job.action
 
         if job:
             job.setall(user_job.schedule)

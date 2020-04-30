@@ -40,7 +40,7 @@ class Device:
     
         self.alias = alias
         self.host = host
-        self.id = id
+        self.id = id.lower()
 
         _LOGGER.debug(
             "Initializing %s",
