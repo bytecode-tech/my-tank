@@ -19,7 +19,7 @@ def update_source():
 def check_update():
     g = git.Git(current_app.config['PROJECT_ROOT'])
     g.fetch('origin')
-    return g.status('--uno')
+    return g.status('-uno')
 
 def appliance_update_available():
     git_status = check_update()
