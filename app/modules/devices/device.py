@@ -179,6 +179,12 @@ class Device:
     def is_strip(self) -> bool:
         return self.device_type == DeviceType.strip
 
+    @property
+    def has_integrity(self) -> bool:
+        """Returns True if the device is correct of false if the hardware loaded is not as expected"""
+
+        raise NotImplementedError("Device subclass needs to implement this.")
+
     def save(self, file: TextIO, fields: dict=None):
         me = { "alias": self.alias,
                 "id": self.id,

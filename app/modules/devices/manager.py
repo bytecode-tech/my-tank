@@ -4,6 +4,7 @@ import json
 import os.path
 from os import path
 from .plugs import TplinkPlug, TplinkStrip
+from .unearth import Unearth
 from app.modules.devices import (
     Device,
     DeviceBrand,
@@ -64,11 +65,24 @@ def _retrieve_device_from_file(id):
             host = device_props['host']
 
             _LOGGER.debug('Looking up: ' + str(device_brand) + " :" + str(device_type))
-            if device_brand == DeviceBrand.tp_link.name:
-                if device_type == DeviceType.plug.name:
-                    device = TplinkPlug(id, alias, host)
-                elif device_type == DeviceType.strip.name:
-                    device = TplinkStrip(id, alias, host)
+            try:
+                if device_brand == DeviceBrand.tp_link.name:
+                    if device_type == DeviceType.plug.name:
+                        device = TplinkPlug(id, alias, host)
+                    elif device_type == DeviceType.strip.name:
+                        device = TplinkStrip(id, alias, host)
+
+                if device is None or not device.has_integrity:
+                    new_device = Unearth.findDevice(id)
+                    new_device.alias = alias
+                    device = new_device
+                    save_device(device)
+            except:
+                new_device = Unearth.findDevice(id)
+                new_device.alias = alias
+                device = new_device
+                save_device(device)
+                
                 
         f.close()
     return device

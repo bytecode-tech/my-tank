@@ -34,3 +34,13 @@ class Unearth:
             _LOGGER.error("Got exception %s", ex, exc_info=True)
         _LOGGER.debug("Found %s devices", len(devices))
         return devices
+
+    @staticmethod
+    def findDevice(device_id) -> Device:
+        device = None
+        devices = Unearth.unearth()
+        for new_device in devices:
+            if device_id == new_device.id:
+                device = new_device
+        
+        return device

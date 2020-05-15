@@ -33,6 +33,21 @@ class TplinkPlug(Plug):
 
         # self.initialize()
 
+    def __eq__(self, obj):
+        return isinstance(obj, TplinkPlug) and obj.id == self.id
+
+    @property
+    def has_integrity(self):
+        try:
+            deviceId = self.sys_info['deviceId']
+            if deviceId.lower() == self.id:
+                return True
+            else:
+                return False
+        except:
+            return False
+        
+
     def get_sysinfo(self) -> Dict:
         """Retrieve system information.
 
