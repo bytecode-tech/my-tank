@@ -27,7 +27,7 @@ def appliance_update_available():
     return True if result is None else False
 
 def update_dependencies():
-    return os.system('sudo pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
+    return os.system('/opt/observer/venv/bin/pip3 install -r ' + current_app.config['PROJECT_ROOT'] + '/requirements.txt')
 
 def appliance_restart():
     uwsgi.reload()
