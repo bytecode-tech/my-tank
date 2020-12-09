@@ -7,6 +7,13 @@
     owner: "{{ observer_user }}"
     group: "{{ observer_user }}"
     mode: 0755
+- name: Copy web env file to system
+  template:
+    src: web.env.j2
+    dest: "{{ observer_configdir }}/web.env"
+    owner: "{{ observer_user }}"
+    group: "{{ observer_user }}"
+    mode: 0755
 - name: Login to Docker Hub
   docker_login:
     username: "{{ observer_dockerhub_user }}"
@@ -18,6 +25,7 @@
   docker_container:
     name: observer_web
     image: joshdmoore/aspen-app:{{ observer_web_version }}
+    env_file: "{{ observer_configdir }}/web.env"
     restart_policy: always
     network_mode: host
     volumes:

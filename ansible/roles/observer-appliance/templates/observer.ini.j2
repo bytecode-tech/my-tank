@@ -1,5 +1,6 @@
 [uwsgi]
 module = run:app
+wsgi = run:app
 
 master = true
 processes = 5
@@ -9,5 +10,8 @@ http-socket = :8080
 socket = {{ observer_rundir }}/observer.sock
 chmod-socket = 664
 vacuum = true
+
+gevent = 100
+http-websockets = true
 
 die-on-term = true

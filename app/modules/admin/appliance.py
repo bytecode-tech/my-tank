@@ -70,6 +70,7 @@ def app_update():
     container = client.containers.get('observer_web')
     current_image = container.image
     current_tag = container.attrs['Config']['Image']
+    current_env = container.attrs['Config']['Env']
 
     latest_image = client.images.pull(current_tag)
 
@@ -77,7 +78,7 @@ def app_update():
         container = client.containers.get('observer_web')
         container.stop()
         container.remove()
-        new_container = client.containers.run(current_tag, name="observer_web", detach=True, network_mode="host", restart_policy={"Name": "always"})
+        new_container = client.containers.run(current_tag, name="observer_web", detach=True, network_mode="host", restart_policy={"Name": "always"}, environment=current_env)
         return new_container.status
     else:
         return 'No Update Available'

@@ -2,6 +2,12 @@
 # defaults file for observer-web
 observer_web_version: "dev"
 
+observer_basedir: "/opt/observer"
+observer_configdir: "{{ observer_basedir }}/config"
+
+observer_branding_name: "MyTank"
+observer_branding_href: "http://mytank.live"
+
 observer_dockerhub_user: "weegrow"
 observer_dockerhub_pw: !vault |
           $ANSIBLE_VAULT;1.2;AES256;dev
