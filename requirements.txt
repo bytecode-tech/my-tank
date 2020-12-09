@@ -14,4 +14,5 @@ docker~=4.2.0
 smbus~=1.1.post2
 twisted~=19.10.0
 wpa_supplicant~=0.2
+gevent
 -e git://github.com/GadgetReactor/pyHS100.git#egg=pyHS100
