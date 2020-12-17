@@ -165,3 +165,33 @@ def api_device_child_toggle(id, child_id):
     }
     else:
         raise exceptions.NotFound
+
+@device_controller.route('/webhook', methods=["POST"])
+def api_device_webhook():
+    if request.method == "POST":
+        alerts = request.data.get('alerts')
+        for alert in alerts:
+            annotations = alert.get('annotations')
+            
+            for attribute, value in annotations.items():
+                parts = attribute.split('_')
+                if parts[0] == 'device':
+                    # device = manager.retrieve_device(parts[1])
+                    child = -1
+                    try:
+                        child = parts[2]
+                    except:
+                        pass
+
+                    if value.lower() == 'on':
+                        # device.turn_off(index=child)
+                        return {
+                            'status': 'Turned device: ' + parts[1] + ' child: ' + child + ' On',
+                        }
+                    elif value.lower() == 'off':
+                        # device.turn_off(index=child)
+                        return {
+                            'status': 'Turned device: ' + parts[1] + ' child: ' + child + ' Off',
+                        }
+
+
