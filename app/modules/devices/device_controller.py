@@ -200,7 +200,7 @@ def api_device_webhook():
                             device.turn_on(index=child)
                             device_status = {
                                 'status': "Devices found",
-                                parts[1]+'_'+child: "On" 
+                                parts[1]+'_'+str(child): "On" 
                             }
                             returnStatus.update(device_status)
                     elif value.lower() == 'off':
@@ -217,7 +217,7 @@ def api_device_webhook():
                             device.turn_off(index=child)
                             device_status = {
                                 'status': "Devices found",
-                                parts[1]+'_'+child: "Off" 
+                                parts[1]+'_'+str(child): "Off" 
                             }
                             returnStatus.update(device_status)
 
