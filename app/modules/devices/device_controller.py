@@ -176,7 +176,7 @@ def api_device_webhook():
             for attribute, value in annotations.items():
                 parts = attribute.split('_')
                 if parts[0] == 'device':
-                    # device = manager.retrieve_device(parts[1])
+                    device = manager.retrieve_device(parts[1])
                     child = -1
                     try:
                         child = parts[2]
@@ -184,14 +184,17 @@ def api_device_webhook():
                         pass
 
                     if value.lower() == 'on':
-                        # device.turn_off(index=child)
+                        device.turn_on(index=child)
                         return {
-                            'status': 'Turned device: ' + parts[1] + ' child: ' + child + ' On',
+                            'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' On',
                         }
                     elif value.lower() == 'off':
-                        # device.turn_off(index=child)
+                        device.turn_off(index=child)
                         return {
-                            'status': 'Turned device: ' + parts[1] + ' child: ' + child + ' Off',
+                            'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' Off',
                         }
+    return {
+        'status': 'No device found'
+    }
 
 
