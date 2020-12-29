@@ -180,9 +180,11 @@ def api_device_webhook():
                 parts = attribute.split('_')
                 if parts[0] == 'device':
                     device = manager.retrieve_device(parts[1])
-                    child = -1
+                    childIndex = -1
+                    childDisplay = "-1"
                     try:
-                        child = int(parts[2])
+                        childIndex = int(parts[2]) - 1
+                        childDisplay = str(parts[2]) 
                     except:
                         pass
 
@@ -196,11 +198,11 @@ def api_device_webhook():
                             }
                             returnStatus.update(device_status)
                         elif device.is_strip:
-                            _LOGGER.debug("Device: %s Plug: %d turned On", parts[1], child)
-                            device.turn_on(index=child)
+                            _LOGGER.debug("Device: %s Plug: %s turned On", parts[1], childDisplay)
+                            device.turn_on(index=childIndex)
                             device_status = {
                                 'status': "Devices found",
-                                parts[1]+'_'+str(child): "On" 
+                                parts[1]+'_'+childDisplay: "On" 
                             }
                             returnStatus.update(device_status)
                     elif value.lower() == 'off':
@@ -213,11 +215,11 @@ def api_device_webhook():
                             }
                             returnStatus.update(device_status)
                         elif device.is_strip:
-                            _LOGGER.debug("Device: %s Plug: %d turned Off", parts[1], child)
-                            device.turn_off(index=child)
+                            _LOGGER.debug("Device: %s Plug: %d turned Off", parts[1], childDisplay)
+                            device.turn_off(index=childIndex)
                             device_status = {
                                 'status': "Devices found",
-                                parts[1]+'_'+str(child): "Off" 
+                                parts[1]+'_'+childDisplay: "Off" 
                             }
                             returnStatus.update(device_status)
 
