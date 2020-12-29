@@ -37,15 +37,17 @@ def read_sht_2x():
 
         humid = sht.humidity().RH
         temp = sht.temperature().F
+        celcius = sht.temperature().C
 
-        return {'temperature': temp, 'humidity': humid}
+        return {'temperature': temp, 'celsius': celcius, 'humidity': humid}
     except:
         _LOGGER.error("SHT-2x not reporting")
 
 def read_sht_30():
     try:
-        fTemp = sensor.temperature[0] * 1.8 + 32
+        cTemp = sensor.temperature[0]
+        fTemp =  cTemp * 1.8 + 32
         humidity = sensor.relative_humidity[0]
-        return {'temperature': fTemp, 'humidity': humidity}
+        return {'temperature': fTemp, 'celsius': cTemp, 'humidity': humidity}
     except:
         _LOGGER.error("SHT-30 not reporting")

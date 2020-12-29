@@ -13,6 +13,7 @@ class SensorCollector(object):
 
       yield GaugeMetricFamily('observer_temperature', 'observer air temperature in degrees F', ht_result['temperature'])
       yield GaugeMetricFamily('observer_humidity', 'observer humidity', ht_result['humidity'])
+      yield GaugeMetricFamily('observer_temperature_c', 'observer air temperature in degrees Celsius', ht_result['celsius'])
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
 
