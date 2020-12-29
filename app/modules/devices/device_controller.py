@@ -184,12 +184,18 @@ def api_device_webhook():
                         pass
 
                     if value.lower() == 'on':
-                        device.turn_on(index=child)
+                        if device.is_plug:
+                            device.turn_on()
+                        elif device.is_strip:
+                            device.turn_on(index=child)
                         return {
                             'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' On',
                         }
                     elif value.lower() == 'off':
-                        device.turn_off(index=child)
+                        if device.is_plug:
+                            device.turn_off()
+                        elif device.is_strip:
+                            device.turn_off(index=child)
                         return {
                             'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' Off',
                         }
