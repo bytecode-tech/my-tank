@@ -179,7 +179,7 @@ def api_device_webhook():
                     device = manager.retrieve_device(parts[1])
                     child = -1
                     try:
-                        child = parts[2]
+                        child = int(parts[2])
                     except:
                         pass
 
