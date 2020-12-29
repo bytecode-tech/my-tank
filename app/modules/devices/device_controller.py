@@ -1,9 +1,11 @@
-import time
+import time, logging
 from flask import (Blueprint, request, jsonify)
 from flask_api import exceptions
 from . import Unearth, manager
 from .device import DeviceType, DeviceBrand
 from .plugs import TplinkPlug, TplinkStrip
+
+_LOGGER = logging.getLogger(__name__)
 
 device_controller = Blueprint('device-controller', __name__, url_prefix='/api/devices')
 
@@ -170,6 +172,7 @@ def api_device_child_toggle(id, child_id):
 def api_device_webhook():
     if request.method == "POST":
         alerts = request.data.get('alerts')
+        returnStatus = { 'status': 'No device found' }
         for alert in alerts:
             annotations = alert.get('annotations')
             
@@ -185,22 +188,39 @@ def api_device_webhook():
 
                     if value.lower() == 'on':
                         if device.is_plug:
+                            _LOGGER.debug("Device: %s turned On", parts[1])
                             device.turn_on()
+                            device_status = {
+                                'status': "Devices found",
+                                parts[1]: "On" 
+                            }
+                            returnStatus.update(device_status)
                         elif device.is_strip:
+                            _LOGGER.debug("Device: %s Plug: %d turned On", parts[1], child)
                             device.turn_on(index=child)
-                        return {
-                            'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' On',
-                        }
+                            device_status = {
+                                'status': "Devices found",
+                                parts[1]+'_'+child: "On" 
+                            }
+                            returnStatus.update(device_status)
                     elif value.lower() == 'off':
                         if device.is_plug:
+                            _LOGGER.debug("Device: %s turned Off", parts[1])
                             device.turn_off()
+                            device_status = {
+                                'status': "Devices found",
+                                parts[1]: "Off" 
+                            }
+                            returnStatus.update(device_status)
                         elif device.is_strip:
+                            _LOGGER.debug("Device: %s Plug: %d turned Off", parts[1], child)
                             device.turn_off(index=child)
-                        return {
-                            'status': 'Turned device: ' + parts[1] + ' child: ' + str(child) + ' Off',
-                        }
-    return {
-        'status': 'No device found'
-    }
+                            device_status = {
+                                'status': "Devices found",
+                                parts[1]+'_'+child: "Off" 
+                            }
+                            returnStatus.update(device_status)
+
+        return jsonify(returnStatus)
 
 
