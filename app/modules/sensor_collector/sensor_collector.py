@@ -1,5 +1,5 @@
 import logging
-from app.modules.dht_sensor import temp
+from app.modules.co2_sensor import co2
 from app.modules.soil_temp import soil_temp
 from app.modules.devices import manager
 from prometheus_client.core import GaugeMetricFamily
@@ -9,11 +9,12 @@ _LOGGER = logging.getLogger(__name__)
 class SensorCollector(object):
   def collect(self):
     try:
-      ht_result = temp.read_temp()
+      ht_result = co2.read()
 
       yield GaugeMetricFamily('observer_temperature', 'observer air temperature in degrees F', ht_result['temperature'])
       yield GaugeMetricFamily('observer_humidity', 'observer humidity', ht_result['humidity'])
       yield GaugeMetricFamily('observer_temperature_c', 'observer air temperature in degrees Celsius', ht_result['celsius'])
+      yield GaugeMetricFamily('observer_co2', 'observer co2', ht_result['co2'])
     except Exception as ex:
       _LOGGER.error("Got exception %s", ex)
 

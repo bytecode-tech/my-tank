@@ -16,3 +16,5 @@ twisted~=19.10.0
 wpa_supplicant~=0.2
 gevent
 -e git://github.com/GadgetReactor/pyHS100.git#egg=pyHS100
+ansible-api
+scd30-i2c
