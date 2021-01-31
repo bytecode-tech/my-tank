@@ -18,7 +18,7 @@ def read():
         m = scd30.read_measurement()
 
         humid = m[2]
-        temp = m[1]
+        temp = (m[1] * (9/5)) + 32 
         celcius = m[1]
         co2 = m[0]
 
