@@ -1,5 +1,5 @@
 import logging
-from app.modules.co2_sensor import co2
+from app.modules.devices.co2_sensor import co2
 from app.modules.soil_temp import soil_temp
 from app.modules.devices import manager
 from prometheus_client.core import GaugeMetricFamily
